@@ -144,7 +144,7 @@ async def zalando(ctx, link):
 		discstock = "\n".join(stock)
 		discsku = "\n".join(sku)
 
-		embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+		embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='> ['+(shoename)+']('+link+')', color=setembedcolor)
 		embed.set_thumbnail(url=shoepic)
 		embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 		embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
@@ -213,7 +213,7 @@ async def zalando(ctx, link):
 			else:
 				totalstock = totalstock
 
-			embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+			embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='> ['+(shoename)+']('+link+')', color=setembedcolor)
 			embed.set_thumbnail(url=shoepic)
 			embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 			embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
@@ -233,3 +233,8 @@ async def zalando(ctx, link):
 			await test91.delete()
 
 bot.run(bottoken)
+
+
+
+
+
