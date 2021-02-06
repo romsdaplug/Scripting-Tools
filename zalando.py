@@ -220,7 +220,7 @@ async def zalando(ctx, link):
 			embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
 			embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
 			embed.add_field(name="Price", value="`"+str(correctprice)+"`", inline=True)
-			embed.add_field(name="Release Date", value="`" + releasedate.text + "", inline=True)
+			embed.add_field(name="Release Date", value="`" + releasedate.text + "`", inline=True)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.message.delete()
 			await ctx.send(embed=embed)
