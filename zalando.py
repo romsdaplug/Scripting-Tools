@@ -138,8 +138,9 @@ async def zalando(ctx, link):
 		newtext = shoename1.split("-")[0]
 		newtext2 = shoename1.split("-")[1]
 		shoename = newtext + newtext2
+		allsize2 = ['> '+x for x in size]
 		totalstock = sum(Decimal(i) for i in stock)
-		discsize = "\n".join(size)
+		discsize = "\n".join(allsize2)
 		discstock = "\n".join(stock)
 		discsku = "\n".join(sku)
 
@@ -197,7 +198,8 @@ async def zalando(ctx, link):
 			newtext = shoename1.split("-")[0]
 			newtext2 = shoename1.split("-")[1]
 			shoename = newtext + newtext2
-			discsize = "\n".join(size)
+			allsize2 = ['> '+x for x in size]
+			discsize = "\n".join(allsize2)
 			discstock = "\n".join(coloredstock)
 			discsku = "\n".join(sku)
 
@@ -231,8 +233,3 @@ async def zalando(ctx, link):
 			await test91.delete()
 
 bot.run(bottoken)
-
-
-
-
-
