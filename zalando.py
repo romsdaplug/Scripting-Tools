@@ -27,7 +27,7 @@ async def on_ready():
 	pass
 
 def check_if_it_is_me(ctx):
-	return ctx.message.author.id == 175953718750085121 or ctx.message.author.id == 351639955531104258 or ctx.message.author.id == 243519195529084939 or ctx.message.author.id == 272815177659842561 or ctx.message.author.id == 418649205494775820
+	return ctx.message.author.id == 175953718750085121 or ctx.message.author.id == 351639955531104258
 
 
 @bot.command()
@@ -145,7 +145,7 @@ async def zalando(ctx, link):
 
 		embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
 		embed.set_thumbnail(url=shoepic)
-		embed.add_field(name=":bar_chart: Size", value=discsize, inline=True)
+		embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 		embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
 		embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
 		embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
@@ -213,7 +213,7 @@ async def zalando(ctx, link):
 
 			embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
 			embed.set_thumbnail(url=shoepic)
-			embed.add_field(name=":bar_chart: Size", value=discsize, inline=True)
+			embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 			embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
 			embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
 			embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
