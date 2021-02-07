@@ -33,9 +33,9 @@ setfootertext = "@ScriptingTools | Stock Checker | <?ftlhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x00000
 
-euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf"]
-asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf"]
-newregionhook = ["https://discord.com/api/webhooks/796527829261090848/36pfX9AeOlz321uMFTwiibnwAwxT_noBgTkt98JgCoh1xzufCn6yQIW8LkPDtc5iv4dt","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf"]
+euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM"]
+asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM"]
+newregionhook = ["https://discord.com/api/webhooks/796527829261090848/36pfX9AeOlz321uMFTwiibnwAwxT_noBgTkt98JgCoh1xzufCn6yQIW8LkPDtc5iv4dt","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM"]
 
 proxies = []
 
@@ -75,7 +75,7 @@ def check_if_it_is_me(ctx):
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def stock(ctx, link):
+async def staff(ctx, link):
 
 	headers = ''
 	url = ''
@@ -111,19 +111,19 @@ async def stock(ctx, link):
 
 	elif region == 'NL' or region == 'nl':
 		headers = {
-		"authority": "www.footlocker.nl",
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
+		'authority': "www.footlocker.nl",
+		'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
 		'accept': "application/json, text/javascript, */*; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
 		'x-requested-with': "XMLHttpRequest",
+		'sec-ch-ua-mobile': "?0",
+		'user-agent': "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Mobile Safari/537.36",
 		'sec-fetch-site': "same-origin",
 		'sec-fetch-mode': "cors",
 		'sec-fetch-dest': "empty",
 		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
+		"accept-language":"de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7",
+		'cookie': "fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true;"
 		}
-
 		url = ("https://www.footlocker.nl/INTERSHOP/web/FLE/Footlocker-Footlocker_NL-Site/en_GB/-/EUR/ViewProduct-ProductVariationSelect")
 		countrycode = 'nl'
 		regioncountry = 'Netherlands'
@@ -169,6 +169,7 @@ async def stock(ctx, link):
 			)
 		countrycode = 'sg'
 		regioncountry = 'Singapore'
+
 
 	elif region == 'MY' or region == 'my':
 		headers = {
@@ -344,11 +345,8 @@ async def stock(ctx, link):
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
-		print(region)
-		if region == "NL" or region == "nl" or region == "AU" or region == "au":
-			print(proxy)
+		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
-			pprint(response)
 		else:
 			response = requests.get(url, headers=headers, params=parameters)
 		if 'Foot Locker - Please Stand By' in response.text:
@@ -436,7 +434,7 @@ async def stock(ctx, link):
 				stock[index]=":red_square:"
 		data = "\n".join("{0} {1}".format(x,y) for x,y in zip(stock,size))
 
-
+		pprint(stock)
 		shoepic = soup2.find("meta", {"property":"og:image"})["content"]
 		shoename = soup2.find("meta", {"property":"og:title"})["content"]
 		shoesku = soup2.find_all("li", {"class":"fl-list--item"})
@@ -543,8 +541,8 @@ async def stock(ctx, link):
 	await test91.delete()
 
 @bot.command()
-@commands.has_any_role(791044154351157328,790654515899662366,644574707475152926,644574705990238210)
-async def staff(ctx, link):
+@commands.has_any_role(644574705990238210,644574707475152926,806766600686010432,806855381656928266,790654515899662366,791044154351157328)
+async def stock(ctx, link):
 
 	headers = ''
 	url = ''
@@ -831,7 +829,7 @@ async def staff(ctx, link):
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
-		if region == "nl" or region == "NL" or region == "AU" or region == "au":
+		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
 		else:
 			response = requests.get(url, headers=headers, params=parameters)
@@ -1338,7 +1336,7 @@ async def release(ctx, link):
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
-		if region == "nl" or region == "NL" or region == "AU" or region == "au":
+		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
 		else:
 			response = requests.get(url, headers=headers, params=parameters)
@@ -1512,29 +1510,29 @@ async def release(ctx, link):
 		else:
 			date = "Live"
 		shoesku = "Not Available"
-	for i in range(len(setwebhook)):
-		webhook = DiscordWebhook(url=setwebhook[i])
-		embed = DiscordEmbed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
-		embed.add_embed_field(name="Footlocker PID", value=str(pid), inline=True)
-		embed.add_embed_field(name="Shoe SKU", value=str(shoesku), inline=True)
+
+	webhook = DiscordWebhook(url=setwebhook)
+	embed = DiscordEmbed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+	embed.add_embed_field(name="Footlocker PID", value=str(pid), inline=True)
+	embed.add_embed_field(name="Shoe SKU", value=str(shoesku), inline=True)
+	embed.add_embed_field(name = chr(173), value = chr(173))
+	embed.add_embed_field(name="Region", value=regioncountry, inline=True)
+	if date == "Live":
+		embed.add_embed_field(name="Availability", value=str(date), inline=True)
 		embed.add_embed_field(name = chr(173), value = chr(173))
-		embed.add_embed_field(name="Region", value=regioncountry, inline=True)
-		if date == "Live":
-			embed.add_embed_field(name="Availability", value=str(date), inline=True)
-			embed.add_embed_field(name = chr(173), value = chr(173))
-		else:
-			embed.add_embed_field(name="Availability", value=str(date), inline=False)
-		embed.add_embed_field(name="Stock & Sizes", value = data, inline=True)
-		embed.add_embed_field(name="Size PIDS", value = data2, inline=True)
-		embed.add_embed_field(name="Moji Custom Size", value = discordmojisizerange, inline=False)
-		embed.add_embed_field(name="Qbot Size Range", value = qbotsizerange, inline=False)
-		embed.add_embed_field(name="Stock Information", value=stockinfo, inline=False)
-		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-		embed.set_thumbnail(url=shoepic)
-		webhook.add_embed(embed)
-		webhook.execute()
-		await ctx.message.delete()
-		await test91.delete()
+	else:
+		embed.add_embed_field(name="Availability", value=str(date), inline=False)
+	embed.add_embed_field(name="Stock & Sizes", value = data, inline=True)
+	embed.add_embed_field(name="Size PIDS", value = data2, inline=True)
+	embed.add_embed_field(name="Moji Custom Size", value = discordmojisizerange, inline=False)
+	embed.add_embed_field(name="Qbot Size Range", value = qbotsizerange, inline=False)
+	embed.add_embed_field(name="Stock Information", value=stockinfo, inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	embed.set_thumbnail(url=shoepic)
+	webhook.add_embed(embed)
+	webhook.execute()
+	await ctx.message.delete()
+	await test91.delete()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
