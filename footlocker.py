@@ -21,12 +21,6 @@ async def on_ready():
 	print('Bot is ready.')
 	pass
 
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
-        return
-    raise error
-
 bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
 setfootertext = "@ScriptingTools | Stock Checker | <?ftlhelp>"
@@ -1660,21 +1654,19 @@ async def ftlhelp(context):
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
-@stock.error
-async def on_command_error(ctx,error):
-	embed=discord.Embed(title="Command Error", color=setembedcolor)
-	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
-	embed.add_field(name="Command Format", value="?stock <link>", inline=False)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.send(embed=embed)
-
-@side.error
-async def on_command_error(ctx,error):
-	embed=discord.Embed(title="Command Error", color=setembedcolor)
-	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
-	embed.add_field(name="Command Format", value="?side <link>", inline=False)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.send(embed=embed)
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, CommandNotFound):
+		return
+	elif isinstance(error,MissingRequiredArgument):
+		embed=discord.Embed(title="Command Error", color=setembedcolor)
+		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+		embed.add_field(name="Command Format - FTL", value="?stock <link>", inline=False)
+		embed.add_field(name="Command Format - Side Step", value="?side <link>", inline=False)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await ctx.send(embed=embed)
+		return
+	raise error
 
 @bot.command()
 async def clear(ctx, amount=2):
