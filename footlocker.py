@@ -111,19 +111,20 @@ async def staff(ctx, link):
 
 	elif region == 'NL' or region == 'nl':
 		headers = {
-		'authority': "www.footlocker.nl",
-		'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
-		'accept': "application/json, text/javascript, */*; q=0.01",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-ch-ua-mobile': "?0",
-		'user-agent': "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Mobile Safari/537.36",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		"accept-language":"de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7",
-		'cookie': "fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true;"
-		}
+		'authority': 'www.footlocker.nl',
+	    'cache-control': 'max-age=0',
+	    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+	    'sec-ch-ua-mobile': '?0',
+	    'upgrade-insecure-requests': '1',
+	    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+	    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+	    'sec-fetch-site': 'none',
+	    'sec-fetch-mode': 'navigate',
+	    'sec-fetch-user': '?1',
+	    'sec-fetch-dest': 'document',
+	    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+	    'cookie': 'sto-id-47873=ALPOBFKMPMCA; fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true; pgid-Footlocker-Footlocker_NL-Site=WfTmDbwkzEZSRppca.Ed8cqq0000-KnAisre; SecureSessionID-0j.sFf0LPPAAAAFNly35GNaA=1ff6888eb001885d446d7388c853d3f0ef38104a8c378f963114f44aee8c2d13; OptanonConsent=isIABGlobal=false&datestamp=Fri+Feb+05+2021+18%3A40%3A09+GMT%2B0100+(heure+normale+d%E2%80%99Europe+centrale)&version=6.7.0&landingPath=https%3A%2F%2Fwww.footlocker.nl%2Fnl%2Fp%2Fnike-dunk-high-heren-schoenen-42516%3Fv%3D314101084904&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A0%2C101%3A0%2C102%3A0%2C103%3A0; _crbx=98d1069d-5bb6-4515-b59a-a3c692a323e4; _ga=GA1.2.1080231609.1612546810; _hjTLDTest=1; _hjid=c18e59a4-0dd1-40b2-876e-4183b9e04abf; sid=GVIuhiPMntlei0PsEp8leDZgCYkEtJcGoTOws8MAjDzp9DoqjTk3UDfu; SecureSessionID-0IsKAB2lRJkAAAE2VGg53VCE=bfc4b78796ec747649db368df9a4867b96adc59c32fad4d39589d4397ecb3bef; datadome=CIdVVE5.SRVTinKuRVthIJ-giRJV_qMwBdYJleWE.pPbG3SemClfzcK_~kHMgI.hCajNxIVdA3H~sdjldCW0WnlPMV8gV5tI_EEk15QWFP',
+	    }
 		url = ("https://www.footlocker.nl/INTERSHOP/web/FLE/Footlocker-Footlocker_NL-Site/en_GB/-/EUR/ViewProduct-ProductVariationSelect")
 		countrycode = 'nl'
 		regioncountry = 'Netherlands'
@@ -328,6 +329,11 @@ async def staff(ctx, link):
 		countrycode = 'dk'
 		regioncountry = 'Denmark'
 		setwebhook = newregionhook
+	elif region == 'DE' or region == 'de':
+		url = ("https://www.footlocker.de/api/products/pdp/")
+		countrycode = 'de'
+		regioncountry = 'Germany'
+		setwebhook = newregionhook
 
 	else:
 		await ctx.send('This region is not supported by our stock checker.')
@@ -346,9 +352,9 @@ async def staff(ctx, link):
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
-			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
+			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		else:
-			response = requests.get(url, headers=headers, params=parameters)
+			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		if 'Foot Locker - Please Stand By' in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
@@ -372,7 +378,7 @@ async def staff(ctx, link):
 			await ctx.send(embed=embed)
 		elif not getpid7 in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link)
+			response2 = requests.get(link, headers=headers, verify=False)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
 			img = soup2.find("meta", {"property":"og:image"})["content"]
 			embed.set_thumbnail(url=img)
@@ -381,7 +387,7 @@ async def staff(ctx, link):
 			await ctx.send(embed=embed)
 		elif getnewpid7 in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link)
+			response2 = requests.get(link, headers=headers, verify=False)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
 			img = soup2.find("meta", {"property":"og:image"})["content"]
 			embed.set_thumbnail(url=img)
@@ -390,7 +396,7 @@ async def staff(ctx, link):
 			await ctx.send(embed=embed)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
-		response2 = requests.get(link)
+		response2 = requests.get(link, headers=headers, verify=False)
 		soup2 = BeautifulSoup(response2.content, "html.parser")
 		json_attribute_name = "data-product-variation-info-json"
 		div_node = soup.find("div", {json_attribute_name: True})
@@ -434,7 +440,6 @@ async def staff(ctx, link):
 				stock[index]=":red_square:"
 		data = "\n".join("{0} {1}".format(x,y) for x,y in zip(stock,size))
 
-		pprint(stock)
 		shoepic = soup2.find("meta", {"property":"og:image"})["content"]
 		shoename = soup2.find("meta", {"property":"og:title"})["content"]
 		shoesku = soup2.find_all("li", {"class":"fl-list--item"})
@@ -550,28 +555,8 @@ async def stock(ctx, link):
 	shoename = ''
 	countrycode = ''
 	region = str(link.split("footlocker.")[1].split("/")[0]).replace(".","")
-	if region == 'DE' or region == 'de':
-		headers = {
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
-		'accept': "application/json, text/javascript, /; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-		}
-		url = (
-		"https://www.footlocker.de/INTERSHOP/web/FLE"
-		"/Footlocker-Footlocker_DE-Site/de_DE/-/EUR"
-		"/ViewProduct-ProductVariationSelect"
-		)
-		countrycode = 'de'
-		regioncountry = 'Germany'
 
-	elif region == 'FR' or region == 'fr':
+	if region == 'FR' or region == 'fr':
 		headers = {
 		'pragma': "no-cache",
 		'cache-control': "no-cache",
@@ -594,17 +579,20 @@ async def stock(ctx, link):
 
 	elif region == 'NL' or region == 'nl':
 		headers = {
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
-		'accept': "application/json, text/javascript, /; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-		}
+		'authority': 'www.footlocker.nl',
+	    'cache-control': 'max-age=0',
+	    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+	    'sec-ch-ua-mobile': '?0',
+	    'upgrade-insecure-requests': '1',
+	    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+	    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+	    'sec-fetch-site': 'none',
+	    'sec-fetch-mode': 'navigate',
+	    'sec-fetch-user': '?1',
+	    'sec-fetch-dest': 'document',
+	    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+	    'cookie': 'sto-id-47873=ALPOBFKMPMCA; fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true; pgid-Footlocker-Footlocker_NL-Site=WfTmDbwkzEZSRppca.Ed8cqq0000-KnAisre; SecureSessionID-0j.sFf0LPPAAAAFNly35GNaA=1ff6888eb001885d446d7388c853d3f0ef38104a8c378f963114f44aee8c2d13; OptanonConsent=isIABGlobal=false&datestamp=Fri+Feb+05+2021+18%3A40%3A09+GMT%2B0100+(heure+normale+d%E2%80%99Europe+centrale)&version=6.7.0&landingPath=https%3A%2F%2Fwww.footlocker.nl%2Fnl%2Fp%2Fnike-dunk-high-heren-schoenen-42516%3Fv%3D314101084904&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A0%2C101%3A0%2C102%3A0%2C103%3A0; _crbx=98d1069d-5bb6-4515-b59a-a3c692a323e4; _ga=GA1.2.1080231609.1612546810; _hjTLDTest=1; _hjid=c18e59a4-0dd1-40b2-876e-4183b9e04abf; sid=GVIuhiPMntlei0PsEp8leDZgCYkEtJcGoTOws8MAjDzp9DoqjTk3UDfu; SecureSessionID-0IsKAB2lRJkAAAE2VGg53VCE=bfc4b78796ec747649db368df9a4867b96adc59c32fad4d39589d4397ecb3bef; datadome=CIdVVE5.SRVTinKuRVthIJ-giRJV_qMwBdYJleWE.pPbG3SemClfzcK_~kHMgI.hCajNxIVdA3H~sdjldCW0WnlPMV8gV5tI_EEk15QWFP',
+	    }
 		url = (
 			"https://www.footlocker.nl/INTERSHOP/web/FLE"
 			"/Footlocker-Footlocker_NL-Site/nl_NL/-/EUR"
@@ -812,11 +800,16 @@ async def stock(ctx, link):
 		countrycode = 'dk'
 		regioncountry = 'Denmark'
 		setwebhook = newregionhook
+	elif region == 'DE' or region == 'de':
+		url = ("https://www.footlocker.de/api/products/pdp/")
+		countrycode = 'de'
+		regioncountry = 'Germany'
+		setwebhook = newregionhook
 
 	else:
 		await ctx.send('This region is not supported by our stock checker.')
 
-	if region == 'DE' or region == 'de' or region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
+	if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
 		pid = link[-12:]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
@@ -830,7 +823,7 @@ async def stock(ctx, link):
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
-			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
+			response = requests.get(url, headers=headers, params=parameters)
 		else:
 			response = requests.get(url, headers=headers, params=parameters)
 		if 'Foot Locker - Please Stand By' in response.text:
@@ -874,7 +867,7 @@ async def stock(ctx, link):
 			await ctx.send(embed=embed)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
-		response2 = requests.get(link)
+		response2 = requests.get(link, headers=headers)
 		soup2 = BeautifulSoup(response2.content, "html.parser")
 		json_attribute_name = "data-product-variation-info-json"
 		div_node = soup.find("div", {json_attribute_name: True})
@@ -931,7 +924,7 @@ async def stock(ctx, link):
 			date = "Live"
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-	if region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+	if region == "DE" or region == "de" or region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 		pidlink = link[-17:]
 		pid = pidlink[:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
@@ -1035,29 +1028,8 @@ async def release(ctx, link):
 	shoename = ''
 	countrycode = ''
 	region = str(link.split("footlocker.")[1].split("/")[0]).replace(".","")
-	if region == 'DE' or region == 'de':
-		headers = {
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
-		'accept': "application/json, text/javascript, /; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-		}
-		url = (
-		"https://www.footlocker.de/INTERSHOP/web/FLE"
-		"/Footlocker-Footlocker_DE-Site/de_DE/-/EUR"
-		"/ViewProduct-ProductVariationSelect"
-		)
-		countrycode = 'de'
-		regioncountry = 'Germany'
-		setwebhook = euregionhook
 
-	elif region == 'FR' or region == 'fr':
+	if region == 'FR' or region == 'fr':
 		headers = {
 		'pragma': "no-cache",
 		'cache-control': "no-cache",
@@ -1081,17 +1053,20 @@ async def release(ctx, link):
 
 	elif region == 'NL' or region == 'nl':
 		headers = {
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
-		'accept': "application/json, text/javascript, /; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-		}
+		'authority': 'www.footlocker.nl',
+	    'cache-control': 'max-age=0',
+	    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+	    'sec-ch-ua-mobile': '?0',
+	    'upgrade-insecure-requests': '1',
+	    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+	    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+	    'sec-fetch-site': 'none',
+	    'sec-fetch-mode': 'navigate',
+	    'sec-fetch-user': '?1',
+	    'sec-fetch-dest': 'document',
+	    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+	    'cookie': 'sto-id-47873=ALPOBFKMPMCA; fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true; pgid-Footlocker-Footlocker_NL-Site=WfTmDbwkzEZSRppca.Ed8cqq0000-KnAisre; SecureSessionID-0j.sFf0LPPAAAAFNly35GNaA=1ff6888eb001885d446d7388c853d3f0ef38104a8c378f963114f44aee8c2d13; OptanonConsent=isIABGlobal=false&datestamp=Fri+Feb+05+2021+18%3A40%3A09+GMT%2B0100+(heure+normale+d%E2%80%99Europe+centrale)&version=6.7.0&landingPath=https%3A%2F%2Fwww.footlocker.nl%2Fnl%2Fp%2Fnike-dunk-high-heren-schoenen-42516%3Fv%3D314101084904&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A0%2C101%3A0%2C102%3A0%2C103%3A0; _crbx=98d1069d-5bb6-4515-b59a-a3c692a323e4; _ga=GA1.2.1080231609.1612546810; _hjTLDTest=1; _hjid=c18e59a4-0dd1-40b2-876e-4183b9e04abf; sid=GVIuhiPMntlei0PsEp8leDZgCYkEtJcGoTOws8MAjDzp9DoqjTk3UDfu; SecureSessionID-0IsKAB2lRJkAAAE2VGg53VCE=bfc4b78796ec747649db368df9a4867b96adc59c32fad4d39589d4397ecb3bef; datadome=CIdVVE5.SRVTinKuRVthIJ-giRJV_qMwBdYJleWE.pPbG3SemClfzcK_~kHMgI.hCajNxIVdA3H~sdjldCW0WnlPMV8gV5tI_EEk15QWFP',
+	    }
 		url = (
 			"https://www.footlocker.nl/INTERSHOP/web/FLE"
 			"/Footlocker-Footlocker_NL-Site/nl_NL/-/EUR"
@@ -1320,10 +1295,13 @@ async def release(ctx, link):
 		countrycode = 'se'
 		regioncountry = 'Sweden'
 		setwebhook = newregionhook
-	else:
-		await ctx.send('This region is not supported by our stock checker.')
+	elif region == 'DE' or region == 'de':
+		url = ("https://www.footlocker.de/api/products/pdp/")
+		countrycode = 'de'
+		regioncountry = 'Germany'
+		setwebhook = newregionhook
 
-	if region == 'DE' or region == 'de' or region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
+	if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
 		pid = link[-12:]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
@@ -1337,9 +1315,9 @@ async def release(ctx, link):
 		getpid7 = pid + "070"
 		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
-			response = requests.get(url, headers=headers, params=parameters, proxy=proxy)
+			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		else:
-			response = requests.get(url, headers=headers, params=parameters)
+			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		if 'Foot Locker - Please Stand By' in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
@@ -1363,7 +1341,7 @@ async def release(ctx, link):
 			await ctx.send(embed=embed)
 		elif not getpid7 in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link)
+			response2 = requests.get(link, headers=headers, verify=False)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
 			img = soup2.find("meta", {"property":"og:image"})["content"]
 			embed.set_thumbnail(url=img)
@@ -1372,7 +1350,7 @@ async def release(ctx, link):
 			await ctx.send(embed=embed)
 		elif getnewpid7 in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link)
+			response2 = requests.get(link, headers=headers, verify=False)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
 			img = soup2.find("meta", {"property":"og:image"})["content"]
 			embed.set_thumbnail(url=img)
@@ -1381,7 +1359,7 @@ async def release(ctx, link):
 			await ctx.send(embed=embed)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
-		response2 = requests.get(link)
+		response2 = requests.get(link, headers=headers, verify=False)
 		soup2 = BeautifulSoup(response2.content, "html.parser")
 		json_attribute_name = "data-product-variation-info-json"
 		div_node = soup.find("div", {json_attribute_name: True})
@@ -1438,7 +1416,7 @@ async def release(ctx, link):
 			date = "Live"
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-	if region == 'IT' or region == 'it' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+	if region == 'DE' or region == 'de' or region == 'IT' or region == 'it' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 		pidlink = link[-17:]
 		pid = pidlink[:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
@@ -1573,17 +1551,20 @@ async def side(ctx, link):
 		regioncountry = 'Germany'
 	elif region == 'NL' or region == 'nl':
 		headers = {
-		'pragma': "no-cache",
-		'cache-control': "no-cache",
-		'accept': "application/json, text/javascript, /; q=0.01",
-		'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		'x-requested-with': "XMLHttpRequest",
-		'sec-fetch-site': "same-origin",
-		'sec-fetch-mode': "cors",
-		'sec-fetch-dest': "empty",
-		'referer': link,
-		'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-		}
+		'authority': 'www.footlocker.nl',
+	    'cache-control': 'max-age=0',
+	    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+	    'sec-ch-ua-mobile': '?0',
+	    'upgrade-insecure-requests': '1',
+	    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+	    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+	    'sec-fetch-site': 'none',
+	    'sec-fetch-mode': 'navigate',
+	    'sec-fetch-user': '?1',
+	    'sec-fetch-dest': 'document',
+	    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+	    'cookie': 'sto-id-47873=ALPOBFKMPMCA; fl-test-cookie-exist=Exist; fl-notice-cookie=true; country_notify=true; pgid-Footlocker-Footlocker_NL-Site=WfTmDbwkzEZSRppca.Ed8cqq0000-KnAisre; SecureSessionID-0j.sFf0LPPAAAAFNly35GNaA=1ff6888eb001885d446d7388c853d3f0ef38104a8c378f963114f44aee8c2d13; OptanonConsent=isIABGlobal=false&datestamp=Fri+Feb+05+2021+18%3A40%3A09+GMT%2B0100+(heure+normale+d%E2%80%99Europe+centrale)&version=6.7.0&landingPath=https%3A%2F%2Fwww.footlocker.nl%2Fnl%2Fp%2Fnike-dunk-high-heren-schoenen-42516%3Fv%3D314101084904&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A0%2C101%3A0%2C102%3A0%2C103%3A0; _crbx=98d1069d-5bb6-4515-b59a-a3c692a323e4; _ga=GA1.2.1080231609.1612546810; _hjTLDTest=1; _hjid=c18e59a4-0dd1-40b2-876e-4183b9e04abf; sid=GVIuhiPMntlei0PsEp8leDZgCYkEtJcGoTOws8MAjDzp9DoqjTk3UDfu; SecureSessionID-0IsKAB2lRJkAAAE2VGg53VCE=bfc4b78796ec747649db368df9a4867b96adc59c32fad4d39589d4397ecb3bef; datadome=CIdVVE5.SRVTinKuRVthIJ-giRJV_qMwBdYJleWE.pPbG3SemClfzcK_~kHMgI.hCajNxIVdA3H~sdjldCW0WnlPMV8gV5tI_EEk15QWFP',
+	    }
 		url = (
 		"https://www.sidestep-shoes.nl/INTERSHOP/web/WFS"
 		"/Sidestep-Sidestep_NL-Site/nl_NL/-/EUR"
@@ -1607,7 +1588,7 @@ async def side(ctx, link):
 		response = requests.get(url, headers=headers, params=parameters)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
-		response2 = requests.get(link)
+		response2 = requests.get(link, headers=headers)
 		soup2 = BeautifulSoup(response2.content, "html.parser")
 		json_attribute_name = "data-product-variation-info-json"
 		div_node = soup.find("div", {json_attribute_name: True})
