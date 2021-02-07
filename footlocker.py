@@ -1686,7 +1686,7 @@ async def on_command_error(ctx,error):
 	embed=discord.Embed(title="Command Error", color=setembedcolor)
 	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 	embed.add_field(name="Command Format", value="?stock <link>", inline=False)
-	embed.set_footer(text="?ftlhelp", icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await ctx.send(embed=embed)
 
 @side.error
@@ -1694,7 +1694,7 @@ async def on_command_error(ctx,error):
 	embed=discord.Embed(title="Command Error", color=setembedcolor)
 	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 	embed.add_field(name="Command Format", value="?side <link>", inline=False)
-	embed.set_footer(text="?ftlhelp", icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await ctx.send(embed=embed)
 
 @bot.command()
