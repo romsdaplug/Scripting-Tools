@@ -20,9 +20,11 @@ async def on_ready():
 	print('Bot is ready.')
 	pass
 
-setfootertext = "@PigeonHelpbox | Stock Checker"
-setfooterimage = "https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1274&height=1274"
-setembedcolor = 0x66FFFF
+bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
+
+setfootertext = "@ScriptingTools | Stock Checker | <?ftlhelp>"
+setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
+setembedcolor = 0x00000
 
 euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf"]
 asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf"]
@@ -312,6 +314,13 @@ async def stock(ctx, link):
 		url = ("https://www.footlocker.se/api/products/pdp/")
 		countrycode = 'se'
 		regioncountry = 'Sweden'
+
+	elif region == 'DK' or region == 'dk':
+		url = ("https://www.footlocker.dk/api/products/pdp/")
+		countrycode = 'dk'
+		regioncountry = 'Denmark'
+		setwebhook = newregionhook
+
 	else:
 		await ctx.send('This region is not supported by our stock checker.')
 
@@ -347,7 +356,7 @@ async def stock(ctx, link):
 			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
-			embed.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif 'Please enable JS and disable any ad' in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
@@ -433,12 +442,12 @@ async def stock(ctx, link):
 			date = "Live"
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-	if region == 'DE' or region == 'de' or region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+	if region == 'DE' or region == 'de' or region == 'IT' or region == 'dk' or region == 'it' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 		pidlink = link[-17:]
 		pid = pidlink[:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
-		embed3.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
 		proxy = getRandomProxy()
@@ -482,17 +491,13 @@ async def stock(ctx, link):
 
 		sizelistwithoutdups = []
 		allsizepidswithoutdups = []
-
-		for i in sizelist: 
-			if i not in sizelistwithoutdups: 
-				sizelistwithoutdups.append(i)
 		
 		allsizepids = [*map(str, allsizepids)]
 		allcoorectsizepids = []
-		for i in allsizepids:
+		for j,i in enumerate(allsizepids):
 			if pid in i:
 				allcoorectsizepids.append(i)
-		
+				sizelistwithoutdups.append(sizelist[j])
 		data2 = "\n".join(allcoorectsizepids)
 		qbotsizerange = allcoorectsizepids[0][-3:] + "-" + allcoorectsizepids[-1][-3:]
 		discordmojisizerange = ",".join(sizelistwithoutdups)
@@ -796,6 +801,13 @@ async def staff(ctx, link):
 		url = ("https://www.footlocker.se/api/products/pdp/")
 		countrycode = 'se'
 		regioncountry = 'Sweden'
+
+	elif region == 'DK' or region == 'dk':
+		url = ("https://www.footlocker.dk/api/products/pdp/")
+		countrycode = 'dk'
+		regioncountry = 'Denmark'
+		setwebhook = newregionhook
+
 	else:
 		await ctx.send('This region is not supported by our stock checker.')
 
@@ -828,7 +840,7 @@ async def staff(ctx, link):
 			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
-			embed.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif 'Please enable JS and disable any ad' in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
@@ -914,12 +926,12 @@ async def staff(ctx, link):
 			date = "Live"
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-	if region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+	if region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 		pidlink = link[-17:]
 		pid = pidlink[:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
-		embed3.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
 		proxy = getRandomProxy()
@@ -963,16 +975,13 @@ async def staff(ctx, link):
 
 		sizelistwithoutdups = []
 		allsizepidswithoutdups = []
-
-		for i in sizelist: 
-			if i not in sizelistwithoutdups: 
-				sizelistwithoutdups.append(i)
 		
 		allsizepids = [*map(str, allsizepids)]
 		allcoorectsizepids = []
-		for i in allsizepids:
+		for j,i in enumerate(allsizepids):
 			if pid in i:
 				allcoorectsizepids.append(i)
+				sizelistwithoutdups.append(sizelist[j])
 		
 		data2 = "\n".join(allcoorectsizepids)
 		qbotsizerange = allcoorectsizepids[0][-3:] + "-" + allcoorectsizepids[-1][-3:]
@@ -1229,6 +1238,12 @@ async def release(ctx, link):
 		regioncountry = 'Italy'
 		setwebhook = newregionhook
 
+	elif region == 'DK' or region == 'dk':
+		url = ("https://www.footlocker.dk/api/products/pdp/")
+		countrycode = 'dk'
+		regioncountry = 'Denmark'
+		setwebhook = newregionhook
+
 	elif region == 'HU' or region == 'hu':
 		url = ("https://www.footlocker.hu/api/products/pdp/")
 		countrycode = 'hu'
@@ -1332,7 +1347,7 @@ async def release(ctx, link):
 			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
-			embed.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif 'Please enable JS and disable any ad' in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
@@ -1418,12 +1433,12 @@ async def release(ctx, link):
 			date = "Live"
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-	if region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+	if region == 'IT' or region == 'it' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 		pidlink = link[-17:]
 		pid = pidlink[:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
-		embed3.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
 		proxy = getRandomProxy()
@@ -1467,16 +1482,13 @@ async def release(ctx, link):
 
 		sizelistwithoutdups = []
 		allsizepidswithoutdups = []
-
-		for i in sizelist: 
-			if i not in sizelistwithoutdups: 
-				sizelistwithoutdups.append(i)
 		
 		allsizepids = [*map(str, allsizepids)]
 		allcoorectsizepids = []
-		for i in allsizepids:
+		for j,i in enumerate(allsizepids):
 			if pid in i:
 				allcoorectsizepids.append(i)
+				sizelistwithoutdups.append(sizelist[j])
 		
 		data2 = "\n".join(allcoorectsizepids)
 		qbotsizerange = allcoorectsizepids[0][-3:] + "-" + allcoorectsizepids[-1][-3:]
@@ -1550,7 +1562,7 @@ async def side(ctx, link):
 		pid = link[-12:]
 		countrycode = 'de'
 		print("Getting Stock for " + pid + " on Sidestep " + countrycode)
-		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
+		embed3=discord.Embed(title="Side-Step Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		regioncountry = 'Germany'
@@ -1608,7 +1620,6 @@ async def side(ctx, link):
 			stock.append(my_dict[i]['inventoryLevel'])
 			sizerange = list(size)
 			mojisizerange = ",".join(sizerange)
-		print(mojisizerange)
 		for index,item in enumerate(stock):
 			if item=="GREEN":
 				stock[index]=":green_square:"
@@ -1639,49 +1650,48 @@ async def side(ctx, link):
 
 
 @bot.command()
-async def countries(context):
+async def ftlcountries(context):
 	embed=discord.Embed(title="All Support FTL Countries", color=setembedcolor)
-	old_region = ['GB','FR','DE','NL','SG','AU','MY','HK','MO']
-	old_region_flag = [':flag_gb:',':flag_fr:',':flag_de:',':flag_nl:',':flag_sg:',':flag_au:',':flag_my:',':flag_hk:',':flag_mo:']
-	new_region = ['AT','BE','DK','HU','IE','IT','GR','LU','NO','CZ','PL','PT','ES','SE']
-	new_region_flag = [':flag_at:',':flag_be:',':flag_dk:',':flag_hu:',':flag_ie:',':flag_it:',':flag_gr:',':flag_lu:',':flag_no:',':flag_cz:',':flag_pl:',':flag_pt:',':flag_es:',':flag_se:']
-	countriesold = "\n".join("{0} {1}".format(x,y) for x,y in zip(old_region,old_region_flag))
-	countriesnew = "\n".join("{0} {1}".format(x,y) for x,y in zip(new_region,new_region_flag))
-	embed.add_field(name="OLD REGION", value=countriesold, inline=True)
+	old_region = ['UK','FR','NL','SG','AU','MY','HK','MO']
+	old_region_name = ['United Kingdom','France','Netherlands','Singapore','Australia','Malaysia','Hong Kong','Macau']
+	old_region_flag = [':flag_gb:',':flag_fr:',':flag_nl:',':flag_sg:',':flag_au:',':flag_my:',':flag_hk:',':flag_mo:']
+	new_region = ['AT','BE','DK','HU','IE','IT',"DE",'GR','LU','NO','CZ','PL','PT','ES','SE']
+	new_region_name = ['Austria','Belgium','Denmark','Hungary','Ireland','Italy',"Germany",'Greece','Luxembourg','Norway','Czech Republic','Poland','Portugal','Spain','Sweden']
+	new_region_flag = [':flag_at:',':flag_be:',':flag_dk:',':flag_hu:',':flag_ie:',':flag_it:',':flag_de:',':flag_gr:',':flag_lu:',':flag_no:',':flag_cz:',':flag_pl:',':flag_pt:',':flag_es:',':flag_se:']
+	countriesold = "\n".join("{0} - {1}  {2}".format(x,y,z) for x,y,z in zip(old_region_flag,old_region,old_region_name))
+	countriesnew = "\n".join("{0} - {1} {2}".format(x,y,z) for x,y,z in zip(new_region_flag,new_region,new_region_name))
 	embed.add_field(name="NEW REGION", value=countriesnew, inline=True)
+	embed.add_field(name="OLD REGION", value=countriesold, inline=True)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
-async def help(context):
+async def ftlhelp(context):
 	embed=discord.Embed(title="All Commands", color=setembedcolor)
-	embed.add_field(name="?help", value='Shows you this command', inline=False)
-	embed.add_field(name="?countries", value='Sends out an embed with a list of all supported FTL regions', inline=False)
-	embed.add_field(name="?release (region) (link)", value='Sends out the an embed with checked stock to a release channel', inline=False)
-	embed.add_field(name="?pigeon (region) (link)", value='STAFF ONLY! Can only be used by pigeon proxies team \nSends out the an embed with checked stock to to a staff channel', inline=False)
-	embed.add_field(name="?stock (region) (link)", value='Can only be used by <@351639955531104258> & <@175953718750085121>', inline=False)
-	embed.add_field(name="?side de (link)", value='Sends out an embed with checked stock for DE region', inline=False)
-	embed.set_footer(text='OOS#4315 STOCK CHECKER', icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+	embed.add_field(name="List of all countries supported by FTL", value='?countries', inline=False)
+	embed.add_field(name="Command Format - FTL", value='?stock <link>', inline=False)
+	embed.add_field(name="Command Format - Sidestep", value='?side <link>', inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
-@bot.event
-async def on_command_error(ctx, error):
-	if isinstance(error, commands.CheckFailure):
-			embed = discord.Embed(title="Something went wrong", color=setembedcolor)
-			embed.add_field(name="Error", value="Either your command is wrong or you arent allowed to use this command \n Contact <@175953718750085121> or <@351639955531104258> for any issues!", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.send(embed=embed)
+@stock.error
+async def on_command_error(ctx,error):
+	embed=discord.Embed(title="Command Error", color=setembedcolor)
+	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+	embed.add_field(name="Command Format", value="?stock <link>", inline=False)
+	embed.set_footer(text="?ftlhelp", icon_url=setfooterimage)
+	await ctx.send(embed=embed)
+
+@side.error
+async def on_command_error(ctx,error):
+	embed=discord.Embed(title="Command Error", color=setembedcolor)
+	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+	embed.add_field(name="Command Format", value="?side <link>", inline=False)
+	embed.set_footer(text="?ftlhelp", icon_url=setfooterimage)
+	await ctx.send(embed=embed)
 
 @bot.command()
 async def clear(ctx, amount=2):
 	await ctx.channel.purge(limit=amount)
 
-@bot.command()
-async def load(ctx, extension):
-	bot.load_extension(f'cogs.{extension}')
-
-@bot.command()
-async def unload(ctx, extension):
-	bot.unload_extension(f'cogs.{extension}')
-
-bot.run('NzkyODU1MjY5MjQzMjI0MTQ1.X-jyAg.CD0xNJ37E5n_xt8x96TxCCEb_EY')
+bot.run(bottoken)
