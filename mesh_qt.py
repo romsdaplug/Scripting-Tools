@@ -637,7 +637,7 @@ async def meshhelp(context):
 	embed=discord.Embed(title="MESH QT / SKU Scraper HELP", color=setembedcolor)
 	embed.add_field(name="SKU Scraper", value="?mesh  <full link here>\n?mesh <meshpid>", inline=False)
 	embed.add_field(name="QT Setup", value="?qt  <store>  <PIDs/SKUs>", inline=False)
-	embed.add_field(name="QT Setup - Example", value="`?qt szuk 16080252.2510891\n16080252.2510892\n16080252.2510893`\n\n`?qt jdgb 16048706.0194498070598`\n\n`?qt fpgb 418943_footpatrolcom.002117383,418943_footpatrolcom.002117384`", inline=False)
+	embed.add_field(name="QT Setup - Example", value="`?qt szuk 16080252.2510891\n16080252.2510892\n16080252.2510893`\n\n`?qt jdgb 16048706.0194498070598`\n\n`?qt fpgb 418943_footpatrolcom,418943_footpatrolcom`", inline=False)
 	embed.add_field(name="Country Format", value="?meshcountries", inline=True)
 	embed.add_field(name="Info", value="A image of the shoe will be applied for FP and Size QTs", inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
