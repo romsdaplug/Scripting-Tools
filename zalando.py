@@ -414,6 +414,15 @@ async def zalandopid(ctx, link):
 			await ctx.send(embed=embed)
 			await test91.delete()
 
+@bot.command()
+async def zalandohelp(context):
+	embed=discord.Embed(title="Zalando HELP", color=setembedcolor)
+	embed.add_field(name="Stock/SKU Scraper", value="?zalando  <full link here>", inline=False)
+	embed.add_field(name="SKU Scraper", value="?zalandopid  <full link here>", inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+
 @zalando.error
 async def on_command_error(ctx,error):
 	embed=discord.Embed(title="Command Error", color=setembedcolor)
