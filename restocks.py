@@ -33,7 +33,7 @@ async def on_command_error(ctx, error):
         return
     raise error
 
-setfootertext = "@ScriptingTools | Restocks |<?restockshelp>"
+setfootertext = "@ScriptingTools | Restocks"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x000000
 
@@ -74,6 +74,7 @@ async def restocks(context, *sku):
 	consignmentprice = []
 	sizes = []
 	currentprice = []
+	currentpricenow = []
 	for i in range(len(resell)):
 		if "Notify me" in resell[i]:
 			continue
@@ -84,6 +85,8 @@ async def restocks(context, *sku):
 				value = resell[i].find("span", {"class":"value"})
 				pirce = resell[i].find("span", {"class":"price__label__value"})
 				sell = resell[i].find("span", {"class":"sell__method__value"})
+				pricenow = resell[i].find("span",{"class":"float-right price"}).text
+				currentpricenow.append(pricenow.split(" € ")[1].split("\n")[0])
 				if resell[i].find("span", {"class":"sell__method__value"}).text == "consignment":
 					sizes.append(str(resell[i].find("span", {"class":"text"}).text))
 					consignmentprice.append(str(round(float(pirce.text),2)))
@@ -98,7 +101,8 @@ async def restocks(context, *sku):
 				continue
 	rprices = prepend(resaleprice, "R: € ")
 	cprices = prepend(consignmentprice, "C: € ")
-	data = ",".join("{0}\n{1}".format(x,y) for x,y in zip(rprices,cprices))
+	lprices = prepend(currentpricenow, "L: € ")
+	data = ",".join("{0}\n{1}\n{2}".format(x,y,z) for x,y,z in zip(lprices,rprices,cprices))
 	data = data.split(",")
 	data2 = ",".join(sizes)
 	data2 = data2.split(",")
@@ -112,7 +116,7 @@ async def restocks(context, *sku):
 	shoepic = soup.find("meta", {"property":"og:image"})["content"]
 	shoedesc = soup.find("meta", {"property":"og:title"})["content"]
 	shoedesc = shoedesc.replace("Restocks","").replace("-","").replace("'","")
-	embed=discord.Embed(title=shoedesc[:-lenshoesku],description="> *R - Resale Price Payout*\n> *C - Consignment Price Payout*\n"+"> *SKU - " + skuforembed + "*", url=product_link ,color=setembedcolor)
+	embed=discord.Embed(title=shoedesc[:-lenshoesku],description="> *L - Current List Price*\n> *R - Resale Price Payout*\n> *C - Consignment Price Payout*\n"+"> *SKU - " + skuforembed + "*", url=product_link ,color=setembedcolor)
 	for i in range(len(newembed)):
 		embed.add_field(name=newembed[i][0],value=newembed[i][1],inline=True)
 	embed.set_thumbnail(url=shoepic)
