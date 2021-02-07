@@ -11,11 +11,10 @@ import requests
 import platform
 import sys
 import random, ast
-from requests_html import HTML, HTMLSession
-import numpy as np
+from discord.ext.commands import CommandNotFound
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
-bottoken = "NzkyODU1MjY5MjQzMjI0MTQ1.X-jyAg.CD0xNJ37E5n_xt8x96TxCCEb_EY"
+bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
 @bot.event
 async def on_ready():
@@ -28,11 +27,15 @@ def prepend(list, str):
     list = [str.format(i) for i in list] 
     return(list)
 
-def divide_chunks(l, n): 
-     
-    # looping till length l 
-    for i in range(0, len(l), n):  
-        yield l[i:i + n] 
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
+
+setfootertext = "@ScriptingTools | Restocks |<?restockshelp>"
+setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
+setembedcolor = 0x000000
 
 @bot.command()
 async def restocks(context, *sku):
@@ -109,25 +112,19 @@ async def restocks(context, *sku):
 	shoepic = soup.find("meta", {"property":"og:image"})["content"]
 	shoedesc = soup.find("meta", {"property":"og:title"})["content"]
 	shoedesc = shoedesc.replace("Restocks","").replace("-","").replace("'","")
-	embed=discord.Embed(title=shoedesc[:-lenshoesku],description="> *R - Resale Price Payout*\n> *C - Consignment Price Payout*\n"+"> *SKU - " + skuforembed + "*", url=product_link ,color=0x66ffff)
-	#embed.add_field(name="SKU",value=str(correctsku[2].text), inline=False)
+	embed=discord.Embed(title=shoedesc[:-lenshoesku],description="> *R - Resale Price Payout*\n> *C - Consignment Price Payout*\n"+"> *SKU - " + skuforembed + "*", url=product_link ,color=setembedcolor)
 	for i in range(len(newembed)):
 		embed.add_field(name=newembed[i][0],value=newembed[i][1],inline=True)
 	embed.set_thumbnail(url=shoepic)
-	embed.set_footer(text="Pigeon Helper made by OOS#4315", icon_url="https://cdn.discordapp.com/attachments/797052521582952468/797231957951643668/Pigeon_Proxies3.png")
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
-	
+
+@restocks.error
+async def on_command_error(ctx,error):
+	embed=discord.Embed(title="Command Error", color=setembedcolor)
+	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+	embed.add_field(name="Command Format", value="?restocks <shoe name>\n?restocks <Shoe ID>", inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await ctx.send(embed=embed)
 
 bot.run(bottoken)
-
-
-
-
-
-
-
-
-
-
-
-
