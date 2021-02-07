@@ -13,7 +13,7 @@ import random, ast
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 import xmltodict
-from discord.ext.commands import CommandNotFound
+from discord.ext.commands import CommandNotFound,MissingRequiredArgument
 bot = commands.Bot(command_prefix = '?', help_command=None)
 
 @bot.event
