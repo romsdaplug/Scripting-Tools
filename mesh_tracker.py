@@ -4,7 +4,7 @@ from datetime import datetime
 from colorama import Fore, Back, Style, init
 import requests
 import json
-from discord.ext.commands import CommandNotFound
+from discord.ext.commands import CommandNotFound,MissingRequiredArgument
 
 bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
@@ -15,12 +15,6 @@ bot = commands.Bot(command_prefix = '?', help_command=None)
 async def on_ready():
 	print('Bot is ready.')
 	pass
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
-        return
-    raise error
 
 setfooter = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
@@ -215,7 +209,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 	linescount = len(lines)
 	if linescount == 0:
 		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
-		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?orderbulk jdde 79798\n714151764``")
+		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?orderbulk jdde 79798\n714151769\n714151768``")
 		test1.set_footer(text=setfooter, icon_url=setfooterimage)
 		test1.set_thumbnail(url=setthumbnail)
 		await ctx.send(embed = test1)
@@ -431,6 +425,20 @@ async def orderstore(context):
 	embed.set_footer(text=setfooter, icon_url=setfooterimage)
 	embed.set_thumbnail(url=setthumbnail)
 	await context.send(embed=embed)
+
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, CommandNotFound):
+		return
+	elif isinstance(error,MissingRequiredArgument):
+		embed=discord.Embed(title="Command Error", color=setembedcolor)
+		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+		embed.add_field(name="Commad - Mesh Tracker", value="```?order jdde 79798\n714151769\n714151768``", inline=False)
+		embed.add_field(name="Commad - Mesh Bulk Tracker", value="```?orderbulk jdde 79798\n714151769\n714151768``", inline=False)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await ctx.send(embed=embed)
+		return
+	raise error
 
 
 bot.run(bottoken)
