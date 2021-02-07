@@ -11,7 +11,7 @@ import requests
 import platform
 import sys
 import random, ast
-from discord.ext.commands import CommandNotFound
+from discord.ext.commands import CommandNotFound,MissingRequiredArgument
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
 bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
@@ -26,12 +26,6 @@ def prepend(list, str):
     str += '{0}'
     list = [str.format(i) for i in list] 
     return(list)
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
-        return
-    raise error
 
 setfootertext = "@ScriptingTools | Restocks"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
@@ -123,12 +117,17 @@ async def restocks(context, *sku):
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
-@restocks.error
-async def on_command_error(ctx,error):
-	embed=discord.Embed(title="Command Error", color=setembedcolor)
-	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
-	embed.add_field(name="Command Format", value="?restocks <shoe name>\n?restocks <Shoe ID>", inline=False)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.send(embed=embed)
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, CommandNotFound):
+		return
+	elif isinstance(error,MissingRequiredArgument):
+		embed=discord.Embed(title="Command Error", color=setembedcolor)
+		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+		embed.add_field(name="Command Format", value="?restocks <shoe name>\n?restocks <Shoe ID>", inline=False)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await ctx.send(embed=embed)
+		return
+	raise error
 
 bot.run(bottoken)
