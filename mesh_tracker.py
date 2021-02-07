@@ -4,25 +4,41 @@ from datetime import datetime
 from colorama import Fore, Back, Style, init
 import requests
 import json
+from discord.ext.commands import CommandNotFound
 
-token = 'Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw'
+bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
-client = commands.Bot(command_prefix = '?')
+bot = commands.Bot(command_prefix = '?', help_command=None)
 
-client.remove_command('help')
 
-@client.command()
-async def ping(ctx):
-    await ctx.send(f'Pong! {round (client.latency * 1000)}ms ')
+@bot.event
+async def on_ready():
+	print('Bot is ready.')
+	pass
 
-@client.command(pass_context=True)
-async def help(ctx):
-    await ctx.send('To track your order : /order [store with region] [orderid] [postcode of order]')
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
 
-@client.command(name='order')
+setfooter = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
+setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
+setembedcolor = 0x00000
+setthumbnail = setfooterimage
+
+
+@bot.command()
 async def order(ctx, store, postcode, orderno: int):
 	lines = ctx.message.content.splitlines()
 	lines.pop(0)
+	linescount = len(lines)
+	if linescount == 0:
+		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
+		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?order jdde 79798\n714151764``")
+		test1.set_footer(text=setfooter, icon_url=setfooterimage)
+		test1.set_thumbnail(url=setthumbnail)
+		await ctx.send(embed = test1)
 	server_name = ctx.guild.name
 	user_name_id = ctx.author.name + ' ID : ' + str(ctx.author.id)
 	log2 = Fore.CYAN +f'[{server_name}]'
@@ -108,86 +124,101 @@ async def order(ctx, store, postcode, orderno: int):
 		region = "myf"
 
 	for i in lines:
-		base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
-		track_url = ''
-		track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
-		r = requests.get(track_url)
-		response = r.text
-		if 'Order not found' in response:
-			test1 = discord.Embed(title="Mesh Order Tracker - Info",  colour=0x66FFFF)
+		try:
+			base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
+			track_url = ''
+			track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
+			r = requests.get(track_url)
+			response = r.text
+			if 'Order not found' in response:
+				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
+				test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
+				test1.set_footer(text=setfooter, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnail)
+				await ctx.message.delete()
+				await ctx.send(embed = test1)
+			test = json.loads(response)
+			a2 = test['status']['short']
+			a4 = test['vendors']
+			date = a2[0]['date']
+			date = datetime.fromisoformat(date[:-1])
+			date.strftime('%Y-%m-%d %H:%M:%S')
+			a5 = a4[0]['items']
+			sku = a5[0]['sku']
+			name = a5[0]['name']
+			img = a5[0]['img']
+			size = a5[0]['size']
+			price_before = a5[0]['price']
+			price_number = price_before['amount']
+			price_currency = price_before['currency']
+			price_final = price_number + ' ' + price_currency
+			color = ''
+			status = ''
+			tracking1 = ''
+			tracking2 = ''
+			if 'Your order is currently being processed.' in response:
+				status = 'Your order is currently being processed.'
+				color = '16776960'
+			elif 'Your order has been placed.' in response:
+				status = 'Your order has been placed.'
+				color = '16776960'
+			elif 'Your order has been despatched.' in response:
+				if '"trackingURL":null' in response:
+					tracking2 = 'N/A'
+				a12 = test['delivery']
+				tracking1 = a12['courier']
+				tracking2 = a12['trackingURL']
+				status = 'Your order has been despatched.'
+				color = '65280'
+			elif 'Your order has been delivered.' in response:
+				a12 = test['delivery']
+				tracking1 = a12['courier']
+				tracking2 = a12['trackingURL']
+				status = 'Your order has been delivered.'
+				color = '65280'
+			elif 'It looks like your order has been cancelled.' in response:
+				status = 'It looks like your order has been cancelled.'
+				color = '16711680'
+			elif 'It looks like there was an issue taking payment for this order' in response:
+				status = 'It looks like there was an issue taking payment for this order.'
+				color = '16711680'
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[Tracking Ordernumber - {i}]")
+			test1 = discord.Embed(title=name, description=status,  colour=discord.Colour(int(color)))
+			test1.set_footer(text='Mesh Order Tracker', icon_url="https://cdn.discordapp.com/attachments/763496861293740102/763512882927108157/67825d35ea85713884df69d5e6f4a9d6.png")
+			test1.add_field(name='Size', value=size, inline=True)
+			test1.add_field(name='Price', value=price_final, inline=True)
+			test1.add_field(name='Order Number', value='||'+str(i)+'||', inline=True)
+			test1.add_field(name='Order Date', value=date, inline=False)
+			if '"trackingURL":"http' in response:
+				test1.add_field(name='Tracking', value='['+tracking1+']('+tracking2+')', inline=True)
+			elif '"trackingURL":null' and 'Your order has been despatched.' in response:
+				test1.add_field(name='Tracking', value=tracking2, inline=True)
+			else:
+				print('')
+			test1.set_footer(text=setfooter, icon_url=setfooterimage)
+			test1.set_thumbnail(url=img)
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
+			print('')
+			await ctx.send(embed = test1)
+		except KeyError:
+			test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
 			test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
-			test1.set_footer(text='Mesh Order Tracker', icon_url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
-			test1.set_thumbnail(url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
+			test1.set_footer(text=setfooter, icon_url=setfooterimage)
+			test1.set_thumbnail(url=setthumbnail)
 			await ctx.message.delete()
 			await ctx.send(embed = test1)
-		test = json.loads(response)
-		a2 = test['status']['short']
-		a4 = test['vendors']
-		date = a2[0]['date']
-		date = datetime.fromisoformat(date[:-1])
-		date.strftime('%Y-%m-%d %H:%M:%S')
-		a5 = a4[0]['items']
-		sku = a5[0]['sku']
-		name = a5[0]['name']
-		img = a5[0]['img']
-		size = a5[0]['size']
-		price_before = a5[0]['price']
-		price_number = price_before['amount']
-		price_currency = price_before['currency']
-		price_final = price_number + ' ' + price_currency
-		color = ''
-		status = ''
-		tracking1 = ''
-		tracking2 = ''
-		if 'Your order is currently being processed.' in response:
-			status = 'Your order is currently being processed.'
-			color = '16776960'
-		elif 'Your order has been placed.' in response:
-			status = 'Your order has been placed.'
-			color = '16776960'
-		elif 'Your order has been despatched.' in response:
-			if '"trackingURL":null' in response:
-				tracking2 = 'N/A'
-			a12 = test['delivery']
-			tracking1 = a12['courier']
-			tracking2 = a12['trackingURL']
-			status = 'Your order has been despatched.'
-			color = '65280'
-		elif 'Your order has been delivered.' in response:
-			a12 = test['delivery']
-			tracking1 = a12['courier']
-			tracking2 = a12['trackingURL']
-			status = 'Your order has been delivered.'
-			color = '65280'
-		elif 'It looks like your order has been cancelled.' in response:
-			status = 'It looks like your order has been cancelled.'
-			color = '16711680'
-		elif 'It looks like there was an issue taking payment for this order' in response:
-			status = 'It looks like there was an issue taking payment for this order.'
-			color = '16711680'
-		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[Tracking Ordernumber - {i}]")
-		test1 = discord.Embed(title=name, description=status,  colour=discord.Colour(int(color)))
-		test1.set_footer(text='Mesh Order Tracker', icon_url="https://cdn.discordapp.com/attachments/763496861293740102/763512882927108157/67825d35ea85713884df69d5e6f4a9d6.png")
-		test1.add_field(name='Size', value=size, inline=True)
-		test1.add_field(name='Price', value=price_final, inline=True)
-		test1.add_field(name='Order Number', value='||'+str(i)+'||', inline=True)
-		test1.add_field(name='Order Date', value=date, inline=False)
-		if '"trackingURL":"http' in response:
-			test1.add_field(name='Tracking', value='['+tracking1+']('+tracking2+')', inline=True)
-		elif '"trackingURL":null' and 'Your order has been despatched.' in response:
-			test1.add_field(name='Tracking', value=tracking2, inline=True)
-		else:
-			print('')
-		test1.set_footer(text='@PigeonHelpbox | made by OOS#4315 & Romain#4428 | ?orderhelp', icon_url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
-		test1.set_thumbnail(url=img)
-		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
-		print('')
-		await ctx.send(embed = test1)
 
-@client.command(name='orderinfo')
-async def orderinfo(ctx, store, postcode, orderno: int):
+@bot.command()
+async def orderbulk(ctx, store, postcode, orderno: int):
 	lines = ctx.message.content.splitlines()
 	lines.pop(0)
+	linescount = len(lines)
+	if linescount == 0:
+		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
+		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?orderbulk jdde 79798\n714151764``")
+		test1.set_footer(text=setfooter, icon_url=setfooterimage)
+		test1.set_thumbnail(url=setthumbnail)
+		await ctx.send(embed = test1)
 	orderproc = 0
 	orderdel = 0
 	orderplaced = 0
@@ -280,98 +311,101 @@ async def orderinfo(ctx, store, postcode, orderno: int):
 		store = "jdsports"
 		region = "myf"
 
-	test1 = discord.Embed(title="Mesh Order Tracker - Info", description="Tracking " + str(len(lines)) + " orders!",  colour=0x66FFFF)
-	test1.set_footer(text='Mesh Order Tracker', icon_url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
+	test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Tracking " + str(len(lines)) + " orders!",  colour=setembedcolor)
+	test1.set_footer(text=setfooter, icon_url=setfooterimage)
 	await ctx.send(embed = test1)
 
 	for i in lines:
-		base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
-		track_url = ''
-		track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
-		r = requests.get(track_url)
-		response = r.text
-		if 'Order not found' in response:
-			ordernotfound = ordernotfound + 1
-		test = json.loads(response)
-		a2 = test['status']['short']
-		a4 = test['vendors']
-		date = a2[0]['date']
-		date = datetime.fromisoformat(date[:-1])
-		date.strftime('%Y-%m-%d %H:%M:%S')
-		a5 = a4[0]['items']
-		sku = a5[0]['sku']
-		name = a5[0]['name']
-		img = a5[0]['img']
-		size = a5[0]['size']
-		price_before = a5[0]['price']
-		price_number = price_before['amount']
-		price_currency = price_before['currency']
-		price_final = price_number + ' ' + price_currency
-		color = ''
-		status = ''
-		tracking1 = ''
-		tracking2 = ''
-		if 'Your order is currently being processed.' in response:
-			status = 'Your order is currently being processed.'
-			color = '16776960'
-			orderproc = orderproc + 1
-		elif 'Your order has been placed.' in response:
-			status = 'Your order has been placed.'
-			color = '16776960'
-			orderplaced = orderplaced + 1
-		elif 'Your order has been despatched.' in response:
-			if '"trackingURL":null' in response:
-				tracking2 = 'N/A'
-			a12 = test['delivery']
-			tracking1 = a12['courier']
-			tracking2 = a12['trackingURL']
-			status = 'Your order has been despatched.'
-			color = '65280'
-			orderdis = orderdis + 1
-		elif 'Your order has been delivered.' in response:
-			a12 = test['delivery']
-			tracking1 = a12['courier']
-			tracking2 = a12['trackingURL']
-			status = 'Your order has been delivered.'
-			color = '65280'
-			orderdel = orderdel + 1
-		elif 'It looks like your order has been cancelled.' in response:
-			status = 'It looks like your order has been cancelled.'
-			color = '16711680'
-			ordercan = ordercan + 1
-		elif 'It looks like there was an issue taking payment for this order' in response:
-			status = 'It looks like there was an issue taking payment for this order.'
-			color = '16711680'
-			orderpay = orderpay + 1
+		try:
+			base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
+			track_url = ''
+			track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
+			r = requests.get(track_url)
+			response = r.text
+			if 'Order not found' in response:
+				ordernotfound = ordernotfound + 1
+			test = json.loads(response)
+			a2 = test['status']['short']
+			a4 = test['vendors']
+			date = a2[0]['date']
+			date = datetime.fromisoformat(date[:-1])
+			date.strftime('%Y-%m-%d %H:%M:%S')
+			a5 = a4[0]['items']
+			sku = a5[0]['sku']
+			name = a5[0]['name']
+			img = a5[0]['img']
+			size = a5[0]['size']
+			price_before = a5[0]['price']
+			price_number = price_before['amount']
+			price_currency = price_before['currency']
+			price_final = price_number + ' ' + price_currency
+			color = ''
+			status = ''
+			tracking1 = ''
+			tracking2 = ''
+			if 'Your order is currently being processed.' in response:
+				status = 'Your order is currently being processed.'
+				color = '16776960'
+				orderproc = orderproc + 1
+			elif 'Your order has been placed.' in response:
+				status = 'Your order has been placed.'
+				color = '16776960'
+				orderplaced = orderplaced + 1
+			elif 'Your order has been despatched.' in response:
+				if '"trackingURL":null' in response:
+					tracking2 = 'N/A'
+				a12 = test['delivery']
+				tracking1 = a12['courier']
+				tracking2 = a12['trackingURL']
+				status = 'Your order has been despatched.'
+				color = '65280'
+				orderdis = orderdis + 1
+			elif 'Your order has been delivered.' in response:
+				a12 = test['delivery']
+				tracking1 = a12['courier']
+				tracking2 = a12['trackingURL']
+				status = 'Your order has been delivered.'
+				color = '65280'
+				orderdel = orderdel + 1
+			elif 'It looks like your order has been cancelled.' in response:
+				status = 'It looks like your order has been cancelled.'
+				color = '16711680'
+				ordercan = ordercan + 1
+			elif 'It looks like there was an issue taking payment for this order' in response:
+				status = 'It looks like there was an issue taking payment for this order.'
+				color = '16711680'
+				orderpay = orderpay + 1
+		except (KeyError,UnboundLocalError):
+				ordernotfound = ordernotfound + 1
 		trackedorders = orderproc + orderplaced + orderdis + orderdel + orderpay + ordercan
 		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[Tracking Ordernumber - {i}]")
 
-	test1 = discord.Embed(title="Mesh Order Tracker - Info", description="Successfully tracked " + str(trackedorders) + " orders!",  colour=0x66FFFF)
+	test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Successfully tracked " + str(trackedorders) + " orders!",  colour=setembedcolor)
 	test1.add_field(name=':x:  Order Not Found', value=ordernotfound, inline=False)
 	test1.add_field(name=':sleeping: Order Placed', value=orderplaced, inline=False)
 	test1.add_field(name=':cold_face: Order Processed', value=orderproc, inline=False)
 	test1.add_field(name=':face_with_symbols_over_mouth: Order Canceled', value=ordercan, inline=False)
 	test1.add_field(name=':rage: Payment Error', value=orderpay, inline=False)
 	test1.add_field(name=':articulated_lorry: Order Dispatched', value=orderdis, inline=False)
-	test1.set_footer(text='@PigeonHelpbox | made by OOS#4315 & Romain#4428 | ?orderhelp', icon_url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
-	test1.set_thumbnail(url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
+	test1.set_footer(text=setfooter, icon_url=setfooterimage)
+	test1.set_thumbnail(url=setthumbnail)
 	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
 	print('')
 	await ctx.send(embed = test1)
 
-@client.command()
+@bot.command()
 async def orderhelp(context):
-	embed=discord.Embed(title="Pigeon Helpbox", description="Mesh Order Tracker", color=0x66FFFF)
+	embed=discord.Embed(title="Scripting Tools", description="Mesh Order Tracker", color=setembedcolor)
 	embed.add_field(name="How do i track a single order :question:", value="```?order <store> <postcode>\n<ordernr>```\n**Example:**```?order jdde 79798\n302723669```", inline=False)
 	embed.add_field(name="How do i track a multiple orders :question:", value="```?order <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?order jdde 79798\n302723669\n302723123\n302723456```", inline=False)
-	embed.add_field(name="How do i get all order status :question:", value="```?orderinfo <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?orderinfo jdsportsde 79798\n302723669\n302723123\n302723456```", inline=False)
+	embed.add_field(name="How do i get all order status :question:", value="```?orderbulk <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?orderbulk jdsportsde 79798\n302723669\n302723123\n302723456```", inline=False)
 	embed.add_field(name="How do i get a store list with its command format :question:", value="Use command `?orderstore to get a full list of all stores supported", inline=False)
 	embed.add_field(name="Information",value="You can either use the full name of the store or the given shortcut!\nexample: jdsportsnl -> jdnl", inline=False)
-	embed.set_footer(text="@PigeonHelpbox | made by OOS#4315 & Romain#4428", icon_url="https://cdn.discordapp.com/attachments/791440600301961246/797249938063884358/Pigeon_Proxies3.png")
-	embed.set_thumbnail(url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
+	embed.set_footer(text=setfooter, icon_url=setfooterimage)
+	embed.set_thumbnail(url=setthumbnail)
 	await context.send(embed=embed)
 
-@client.command()
+@bot.command()
 async def orderstore(context):
 	fpregions = ["gb","fr","it","nl","dk","fi","se","ie","de"]
 	fpflag = [":flag_gb:",":flag_fr:",":flag_it:",":flag_nl:",":flag_dk:",":flag_fi:",":flag_se:",":flag_ie:",":flag_de:"]
@@ -390,13 +424,13 @@ async def orderstore(context):
 	fpstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(fpflag,footpatrolregions,fpshortregion))
 	szstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(szflag,sizeregion,sizeshortregion))
 	jdstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(jdflag,jdsportsregions,jdshortregions))
-	embed=discord.Embed(title="Pigeon Helpbox", description="Mesh Stores", color=0x66FFFF)
+	embed=discord.Embed(title="Scripting Tools", description="Mesh Stores", color=setembedcolor)
 	embed.add_field(name="JDSports", value=jdstores, inline=True)
 	embed.add_field(name="Size?", value=szstores, inline=True)
 	embed.add_field(name="Footpatrol", value=fpstores, inline=True)
-	embed.set_footer(text="@PigeonHelpbox | made by OOS#4315 & Romain#4428", icon_url="https://cdn.discordapp.com/attachments/791440600301961246/797249938063884358/Pigeon_Proxies3.png")
-	embed.set_thumbnail(url="https://media.discordapp.net/attachments/791440600301961246/797258002159239298/Pigeon_Proxies_DiscordBot.png?width=1276&height=1276")
+	embed.set_footer(text=setfooter, icon_url=setfooterimage)
+	embed.set_thumbnail(url=setthumbnail)
 	await context.send(embed=embed)
 
 
-client.run(token)
+bot.run(bottoken)
