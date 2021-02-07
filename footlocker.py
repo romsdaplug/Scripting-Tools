@@ -13,12 +13,19 @@ import random, ast
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 import xmltodict
+from discord.ext.commands import CommandNotFound
 bot = commands.Bot(command_prefix = '?', help_command=None)
 
 @bot.event
 async def on_ready():
 	print('Bot is ready.')
 	pass
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
 
 bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
