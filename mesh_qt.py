@@ -674,7 +674,7 @@ async def on_command_error(ctx,error):
 	embed=discord.Embed(title="Command Error", color=setembedcolor)
 	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 	embed.add_field(name="Command Format", value="?mesh <meshpid>\n?mesh <link>", inline=False)
-	embed.set_footer(text="?meshhelp", icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await ctx.send(embed=embed)
 
 @qt.error
@@ -682,7 +682,7 @@ async def on_command_error(ctx,error):
 	embed=discord.Embed(title="Command Error", color=setembedcolor)
 	embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 	embed.add_field(name="Command Format", value="?qt <store> <PIDs/SKUs>", inline=False)
-	embed.set_footer(text="?meshhelp", icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await ctx.send(embed=embed)
 
 
