@@ -16,7 +16,7 @@ async def on_ready():
 	print('Bot is ready.')
 	pass
 
-setfooter = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
+setfootertext = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x00000
 setthumbnail = setfooterimage
@@ -30,7 +30,7 @@ async def order(ctx, store, postcode, orderno: int):
 	if linescount == 0:
 		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
 		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?order jdde 79798\n714151764``")
-		test1.set_footer(text=setfooter, icon_url=setfooterimage)
+		test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test1.set_thumbnail(url=setthumbnail)
 		await ctx.send(embed = test1)
 	server_name = ctx.guild.name
@@ -127,7 +127,7 @@ async def order(ctx, store, postcode, orderno: int):
 			if 'Order not found' in response:
 				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
 				test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
-				test1.set_footer(text=setfooter, icon_url=setfooterimage)
+				test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 				test1.set_thumbnail(url=setthumbnail)
 				await ctx.message.delete()
 				await ctx.send(embed = test1)
@@ -189,7 +189,7 @@ async def order(ctx, store, postcode, orderno: int):
 				test1.add_field(name='Tracking', value=tracking2, inline=True)
 			else:
 				print('')
-			test1.set_footer(text=setfooter, icon_url=setfooterimage)
+			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test1.set_thumbnail(url=img)
 			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
 			print('')
@@ -197,7 +197,7 @@ async def order(ctx, store, postcode, orderno: int):
 		except KeyError:
 			test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
 			test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
-			test1.set_footer(text=setfooter, icon_url=setfooterimage)
+			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test1.set_thumbnail(url=setthumbnail)
 			await ctx.message.delete()
 			await ctx.send(embed = test1)
@@ -210,7 +210,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 	if linescount == 0:
 		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
 		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?orderbulk jdde 79798\n714151769\n714151768``")
-		test1.set_footer(text=setfooter, icon_url=setfooterimage)
+		test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test1.set_thumbnail(url=setthumbnail)
 		await ctx.send(embed = test1)
 	orderproc = 0
@@ -306,7 +306,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 		region = "myf"
 
 	test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Tracking " + str(len(lines)) + " orders!",  colour=setembedcolor)
-	test1.set_footer(text=setfooter, icon_url=setfooterimage)
+	test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await ctx.send(embed = test1)
 
 	for i in lines:
@@ -381,7 +381,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 	test1.add_field(name=':face_with_symbols_over_mouth: Order Canceled', value=ordercan, inline=False)
 	test1.add_field(name=':rage: Payment Error', value=orderpay, inline=False)
 	test1.add_field(name=':articulated_lorry: Order Dispatched', value=orderdis, inline=False)
-	test1.set_footer(text=setfooter, icon_url=setfooterimage)
+	test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 	test1.set_thumbnail(url=setthumbnail)
 	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
 	print('')
@@ -395,7 +395,7 @@ async def orderhelp(context):
 	embed.add_field(name="How do i get all order status :question:", value="```?orderbulk <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?orderbulk jdsportsde 79798\n302723669\n302723123\n302723456```", inline=False)
 	embed.add_field(name="How do i get a store list with its command format :question:", value="Use command `?orderstore to get a full list of all stores supported", inline=False)
 	embed.add_field(name="Information",value="You can either use the full name of the store or the given shortcut!\nexample: jdsportsnl -> jdnl", inline=False)
-	embed.set_footer(text=setfooter, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	embed.set_thumbnail(url=setthumbnail)
 	await context.send(embed=embed)
 
@@ -422,7 +422,7 @@ async def orderstore(context):
 	embed.add_field(name="JDSports", value=jdstores, inline=True)
 	embed.add_field(name="Size?", value=szstores, inline=True)
 	embed.add_field(name="Footpatrol", value=fpstores, inline=True)
-	embed.set_footer(text=setfooter, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	embed.set_thumbnail(url=setthumbnail)
 	await context.send(embed=embed)
 
@@ -433,8 +433,8 @@ async def on_command_error(ctx, error):
 	elif isinstance(error,MissingRequiredArgument):
 		embed=discord.Embed(title="Command Error", color=setembedcolor)
 		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
-		embed.add_field(name="Commad - Mesh Tracker", value="```?order jdde 79798\n714151769\n714151768``", inline=False)
-		embed.add_field(name="Commad - Mesh Bulk Tracker", value="```?orderbulk jdde 79798\n714151769\n714151768``", inline=False)
+		embed.add_field(name="Commad - Mesh Tracker", value="```?order jdde 79798\n714151769\n714151768```", inline=False)
+		embed.add_field(name="Commad - Mesh Bulk Tracker", value="```?orderbulk jdde 79798\n714151769\n714151768```", inline=False)
 		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await ctx.send(embed=embed)
 		return
