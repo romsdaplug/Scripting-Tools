@@ -1647,7 +1647,7 @@ async def ftlcountries(context):
 
 @bot.command()
 async def ftlhelp(context):
-	embed=discord.Embed(title="All Commands", color=setembedcolor)
+	embed=discord.Embed(title="Footlocker Stock Checker Help", color=setembedcolor)
 	embed.add_field(name="List of all countries supported by FTL", value='?ftlcountries', inline=False)
 	embed.add_field(name="Command Format - FTL", value='?stock <link>', inline=False)
 	embed.add_field(name="Command Format - Sidestep", value='?side <link>', inline=False)
