@@ -389,7 +389,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 
 @bot.command()
 async def orderhelp(context):
-	embed=discord.Embed(title="Scripting Tools", description="Mesh Order Tracker", color=setembedcolor)
+	embed=discord.Embed(title="Mesh Order Tracker Help", color=setembedcolor)
 	embed.add_field(name="How do i track a single order :question:", value="```?order <store> <postcode>\n<ordernr>```\n**Example:**```?order jdde 79798\n302723669```", inline=False)
 	embed.add_field(name="How do i track a multiple orders :question:", value="```?order <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?order jdde 79798\n302723669\n302723123\n302723456```", inline=False)
 	embed.add_field(name="How do i get all order status :question:", value="```?orderbulk <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?orderbulk jdsportsde 79798\n302723669\n302723123\n302723456```", inline=False)
@@ -418,7 +418,7 @@ async def orderstore(context):
 	fpstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(fpflag,footpatrolregions,fpshortregion))
 	szstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(szflag,sizeregion,sizeshortregion))
 	jdstores = "\n".join("{0} {1} {2}".format(x,y,z) for x,y,z in zip(jdflag,jdsportsregions,jdshortregions))
-	embed=discord.Embed(title="Scripting Tools", description="Mesh Stores", color=setembedcolor)
+	embed=discord.Embed(title="Mesh Stores Help", color=setembedcolor)
 	embed.add_field(name="JDSports", value=jdstores, inline=True)
 	embed.add_field(name="Size?", value=szstores, inline=True)
 	embed.add_field(name="Footpatrol", value=fpstores, inline=True)
