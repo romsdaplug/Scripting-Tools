@@ -535,15 +535,19 @@ async def staff(ctx, link):
 	embed.add_field(name="Qbot Size Range", value = qbotsizerange, inline=False)
 	embed.add_field(name="Stock Information", value=stockinfo, inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.message.delete()
-	await ctx.send(embed=embed)
-	await test91.delete()
-
+	if "private" in ctx.channel.type:
+		member = ctx.author
+		await member.send(embed=embed)
+		await test91.delete()
+	else:
+		await ctx.send(embed=embed)
+		await ctx.message.delete()
+		await test91.delete()
 
 #@commands.has_any_role(644574705990238210,644574707475152926,806766600686010432,806855381656928266,790654515899662366,791044154351157328)
 @bot.command()
 async def stock(ctx, link):
-
+	print(ctx.channel.type)
 	headers = ''
 	url = ''
 	pid = ''
@@ -1009,9 +1013,14 @@ async def stock(ctx, link):
 	embed.add_field(name="Qbot Size Range", value = qbotsizerange, inline=False)
 	embed.add_field(name="Stock Information", value=stockinfo, inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.message.delete()
-	await ctx.send(embed=embed)
-	await test91.delete()
+	if "private" in ctx.channel.type:
+		member = ctx.author
+		await member.send(embed=embed)
+		await test91.delete()
+	else:
+		await ctx.send(embed=embed)
+		await ctx.message.delete()
+		await test91.delete()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
@@ -1504,8 +1513,14 @@ async def release(ctx, link):
 	embed.set_thumbnail(url=shoepic)
 	webhook.add_embed(embed)
 	webhook.execute()
-	await ctx.message.delete()
-	await test91.delete()
+	if "private" in ctx.channel.type:
+		member = ctx.author
+		await member.send(embed=embed)
+		await test91.delete()
+	else:
+		await ctx.send(embed=embed)
+		await ctx.message.delete()
+		await test91.delete()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
@@ -1625,9 +1640,14 @@ async def side(ctx, link):
 	embed.add_field(name="Qbot Size Range", value = qbotsizerange, inline=False)
 	embed.add_field(name="Stock Information", value=stockinfo, inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	await ctx.message.delete()
-	await ctx.send(embed=embed)
-	await test91.delete()
+	if "private" in ctx.channel.type:
+		member = ctx.author
+		await member.send(embed=embed)
+		await test91.delete()
+	else:
+		await ctx.send(embed=embed)
+		await ctx.message.delete()
+		await test91.delete()
 
 
 @bot.command()
