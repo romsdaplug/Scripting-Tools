@@ -33,12 +33,10 @@ async def order(ctx, store, postcode, orderno: int):
 		test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test1.set_thumbnail(url=setthumbnail)
 		await ctx.send(embed = test1)
-	server_name = ctx.guild.name
 	user_name_id = ctx.author.name + ' ID : ' + str(ctx.author.id)
-	log2 = Fore.CYAN +f'[{server_name}]'
 	log3 = Fore.CYAN + f'[{user_name_id}] '
 	log4 = "[ORDER TRACKER]"
-	log = log2 + ' ' + log3 + log4
+	log = log3 + log4
 	now = datetime.now()
 
 	if store == "fpgb" or store == "footpatrolgb" or store == "footpatroluk" or store == "fpuk" or store == "fpcom" or store == "footpatrolcom":
@@ -129,7 +127,6 @@ async def order(ctx, store, postcode, orderno: int):
 				test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
 				test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 				test1.set_thumbnail(url=setthumbnail)
-				await ctx.message.delete()
 				await ctx.send(embed = test1)
 			test = json.loads(response)
 			a2 = test['status']['short']
@@ -199,7 +196,6 @@ async def order(ctx, store, postcode, orderno: int):
 			test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
 			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test1.set_thumbnail(url=setthumbnail)
-			await ctx.message.delete()
 			await ctx.send(embed = test1)
 
 @bot.command()
@@ -221,12 +217,10 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 	ordercan = 0
 	orderpay = 0
 	ordernotfound = 0
-	server_name = ctx.guild.name
 	user_name_id = ctx.author.name + ' ID : ' + str(ctx.author.id)
-	log2 = Fore.CYAN +f'[{server_name}]'
 	log3 = Fore.CYAN + f'[{user_name_id}] '
 	log4 = "[ORDER TRACKER]"
-	log = log2 + ' ' + log3 + log4
+	log = log3 + log4
 	now = datetime.now()
 
 	if store == "fpgb" or store == "footpatrolgb" or store == "footpatroluk" or store == "fpuk" or store == "fpcom" or store == "footpatrolcom":
