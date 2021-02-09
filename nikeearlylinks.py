@@ -142,7 +142,7 @@ async def nike(context, link):
 			embedlistsizes[0] = "\n".join(embedlistsizes[0])
 			embedlistsizes[1] = "\n".join(embedlistsizes[1])
 			embedlistsizes[2] = "\n".join(embedlistsizes[2])
-			embed=discord.Embed(title="Nike CH - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
+			embed=discord.Embed(title="Nike AU - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[0], inline=True)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[1], inline=True)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[2], inline=True)
@@ -173,7 +173,7 @@ async def nike(context, link):
 				embedlistsizes[0] = "\n".join(embedlistsizes[0])
 				embedlistsizes[1] = "\n".join(embedlistsizes[1])
 				embedlistsizes[2] = "\n".join(embedlistsizes[2])
-				embed=discord.Embed(title="Nike CH - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
+				embed=discord.Embed(title="Nike CA - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[0], inline=True)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[1], inline=True)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[2], inline=True)
@@ -184,7 +184,7 @@ async def nike(context, link):
 				embedlistsizes[3] = "\n".join(embedlistsizes[3])
 				embedlistsizes[4] = "\n".join(embedlistsizes[4])
 				embedlistsizes[5] = "\n".join(embedlistsizes[5])
-				embed=discord.Embed(title="Nike CH - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
+				embed=discord.Embed(title="Nike CA - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[3], inline=True)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[4], inline=True)
 				embed.add_field(name="Checkout Link", value=embedlistsizes[5], inline=True)
@@ -214,7 +214,36 @@ async def nike(context, link):
 			embedlistsizes[0] = "\n".join(embedlistsizes[0])
 			embedlistsizes[1] = "\n".join(embedlistsizes[1])
 			embedlistsizes[2] = "\n".join(embedlistsizes[2])
-			embed=discord.Embed(title="Nike CH - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
+			embed=discord.Embed(title="Nike RU - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
+			embed.add_field(name="Checkout Link", value=embedlistsizes[0], inline=True)
+			embed.add_field(name="Checkout Link", value=embedlistsizes[1], inline=True)
+			embed.add_field(name="Checkout Link", value=embedlistsizes[2], inline=True)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			embed.set_thumbnail(url=shoepic)
+			await context.send(embed=embed)
+	elif nikeregion == "sg":
+		firstpartlink = link.split("sg/")[0]
+		secondpartlink = link.split("/launch/")[1]
+
+		response = requests.get(link, headers=headers)
+		soup = bs(response.content, 'html.parser')
+		text = soup.find("meta", {"name":"branch:deeplink:productId"})["content"]
+		shoepic = soup.find("meta", {"property":"og:image"})["content"]
+		sizes = ["4","4.5","5","5.5","6","6.5","7","7.5","8","8.5","9","9.5","10","10.5","11","11.5","12","12.5"]
+		region = ["sg"]
+		country = ["sg"]
+		earlylink = []
+		for i in range(len(region)):
+			for j in range(len(sizes)):
+				earlylink.append(str("[US " + str(sizes[j]) + "](" + firstpartlink + str(region[i]) + "/launch/" + secondpartlink + "?productId=" + str(text) + "&size=" + str(sizes[j]) + ")"))
+			lenearlylink = len(earlylink)
+			n = 6
+			embedlistsizes = list(divide_chunks(earlylink, n))
+
+			embedlistsizes[0] = "\n".join(embedlistsizes[0])
+			embedlistsizes[1] = "\n".join(embedlistsizes[1])
+			embedlistsizes[2] = "\n".join(embedlistsizes[2])
+			embed=discord.Embed(title="Nike SG - Early Links - " + str.upper(region[i]) + " " + ":flag_" + str(country[i]) + ":", color=setembedcolor)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[0], inline=True)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[1], inline=True)
 			embed.add_field(name="Checkout Link", value=embedlistsizes[2], inline=True)
