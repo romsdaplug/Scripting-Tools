@@ -344,7 +344,6 @@ async def staff(ctx, link):
 		}
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
-		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		else:
@@ -379,15 +378,7 @@ async def staff(ctx, link):
 			embed.add_field(name="Info", value="Product has no stock loaded", inline=False)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
-		elif getnewpid7 in response.text:
-			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link, headers=headers, verify=False)
-			soup2 = BeautifulSoup(response2.content, "html.parser")
-			img = soup2.find("meta", {"property":"og:image"})["content"]
-			embed.set_thumbnail(url=img)
-			embed.add_field(name="Info", value="Product has no stock loaded", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.send(embed=embed)
+
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
 		response2 = requests.get(link, headers=headers, verify=False)
@@ -820,7 +811,6 @@ async def stock(ctx, link):
 		}
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
-		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters)
 		else:
@@ -847,15 +837,6 @@ async def stock(ctx, link):
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif not getpid7 in response.text:
-			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link)
-			soup2 = BeautifulSoup(response2.content, "html.parser")
-			img = soup2.find("meta", {"property":"og:image"})["content"]
-			embed.set_thumbnail(url=img)
-			embed.add_field(name="Info", value="Product has no stock loaded", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.send(embed=embed)
-		elif getnewpid7 in response.text:
 			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 			response2 = requests.get(link)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
@@ -1317,7 +1298,6 @@ async def release(ctx, link):
 		}
 		proxy = getRandomProxy()
 		getpid7 = pid + "070"
-		getnewpid7 = "Quantity_" + pid + "070"
 		if region == "nl" or region == "NL":
 			response = requests.get(url, headers=headers, params=parameters, verify=False)
 		else:
@@ -1352,15 +1332,7 @@ async def release(ctx, link):
 			embed.add_field(name="Info", value="Product has no stock loaded", inline=False)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
-		elif getnewpid7 in response.text:
-			embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-			response2 = requests.get(link, headers=headers, verify=False)
-			soup2 = BeautifulSoup(response2.content, "html.parser")
-			img = soup2.find("meta", {"property":"og:image"})["content"]
-			embed.set_thumbnail(url=img)
-			embed.add_field(name="Info", value="Product has no stock loaded", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.send(embed=embed)
+
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
 		response2 = requests.get(link, headers=headers, verify=False)
