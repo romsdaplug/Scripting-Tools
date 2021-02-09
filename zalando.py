@@ -156,9 +156,14 @@ async def zalando(ctx, link):
 			embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
 			embed.add_field(name="Release Date", value="`Live`", inline=True)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.message.delete()
-			await ctx.send(embed=embed)
-			await test91.delete()
+			if "private" in ctx.channel.type:
+				member = ctx.author
+				await member.send(embed=embed)
+				await test91.delete()
+			else:
+				await ctx.send(embed=embed)
+				await ctx.message.delete()
+				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
 				response2 = requests.get(link, data=payload, headers=headers2)
@@ -225,9 +230,14 @@ async def zalando(ctx, link):
 				embed.add_field(name="Price", value="`"+str(correctprice)+"`", inline=True)
 				embed.add_field(name="Release Date", value="`" + releasedate.text + "`", inline=True)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-				await ctx.message.delete()
-				await ctx.send(embed=embed)
-				await test91.delete()
+				if "private" in ctx.channel.type:
+					member = ctx.author
+					await member.send(embed=embed)
+					await test91.delete()
+				else:
+					await ctx.send(embed=embed)
+					await ctx.message.delete()
+					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
 				embed.add_field(name="Error", value="An error occured. Please check your command or link!", inline=True)
@@ -354,9 +364,14 @@ async def zalandopid(ctx, link):
 			embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
 			embed.add_field(name="Release Date", value="`Live`", inline=True)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-			await ctx.message.delete()
-			await ctx.send(embed=embed)
-			await test91.delete()
+			if "private" in ctx.channel.type:
+				member = ctx.author
+				await member.send(embed=embed)
+				await test91.delete()
+			else:
+				await ctx.send(embed=embed)
+				await ctx.message.delete()
+				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
 				response2 = requests.get(link, data=payload, headers=headers2)
@@ -406,9 +421,14 @@ async def zalandopid(ctx, link):
 				embed.add_field(name="Price", value="`"+str(correctprice)+"`", inline=True)
 				embed.add_field(name="Release Date", value="`" + releasedate.text + "`", inline=True)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-				await ctx.message.delete()
-				await ctx.send(embed=embed)
-				await test91.delete()
+				if "private" in ctx.channel.type:
+					member = ctx.author
+					await member.send(embed=embed)
+					await test91.delete()
+				else:
+					await ctx.send(embed=embed)
+					await ctx.message.delete()
+					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
 				embed.add_field(name="Error", value="An error occured. Please check your command or link!", inline=True)
