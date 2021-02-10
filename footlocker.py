@@ -532,7 +532,6 @@ async def staff(ctx, link):
 		await test91.delete()
 	else:
 		await ctx.send(embed=embed)
-		await ctx.message.delete()
 		await test91.delete()
 
 #@commands.has_any_role(644574705990238210,644574707475152926,806766600686010432,806855381656928266,790654515899662366,791044154351157328)
@@ -1000,7 +999,6 @@ async def stock(ctx, link):
 		await test91.delete()
 	else:
 		await ctx.send(embed=embed)
-		await ctx.message.delete()
 		await test91.delete()
 
 @bot.command()
@@ -1491,7 +1489,6 @@ async def release(ctx, link):
 		await test91.delete()
 	else:
 		await ctx.send(embed=embed)
-		await ctx.message.delete()
 		await test91.delete()
 
 @bot.command()
@@ -1618,7 +1615,6 @@ async def side(ctx, link):
 		await test91.delete()
 	else:
 		await ctx.send(embed=embed)
-		await ctx.message.delete()
 		await test91.delete()
 
 
