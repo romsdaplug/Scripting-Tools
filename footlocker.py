@@ -1565,6 +1565,27 @@ async def side(ctx, link):
 		"InventoryServerity": "ProductDetail",
 		}
 		response = requests.get(url, headers=headers, params=parameters)
+		if 'Foot Locker - Please Stand By' in response.text:
+			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
+			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			embed.set_thumbnail(url=img)
+			embed.add_field(name="Info", value="Queue is up, we can't check stock!", inline=False)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			await ctx.send(embed=embed)
+		elif 'Foot Locker - Sold Out!' in response.text:
+			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
+			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			embed.set_thumbnail(url=img)
+			embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			await ctx.send(embed=embed)
+		elif 'Please enable JS and disable any ad' in response.text:
+			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
+			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			embed.set_thumbnail(url=img)
+			embed.add_field(name="Info", value="Datadome is up - Please try later", inline=False)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			await ctx.send(embed=embed)
 		response.raise_for_status()
 		soup = BeautifulSoup(response.json()["content"], "html.parser")
 		response2 = requests.get(link, headers=headers)
