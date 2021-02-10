@@ -161,8 +161,7 @@ async def zalando(ctx, link):
 				await member.send(embed=embed)
 				await test91.delete()
 			else:
-				await ctx.send(embed=embed)
-				await ctx.message.delete()
+				await ctx.send(embed=embed
 				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
@@ -236,7 +235,6 @@ async def zalando(ctx, link):
 					await test91.delete()
 				else:
 					await ctx.send(embed=embed)
-					await ctx.message.delete()
 					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
@@ -369,8 +367,7 @@ async def zalandopid(ctx, link):
 				await member.send(embed=embed)
 				await test91.delete()
 			else:
-				await ctx.send(embed=embed)
-				await ctx.message.delete()
+				await ctx.send(embed=embed
 				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
@@ -427,7 +424,6 @@ async def zalandopid(ctx, link):
 					await test91.delete()
 				else:
 					await ctx.send(embed=embed)
-					await ctx.message.delete()
 					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
