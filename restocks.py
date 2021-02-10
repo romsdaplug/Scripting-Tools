@@ -41,11 +41,8 @@ async def restocks(context, *sku):
 		test2 = test['data']
 
 		product_name = test2[0]['name']
-		product_id = test2[0]['id']
-		product_sku = test2[0]['sku']
 		slug = test2[0]['slug']
 		product_link = 'https://restocks.de' + slug
-		product_price = test2[0]['price']
 
 		headers = {
 		"pragma": "no-cache",
@@ -79,9 +76,8 @@ async def restocks(context, *sku):
 				try:
 					value = resell[i].find("span", {"class":"value"})
 					pirce = resell[i].find("span", {"class":"price__label__value"})
-					sell = resell[i].find("span", {"class":"sell__method__value"})
 					pricenow = resell[i].find("span",{"class":"float-right price"}).text
-					currentpricenow.append(pricenow.split(" € ")[1].split("\n")[0])
+					currentpricenow.append(pricenow.split(" ")[1].split("€")[0])
 					if resell[i].find("span", {"class":"sell__method__value"}).text == "consignment":
 						sizes.append(str(resell[i].find("span", {"class":"text"}).text))
 						consignmentprice.append(str(round(float(pirce.text),2)))
@@ -94,6 +90,7 @@ async def restocks(context, *sku):
 						consignmentprice.append(str(round(float(resellprice),2)))
 				except(Exception,AttributeError):
 					continue
+		print(currentpricenow)
 		rprices = prepend(resaleprice, "R: € ")
 		cprices = prepend(consignmentprice, "C: € ")
 		lprices = prepend(currentpricenow, "L: € ")
