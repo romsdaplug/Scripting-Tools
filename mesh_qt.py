@@ -28,7 +28,7 @@ setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrV
 setembedcolor = 0x000000
 
 @bot.command()
-async def qt(context, store, pid):
+async def qt1(context, store, pid):
 	store = str.lower(store)
 	lines = context.message.content.splitlines()
 	newpid = ",".join(lines).replace("?qt ","").replace(store,"").replace(" ","")
@@ -54,6 +54,42 @@ async def qt(context, store, pid):
 		qtstore = "footpatrol"
 		qtregion = "com"
 		url = "https://www.footpatrol.com/product/pigeon-oos/" + pid
+	elif store == "fpde" or store == "footpatrolde":
+		store = "footpatrol"
+		region = "de"
+		qtstore = "footpatrol"
+		qtregion = "de"
+		url = "https://www.footpatrol.de/product/pigeon-oos/" + pid
+	elif store == "fpdk" or store == "footpatroldk":
+		store = "footpatrol"
+		region = "dk"
+		qtstore = "footpatrol"
+		qtregion = "dk"
+		url = "https://www.footpatrol.dk/product/pigeon-oos/" + pid
+	elif store == "fpie" or store == "footpatrolie":
+		store = "footpatrol"
+		region = "ie"
+		qtstore = "footpatrol"
+		qtregion = "ie"
+		url = "https://www.footpatrol.ie/product/pigeon-oos/" + pid
+	elif store == "fpit" or store == "footpatrolit":
+		store = "footpatrol"
+		region = "it"
+		qtstore = "footpatrol"
+		qtregion = "it"
+		url = "https://www.footpatrol.it/product/pigeon-oos/" + pid
+	elif store == "fpnl" or store == "footpatrolnl":
+		store = "footpatrol"
+		region = "nl"
+		qtstore = "footpatrol"
+		qtregion = "nl"
+		url = "https://www.footpatrol.nl/product/pigeon-oos/" + pid
+	elif store == "fpse" or store == "footpatrolse":
+		store = "footpatrol"
+		region = "se"
+		qtstore = "footpatrol"
+		qtregion = "se"
+		url = "https://www.footpatrol.se/product/pigeon-oos/" + pid
 	elif store == "fpfr" or store == "footpatrolfr":
 		store = "footpatrol"
 		region = "fr"
@@ -310,7 +346,7 @@ async def qt(context, store, pid):
 		await context.send(embed=embed)
 
 @bot.command()
-async def mesh(context, link):
+async def mesh1(context, link):
 	try:
 		if "footpatrolcom" in link and len(link) < 25:
 			url = "https://m.footpatrol.com/product/pigeon-oos/" + link
@@ -318,6 +354,18 @@ async def mesh(context, link):
 			url = "https://m.footpatrol.fr/product/pigeon-oos/" + link
 		elif "footpatrolfi" in link and len(link) < 25:
 			url = "https://m.footpatrol.fi/product/pigeon-oos/" + link
+		elif "footpatrolde" in link and len(link) < 25:
+			url = "https://m.footpatrol.de/product/pigeon-oos/" + link
+		elif "footpatroldk" in link and len(link) < 25:
+			url = "https://m.footpatrol.dk/product/pigeon-oos/" + link
+		elif "footpatrolit" in link and len(link) < 25:
+			url = "https://m.footpatrol.it/product/pigeon-oos/" + link
+		elif "footpatrolnl" in link and len(link) < 25:
+			url = "https://m.footpatrol.nl/product/pigeon-oos/" + link
+		elif "footpatrolse" in link and len(link) < 25:
+			url = "https://m.footpatrol.se/product/pigeon-oos/" + link
+		elif "footpatrolie" in link and len(link) < 25:
+			url = "https://m.footpatrol.ie/product/pigeon-oos/" + link
 		elif "sizeuk" in link and len(link) < 25:
 			link = link.replace("sizeuk","").replace("_","")
 			url = "https://m.size.co.uk/product/pigeon-oos/" + link
@@ -396,6 +444,36 @@ async def mesh(context, link):
 			region = "fr"
 			qtstore = "footpatrol"
 			qtregion = "fr"
+		elif store == "footpatrolde":
+			store = "footpatrol"
+			region = "de"
+			qtstore = "footpatrol"
+			qtregion = "de"
+		elif store == "footpatroldk":
+			store = "footpatrol"
+			region = "dk"
+			qtstore = "footpatrol"
+			qtregion = "dk"
+		elif store == "footpatrolie":
+			store = "footpatrol"
+			region = "ie"
+			qtstore = "footpatrol"
+			qtregion = "ie"
+		elif store == "footpatrolit":
+			store = "footpatrol"
+			region = "it"
+			qtstore = "footpatrol"
+			qtregion = "it"
+		elif store == "footpatrolnl":
+			store = "footpatrol"
+			region = "nl"
+			qtstore = "footpatrol"
+			qtregion = "nl"
+		elif store == "footpatrolse":
+			store = "footpatrol"
+			region = "se"
+			qtstore = "footpatrol"
+			qtregion = "se"
 		elif store == "sizecouk":
 			store = "size"
 			region = ""
@@ -640,8 +718,8 @@ async def meshhelp(context):
 
 @bot.command()
 async def meshcountries(context):
-	fpregions = ["gb","fr"]
-	fpflag = [":flag_gb:",":flag_fr:"]
+	fpregions = ["gb","fr","de","dk","it","nl","se","ie"]
+	fpflag = [":flag_gb:",":flag_fr:",":flag_de:",":flag_dk:",":flag_it:",":flag_nl:",":flag_se:",":flag_ie:"]
 	szregions = ["gb","de","dk","es","fr","ie","it","nl","se"]
 	szflag = [":flag_gb:",":flag_de:",":flag_dk:",":flag_es:",":flag_fr:",":flag_ie:",":flag_it:",":flag_nl:",":flag_se:"]
 	jdregions = ["gb","at","au","be","de","dk","es","fr","ie","it","my","nl","pt","se","sg"]
