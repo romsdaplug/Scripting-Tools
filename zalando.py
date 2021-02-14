@@ -252,7 +252,7 @@ async def zalando(ctx, link):
 		await ctx.send(embed=embed)
 
 @bot.command()
-async def zalandopid(ctx, link):
+async def testpid(ctx, link):
 	try:
 		text = link.split(".html")[0].split("-")[-2]
 		text2 = link.split(".html")[0].split("-")[-1]
@@ -419,14 +419,22 @@ async def zalandopid(ctx, link):
 				allsize2 = ['> '+x for x in size]
 				discsize = "\n".join(allsize2)
 				discsku = "\n".join(sku)
+				discsizesku = "\n".join("{0} {1}".format(x,y) for x,y in zip(allsize2,sku))
+				discfleek = ";".join(sku)
+				discrootz = ",".join(sku)
+				disclunar = "/".join(sku)
 
 				embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='> ['+(shoename)+']('+link+')', color=setembedcolor)
 				embed.set_thumbnail(url=shoepic)
 				embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 				embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
+				embed.add_field(name="Hazey", value=discsku, inline=False)
+				embed.add_field(name="Lunar", value=disclunar, inline=False)
+				embed.add_field(name="RootLabz", value=discrootz, inline=False)
+				embed.add_field(name="Fleek", value=discfleek, inline=False)
 				embed.add_field(name="PID", value="`" + mainpid + "`", inline=False)
-				embed.add_field(name="Price", value="`"+str(correctprice)+"`", inline=True)
-				embed.add_field(name="Release Date", value="`" + releasedate.text + "`", inline=True)
+				embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
+				embed.add_field(name="Release Date", value="`Live`", inline=True)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				if "private" in ctx.channel.type:
 					member = ctx.author
