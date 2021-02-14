@@ -220,7 +220,7 @@ async def help(context):
 	embed.add_field(name="Mesh QT / Scraper  <:hawkoos:807792754260181023> <:mbotoos:807792807326253077>", value="?meshhelp\n?mesh <full link here>\n?mesh <meshpid>\n?qt <store> <PIDs/SKUs>\n?meshcountries", inline=False)
 	embed.add_field(name="UPS Tracker  <:UPS:808299085496713257>", value="?upshelp\n?orderstore\n?ups\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>\n\n?upsbulk\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>", inline=False)
 	embed.add_field(name="Footlocker / Side-Step Stock Checker  <:ftl:809892922387595314> <:sidestep:809894025636216902>", value="?ftlhelp\n?stock <link>\n?side <link>\n?ftlcountries\n", inline=False)
-	embed.add_field(name="Zalando Stock / PID Scraper  <:zalando:809893400718737508>", value="?zalandohelp\n?zalando <full link here>\n?zalandopid <full link here>", inline=False)
+	embed.add_field(name="Zalando Stock / PID Scraper inkl. Bot Format  <:zalando:809893400718737508>", value="?zalandohelp\n?zalando <full link here>\n?zalandopid <full link here>", inline=False)
 	embed.add_field(name="Restocks Price Checker  <:restocks:809892862400921640>", value="?restocks <shoename>", inline=False)
 	embed.add_field(name="StockX Price Checker  <:stockx:810352884608532531>", value="?stockx <shoename>", inline=False)
 	embed.add_field(name="Nike Early Link <:nike:809892892654305300>", value="?nikehelp\nSupported Countries: CH, CA, AU, RU, SG\n?nike <full link here>", inline=False)
