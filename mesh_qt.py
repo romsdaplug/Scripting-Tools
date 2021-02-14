@@ -28,7 +28,7 @@ setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrV
 setembedcolor = 0x000000
 
 @bot.command()
-async def qt1(context, store, pid):
+async def qt(context, store, pid):
 	store = str.lower(store)
 	lines = context.message.content.splitlines()
 	newpid = ",".join(lines).replace("?qt ","").replace(store,"").replace(" ","")
@@ -346,7 +346,7 @@ async def qt1(context, store, pid):
 		await context.send(embed=embed)
 
 @bot.command()
-async def mesh1(context, link):
+async def mesh(context, link):
 	try:
 		if "footpatrolcom" in link and len(link) < 25:
 			url = "https://m.footpatrol.com/product/pigeon-oos/" + link
