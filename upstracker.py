@@ -37,15 +37,15 @@ setthumbnail = setfooterimage
 async def ups(ctx, TrackingNr):
 	ordernotfound = 0
 	lines = ctx.message.content.splitlines()
+	lines.pop(0)
 	linescount = len(lines)
 
-	lines[0] = lines[0].replace("?ups ","")
 	if linescount == 0:
 		test1 = discord.Embed(title="UPS Tracker - Error",  colour=setembedcolor)
-		embed.add_field(name="Commad Format - Single View", value="Make sure tracking numbers are on the next line after ?ups```?ups\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
-		embed.add_field(name="Max. Track Links", value="Cause of Discord Text limit you can track up to **26 Links**", inline=False)
-		embed.add_field(name="Max. Track Numbers", value="Cause of Discord Text limit you can track up to **105 Trackingnumbers**", inline=False)
-		embed.add_field(name="GMAIL - FTL Ship Mails - How to get Trackingnumbers", value="""Paste following command in your chrome console\nKeep in mind all your mails need to be extended!```js
+		test1.add_field(name="Commad Format - Single View", value="Make sure tracking numbers are on the next line after ?ups```?ups\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
+		test1.add_field(name="Max. Track Links", value="Cause of Discord Text limit you can track up to **26 Links**", inline=False)
+		test1.add_field(name="Max. Track Numbers", value="Cause of Discord Text limit you can track up to **105 Trackingnumbers**", inline=False)
+		test1.add_field(name="GMAIL - FTL Ship Mails - How to get Trackingnumbers", value="""Paste following command in your chrome console\nKeep in mind all your mails need to be extended!```js
 !(function(){
     var orders = Array.from(document.querySelectorAll('[class^="m_"][class$="fl-email--actions-block--button-container"]')).map(element => {
         var SIZE = element.getElementsByTagName('tr')[0].getElementsByTagName('a')[0]
@@ -133,7 +133,7 @@ async def ups(ctx, TrackingNr):
 			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test1.set_thumbnail(url=setthumbnail)
 			print('')
-			await ctx.send(embed = test1)
+			await ctx.send(embed=test1)
 		except TypeError:
 			ordernotfound = ordernotfound + 1
 			setembedcolorstatus = 0xFF0000
@@ -146,22 +146,30 @@ async def ups(ctx, TrackingNr):
 			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test1.set_thumbnail(url=setthumbnail)
 			print('')
-			await ctx.send(embed = test1)
+			await ctx.send(embed=test1)
+				
 		
 
 @bot.command()
 async def upsbulk(ctx, TrackingNr):
+
 	ordernotfound = 0
-	lines = ctx.message.content.splitlines()
+	if TrackingNr == "text":
+		attachment_url = ctx.message.attachments[0].url
+		file_request = requests.get(attachment_url)
+		newfile = file_request.text.replace("\n",",")
+		lines = newfile.split(",")
+	else:
+		lines = ctx.message.content.splitlines()
+		lines.pop(0)
 	linescount = len(lines)
-	lines[0] = lines[0].replace("?ups ","")
 
 	if linescount == 0:
 		test1 = discord.Embed(title="UPS Tracker - Error",  colour=setembedcolor)
-		embed.add_field(name="Commad Format - Summary", value="Make sure tracking numbers are on the next line after ?ups```?upsbulk\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
-		embed.add_field(name="Max. Track Links", value="Cause of Discord Text limit you can track up to **26 Links**", inline=False)
-		embed.add_field(name="Max. Track Numbers", value="Cause of Discord Text limit you can track up to **105 Trackingnumbers**", inline=False)
-		embed.add_field(name="GMAIL - FTL Ship Mails - How to get Trackingnumbers", value="""Paste following command in your chrome console\nKeep in mind all your mails need to be extended!```js
+		test1.add_field(name="Commad Format - Summary", value="Make sure tracking numbers are on the next line after ?ups```?upsbulk\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
+		test1.add_field(name="Max. Track Links", value="Cause of Discord Text limit you can track up to **26 Links**", inline=False)
+		test1.add_field(name="Max. Track Numbers", value="Cause of Discord Text limit you can track up to **105 Trackingnumbers**", inline=False)
+		test1.add_field(name="GMAIL - FTL Ship Mails - How to get Trackingnumbers", value="""Paste following command in your chrome console\nKeep in mind all your mails need to be extended!```js
 !(function(){
     var orders = Array.from(document.querySelectorAll('[class^="m_"][class$="fl-email--actions-block--button-container"]')).map(element => {
         var SIZE = element.getElementsByTagName('tr')[0].getElementsByTagName('a')[0]
@@ -245,13 +253,14 @@ async def upsbulk(ctx, TrackingNr):
 	test1.set_footer(text=setfootertext, icon_url=setfooterimage)
 	test1.set_thumbnail(url=setthumbnail)
 	print('')
-	await ctx.send(embed = test1)
+	await ctx.send(embed=test1)
 
 @bot.command()
 async def upshelp(context):
 		embed=discord.Embed(title="UPS Order Tracker", color=setembedcolor)
 		embed.add_field(name="Commad Format - Single View", value="Make sure tracking numbers are on the next line after ?ups```?ups\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
 		embed.add_field(name="Commad Format - Summary", value="Make sure tracking numbers are on the next line after ?ups```?upsbulk\n<Tracking NR. 1>\n<Tracking NR. 2>\n<Tracking NR. 3>```", inline=True)
+		embed.add_field(name="Commad Format - Summary with .txt File - 105+ Orders", value="Make sure to type 'text' on the next line after ?upsbulk```?upsbulk\ntext\n<paste ordernrs here as message.txt file>```", inline=True)
 		embed.add_field(name="Max. Track Links", value="Cause of Discord Text limit you can track up to **26 Links**", inline=False)
 		embed.add_field(name="Max. Track Numbers", value="Cause of Discord Text limit you can track up to **105 Trackingnumbers**", inline=False)
 		embed.add_field(name="GMAIL - FTL Ship Mails - How to get Trackingnumbers", value="""Paste following command in your chrome console\nKeep in mind all your mails need to be extended!```js
