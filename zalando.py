@@ -161,7 +161,8 @@ async def zalando(ctx, link):
 				await member.send(embed=embed)
 				await test91.delete()
 			else:
-				await ctx.send(embed=embed
+				await ctx.send(embed=embed)
+				await ctx.message.delete()
 				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
@@ -235,6 +236,7 @@ async def zalando(ctx, link):
 					await test91.delete()
 				else:
 					await ctx.send(embed=embed)
+					await ctx.message.delete()
 					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
@@ -304,7 +306,6 @@ async def zalandopid(ctx, link):
 			else:
 				newstrtext = newtext.split('"units":')[1].split("}]")[0]
 				newstrtext = newstrtext + "}]"
-				#jsondata = json.loads(newstrtext)
 				count = newstrtext.count("displayPrice")
 				valuecount = newstrtext.count("value")
 				newvalue2 = newstrtext.split('"percentageDiscount":')[1].split(",")[0]
@@ -353,11 +354,19 @@ async def zalandopid(ctx, link):
 			allsize2 = ['> '+x for x in size]
 			discsize = "\n".join(allsize2)
 			discsku = "\n".join(sku)
+			discsizesku = "\n".join("{0} {1}".format(x,y) for x,y in zip(allsize2,sku))
+			discfleek = ";".join(sku)
+			discrootz = ",".join(sku)
+			disclunar = "/".join(sku)
 
 			embed=discord.Embed(title="Zalando Stock Checker :flag_" + countrycode + ":", description='> ['+(shoename)+']('+link+')', color=setembedcolor)
 			embed.set_thumbnail(url=shoepic)
 			embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 			embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
+			embed.add_field(name="Hazey", value=discsku, inline=False)
+			embed.add_field(name="Lunar", value=disclunar, inline=False)
+			embed.add_field(name="RootLabz", value=discrootz, inline=False)
+			embed.add_field(name="Fleek", value=discfleek, inline=False)
 			embed.add_field(name="PID", value="`" + mainpid + "`", inline=False)
 			embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
 			embed.add_field(name="Release Date", value="`Live`", inline=True)
@@ -367,7 +376,8 @@ async def zalandopid(ctx, link):
 				await member.send(embed=embed)
 				await test91.delete()
 			else:
-				await ctx.send(embed=embed
+				await ctx.send(embed=embed)
+				await ctx.message.delete()
 				await test91.delete()
 		except (AttributeError,TypeError):
 			try:
@@ -424,6 +434,7 @@ async def zalandopid(ctx, link):
 					await test91.delete()
 				else:
 					await ctx.send(embed=embed)
+					await ctx.message.delete()
 					await test91.delete()
 			except Exception:
 				embed=discord.Embed(title="Zalando Stock Checker - Error", color=setembedcolor)
