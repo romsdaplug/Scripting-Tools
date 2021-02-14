@@ -252,7 +252,7 @@ async def zalando(ctx, link):
 		await ctx.send(embed=embed)
 
 @bot.command()
-async def testpid(ctx, link):
+async def zalandopid(ctx, link):
 	try:
 		text = link.split(".html")[0].split("-")[-2]
 		text2 = link.split(".html")[0].split("-")[-1]
@@ -353,7 +353,9 @@ async def testpid(ctx, link):
 			shoename = newtext + newtext2
 			allsize2 = ['> '+x for x in size]
 			discsize = "\n".join(allsize2)
+			newsku = ['> '+x for x in sku]
 			discsku = "\n".join(sku)
+			dischazey = "\n".join(newsku)
 			discsizesku = "\n".join("{0} {1}".format(x,y) for x,y in zip(allsize2,sku))
 			discfleek = ";".join(sku)
 			discrootz = ",".join(sku)
@@ -363,10 +365,10 @@ async def testpid(ctx, link):
 			embed.set_thumbnail(url=shoepic)
 			embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 			embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
-			embed.add_field(name="Hazey", value=discsku, inline=False)
-			embed.add_field(name="Lunar", value=disclunar, inline=False)
-			embed.add_field(name="RootLabz", value=discrootz, inline=False)
-			embed.add_field(name="Fleek", value=discfleek, inline=False)
+			embed.add_field(name="<:hazeyoos:810363526765346836> Hazey", value=dischazey, inline=False)
+			embed.add_field(name="<:lunaroos:810363502568013825> Lunar", value="> "+disclunar, inline=False)
+			embed.add_field(name="<:rootlabzoos:810363570666733578> RootLabz", value="> "+discrootz, inline=False)
+			embed.add_field(name="<:fleekoos:810363547686928384> Fleek", value="> "+discfleek, inline=False)
 			embed.add_field(name="PID", value="`" + mainpid + "`", inline=False)
 			embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
 			embed.add_field(name="Release Date", value="`Live`", inline=True)
@@ -418,7 +420,9 @@ async def testpid(ctx, link):
 				shoename = newtext + newtext2
 				allsize2 = ['> '+x for x in size]
 				discsize = "\n".join(allsize2)
+				newsku = ['> '+x for x in sku]
 				discsku = "\n".join(sku)
+				dischazey = "\n".join(newsku)
 				discsizesku = "\n".join("{0} {1}".format(x,y) for x,y in zip(allsize2,sku))
 				discfleek = ";".join(sku)
 				discrootz = ",".join(sku)
@@ -428,10 +432,10 @@ async def testpid(ctx, link):
 				embed.set_thumbnail(url=shoepic)
 				embed.add_field(name=":straight_ruler: Size", value=discsize, inline=True)
 				embed.add_field(name=":pushpin: SKUs", value=discsku, inline=True)
-				embed.add_field(name="Hazey", value=discsku, inline=False)
-				embed.add_field(name="Lunar", value=disclunar, inline=False)
-				embed.add_field(name="RootLabz", value=discrootz, inline=False)
-				embed.add_field(name="Fleek", value=discfleek, inline=False)
+				embed.add_field(name="<:hazeyoos:810363526765346836> Hazey", value=dischazey, inline=False)
+				embed.add_field(name="<:lunaroos:810363502568013825> Lunar", value="> "+disclunar, inline=False)
+				embed.add_field(name="<:rootlabzoos:810363570666733578> RootLabz", value="> "+discrootz, inline=False)
+				embed.add_field(name="<:fleekoos:810363547686928384> Fleek", value="> "+discfleek, inline=False)
 				embed.add_field(name="PID", value="`" + mainpid + "`", inline=False)
 				embed.add_field(name="Price", value="`" + str(correctprice) + "`", inline=True)
 				embed.add_field(name="Release Date", value="`Live`", inline=True)
