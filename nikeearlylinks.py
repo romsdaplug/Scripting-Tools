@@ -255,7 +255,7 @@ async def nike(context, link):
 async def nikehelp(context):
 	embed=discord.Embed(title="Nike Early Links HELP", color=setembedcolor)
 	embed.add_field(name="Command Format", value="?nike  <full link here>", inline=False)
-	embed.add_field(name="Supported Countries", value=":flag_ch: Switzerand\n:flag_au: Australia\n:flag_ca: Canada\n:", inline=False)
+	embed.add_field(name="Supported Countries", value=":flag_ch: Switzerand\n:flag_au: Australia\n:flag_ca: Canada\n:flag_ru: Russia\n:flag_sg: Singapore", inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
