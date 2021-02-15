@@ -181,4 +181,17 @@ async def stockx(context, *stockx):
 	embed.set_footer(text=setfootertextstockx, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, CommandNotFound):
+		return
+	elif isinstance(error,MissingRequiredArgument):
+		embed=discord.Embed(title="Command Error", color=setembedcolor)
+		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+		embed.add_field(name="Command Format", value="?restocks <shoe name>\n?restocks <Shoe ID>", inline=False)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await ctx.send(embed=embed)
+		return
+	raise error
+
 bot.run(bottoken)
