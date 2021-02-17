@@ -334,7 +334,7 @@ async def staff(ctx, link):
 		await ctx.send('This region is not supported by our stock checker.')
 
 	if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
-		pid = link[-12:]
+		pid = link.split("?v=")[1][:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -438,8 +438,7 @@ async def staff(ctx, link):
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
 	if region == 'DE' or region == 'de' or region == 'IT' or region == 'dk' or region == 'it' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
-		pidlink = link[-17:]
-		pid = pidlink[:12]
+		pid = .split(".html")[0][-12:]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -796,7 +795,7 @@ async def stock(ctx, link):
 		await ctx.send('This region is not supported by our stock checker.')
 
 	if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
-		pid = link[-12:]
+		pid = link.split("?v=")[1][:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -900,8 +899,7 @@ async def stock(ctx, link):
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
 	if region == "DE" or region == "de" or region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
-		pidlink = link[-17:]
-		pid = pidlink[:12]
+		pid = .split(".html")[0][-12:]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -1278,7 +1276,7 @@ async def release(ctx, link):
 		setwebhook = newregionhook
 
 	if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
-		pid = link[-12:]
+		pid = link.split("?v=")[1][:12]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -1383,8 +1381,7 @@ async def release(ctx, link):
 		stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
 	if region == 'DE' or region == 'de' or region == 'IT' or region == 'it' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
-		pidlink = link[-17:]
-		pid = pidlink[:12]
+		pid = .split(".html")[0][-12:]
 		print("Getting Stock for " + pid + " on FTL " + countrycode)
 		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
