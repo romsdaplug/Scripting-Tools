@@ -13,7 +13,7 @@ import random, ast
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 import xmltodict
-from discord.ext.commands import CommandNotFound,MissingRequiredArgument
+from discord.ext.commands import CommandNotFound,MissingRequiredArgument,CommandInvokeError
 bot = commands.Bot(command_prefix = '?', help_command=None)
 
 @bot.event
@@ -31,38 +31,9 @@ euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6J
 asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN"]
 newregionhook = ["https://discord.com/api/webhooks/796527829261090848/36pfX9AeOlz321uMFTwiibnwAwxT_noBgTkt98JgCoh1xzufCn6yQIW8LkPDtc5iv4dt","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN"]
 
-proxies = []
-
-try:
-	proxies = open("proxies.txt").read().splitlines()
-	print(" [Succesfully loaded " + str(len(proxies)) + " proxies]")  
-except Exception as e:
-	print(e)
-	print(" [Could not load proxies]")
-
-def getRandomProxy():
-  if (len(proxies) != 0):
-  	proxyDict = {}
-  	proxy = random.choice(proxies)
-  	proxySplit = proxy.split(":")
-  	if (len(proxySplit) != 4):
-  		proxyDict = {
-  		"http": "http://" + proxySplit[0] + ":" + proxySplit[1] + "/",
-  		"https": "https://" + proxySplit[0] + ":" + proxySplit[1] + "/"
-  		}
-  	else:
-  		proxyDict = {
-  		"http": "http://" + proxySplit[2] + ":" + proxySplit[3] + "@" + proxySplit[0] + ":" + proxySplit[1] + "/",
-  		"https": "https://" + proxySplit[2] + ":" + proxySplit[3] + "@" + proxySplit[0] + ":" + proxySplit[1] + "/"
-  		}          
-  		return proxyDict
-  else:
-  	proxyDict = {}
-  	proxyDict = {
-  	"http": "http://",
-  	"https": "https://"
-  	}             
-  return proxyDict
+def split_list(a_list):
+    half = len(a_list)//2
+    return a_list[:half], a_list[half:]
 
 def check_if_it_is_me(ctx):
 	return ctx.message.author.id == 175953718750085121 or ctx.message.author.id == 351639955531104258
@@ -343,7 +314,6 @@ async def staff(ctx, link):
 		"BaseSKU": pid,
 		"InventoryServerity": "ProductDetail",
 		}
-		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		response = requests.get(url, headers=headers, params=parameters, verify=False)
 		if 'Foot Locker - Please Stand By' in response.text:
@@ -444,7 +414,6 @@ async def staff(ctx, link):
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
-		proxy = getRandomProxy()
 		response = requests.get(urllink)
 		response2 = requests.get(link)
 		if 'Please enable JS and disable any ad' in response.text:
@@ -804,7 +773,6 @@ async def stock(ctx, link):
 		"BaseSKU": pid,
 		"InventoryServerity": "ProductDetail",
 		}
-		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		response = requests.get(url, headers=headers, params=parameters)
 		if 'Foot Locker - Please Stand By' in response.text:
@@ -905,7 +873,6 @@ async def stock(ctx, link):
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
-		proxy = getRandomProxy()
 		response = requests.get(urllink)
 		response2 = requests.get(link)
 		if 'Please enable JS and disable any ad' in response.text:
@@ -1285,7 +1252,6 @@ async def release(ctx, link):
 		"BaseSKU": pid,
 		"InventoryServerity": "ProductDetail",
 		}
-		proxy = getRandomProxy()
 		getpid7 = pid + "070"
 		response = requests.get(url, headers=headers, params=parameters, verify=False)
 		if 'Foot Locker - Please Stand By' in response.text:
@@ -1387,7 +1353,6 @@ async def release(ctx, link):
 		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 		test91 = await ctx.send(embed=embed3)
 		urllink = url + pid
-		proxy = getRandomProxy()
 		response = requests.get(urllink)
 		response2 = requests.get(link)
 		if 'Please enable JS and disable any ad' in response.text:
@@ -1629,6 +1594,100 @@ async def side(ctx, link):
 
 
 @bot.command()
+async def ftlnew(context, link):
+
+	loadedregion = []
+	loadedregionurl = []
+	notloadedregion = []
+	notloadedregionurl = []
+
+	allregionlinksec = link.split("product/")[1]
+	allregionlinksec = "product/" + allregionlinksec
+	allregionlinkfirst = "https://www.footlocker."
+
+	region = ["de/en/","at/en/","be/en/","dk/en/","gr/en/","hu/en/","ie/en/","it/en/","lu/en/","no/en/","cz/en/","pl/en/","pt/en/","es/en/","se/en/"]
+
+	for i in range(len(region)):
+		url = allregionlinkfirst + region[i] + allregionlinksec
+		response = requests.get(url)
+		if "Heading-main font-body-2" in response.text:
+			notloadedregion.append(region[i])
+			notloadedregionurl.append(url)
+		elif "ProductName-alt" in response.text:
+			loadedregion.append(region[i])
+			loadedregionurl.append(url)
+
+	for i in range(len(loadedregion)):
+		loadedregion[i] = loadedregion[i].replace("/en/","")
+		loadedregion[i] = ":flag_" + loadedregion[i] + ":"
+
+	for i in range(len(notloadedregion)):
+		notloadedregion[i] = notloadedregion[i].replace("/en/","")
+		notloadedregion[i] = ":flag_" + notloadedregion[i] + ":"
+
+	loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion,loadedregionurl))
+	notloadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(notloadedregion,notloadedregionurl))
+
+
+	for i in range(2):
+		if i == 0:
+			if not loadedURL:
+				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+				embed.add_field(name="Product Page Live", value="No Region is Live!", inline=False)
+				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				await context.send(embed=embed)
+			else:
+				try:
+					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+					embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL, inline=False)
+					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+					await context.send(embed=embed)
+				except(Exception):						
+					loadedURL1, loadedURL2 = split_list(loadedURL)
+					for j in range(2):
+						if j == 0:
+							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL1, inline=False)
+							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							await context.send(embed=embed)
+						elif j == 1:
+							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL2, inline=False)
+							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							await context.send(embed=embed)
+		if i == 1:
+			if not notloadedregionurl:
+				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+				embed.add_field(name="No Product Page loaded", value="ALL Regions are loaded!", inline=False)
+				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				await context.send(embed=embed)
+			else:
+				try:
+					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+					embed.add_field(name=":x: No Product Page loaded", value=notloadedURL, inline=False)
+					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+					await context.send(embed=embed)
+				except(Exception):			
+					newloadedURL1, newloadedURL2 = split_list(notloadedURL)
+					print(notloadedURL)
+					pprint("   ")
+					pprint(newloadedURL1)
+					print("    ")
+					pprint(newloadedURL2)		
+					for j in range(2):
+						if j == 0:						
+							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL1, inline=False)
+							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							await context.send(embed=embed)
+						elif j == 1:
+							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL2, inline=False)
+							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							await context.send(embed=embed)
+
+
+@bot.command()
 async def ftlcountries(context):
 	embed=discord.Embed(title="All Support FTL Countries", color=setembedcolor)
 	old_region = ['UK','FR','NL','SG','AU','MY','HK','MO']
@@ -1650,6 +1709,7 @@ async def ftlhelp(context):
 	embed.add_field(name="List of all countries supported by FTL", value='?ftlcountries', inline=False)
 	embed.add_field(name="Command Format - FTL", value='?stock <link>', inline=False)
 	embed.add_field(name="Command Format - Sidestep", value='?side <link>', inline=False)
+	embed.add_field(name="Command Format - FTL New Page Checker", value='?ftlnew <link>', inline=False)
 	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
@@ -1666,6 +1726,7 @@ async def on_command_error(ctx, error):
 		await ctx.send(embed=embed)
 		return
 	raise error
+
 
 @bot.command()
 async def clear(ctx, amount=2):
