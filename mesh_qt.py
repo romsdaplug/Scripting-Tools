@@ -23,7 +23,7 @@ async def on_ready():
 	pass
 
 
-setfootertext = "@ScriptingTools | <?meshhelp>"
+setfootertextmesh = "@ScriptingTools | <?meshhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x000000
 
@@ -33,6 +33,10 @@ async def qt(context, store, pid):
 	lines = context.message.content.splitlines()
 	newpid = ",".join(lines).replace("?qt ","").replace(store,"").replace(" ","")
 	pid = str.lower(pid).replace("\n","").replace(" ","")
+	qtpid = lines[0].replace("?qt ","").replace(store,"").replace(" ","")
+	if qtpid == "":
+		qtpid = lines[1]
+
 	newpidlist = []
 
 	headers = {
@@ -239,10 +243,12 @@ async def qt(context, store, pid):
 			underline = ""
 		else:
 			underline = "_"
-		print("Finishing QT for " + newpid + " / " + store + region)
+		#print("Finishing QT for " + newpid + " / " + store + region)
 		try:
 			if pid[6] == ".":
 				pidlist = newpid.split(",")
+				if not pidlist[0]:
+						pidlist.pop(0)
 				for i in range(len(pidlist)):
 					singlepid = pidlist[i]
 					pid2 = singlepid.split(".",1)[1]
@@ -250,6 +256,8 @@ async def qt(context, store, pid):
 					finalpidlist = ",".join(newpidlist)
 			elif pid[8] == ".":
 				pidlist = newpid.split(",")
+				if not pidlist[0]:
+						pidlist.pop(0)
 				for i in range(len(pidlist)):
 					singlepid = pidlist[i]
 					pid2 = singlepid.split(".",1)[1]
@@ -257,17 +265,21 @@ async def qt(context, store, pid):
 					finalpidlist = ",".join(newpidlist)
 			elif pid[17] == ".":
 				pidlist = newpid.split(",")
+				if not pidlist[0]:
+						pidlist.pop(0)
 				for i in range(len(pidlist)):
 					singlepid = pidlist[i]
 					pid2 = singlepid.split(".",1)[1]
-					newpidlist.append(singlepid[:6] + underline + qtstore + qtregion + "." + pid2)
+					newpidlist.append(singlepid.split("_")[0] + underline + qtstore + qtregion + "." + pid2)
 					finalpidlist = ",".join(newpidlist)
 			elif pid[19] == ".":
 				pidlist = newpid.split(",")
+				if not pidlist[0]:
+						pidlist.pop(0)
 				for i in range(len(pidlist)):
 					singlepid = pidlist[i]
 					pid2 = singlepid.split(".",1)[1]
-					newpidlist.append(singlepid[:8] + underline + qtstore + qtregion + "." + pid2)
+					newpidlist.append(singlepid.split("_")[0] + underline + qtstore + qtregion + "." + pid2)
 					finalpidlist = ",".join(newpidlist)
 			else:
 				finalpidlist = newpid
@@ -276,26 +288,55 @@ async def qt(context, store, pid):
 			if pid.isnumeric():
 				if len(pid) == 8:
 					pidlist = newpid.split(",")
+					if not pidlist[0]:
+						pidlist.pop(0)
 					for i in range(len(pidlist)):
 						newpidlist.append(pidlist[i] + underline + qtstore + qtregion)
 						finalpidlist = ",".join(newpidlist)
 				elif len(pid) == 6:
 					pidlist = newpid.split(",")
+					if not pidlist[0]:
+						pidlist.pop(0)
 					for i in range(len(pidlist)):
 						newpidlist.append(pidlist[i] + underline + qtstore + qtregion)
 						finalpidlist = ",".join(newpidlist)
 			else:
-				finalpidlist = newpid
 				pidlist = newpid.split(",")
+				if not pidlist[0]:
+					pidlist.pop(0)
+				if "_" in pidlist[0]:
+					for i in range(len(pidlist)):
+						singlepid = pidlist[i]
+						pid2 = singlepid.split(".",1)[1]
+						newpidlist.append(singlepid.split("_")[0] + underline + qtstore + qtregion + "." + pid2)
+						finalpidlist = ",".join(newpidlist)
+				elif "." in pidlist[0]:
+					for i in range(len(pidlist)):
+						singlepid = pidlist[i]
+						pid2 = singlepid.split(".",1)[1]
+						newpidlist.append(singlepid.split(".")[0] + underline + qtstore + qtregion + "." + pid2)
+						finalpidlist = ",".join(newpidlist)
+
 		print("Finished QT for " + finalpidlist + " / " + store + region)		
 		mbotqt = "https://mbot.app/" + store + region + "/variant/" + finalpidlist
 		mbotqt = mbotqt.replace("/" + underline + qtstore + qtregion,("/")).replace("/,","/")
 		hawkqt = "https://hawkmesh.com/quicktask/" + store + region+ "/" + finalpidlist
 		hawkqt = hawkqt.replace("/" + underline + qtstore + qtregion,("/")).replace("/,","/")
 		skulen = mbotqt.partition(qtstore + qtregion + "/")
-		skulen = skulen[2].split(",")
-		list(skulen)
-		skuamount = len(skulen)
+		if store == "footpatrol":
+			skulen = mbotqt.partition(qtstore + region + "/")
+		skulen = list(skulen)
+		print(skulen[0])
+		if "mbot" in skulen[0]:
+			skulen.pop(0)
+		if qtstore in skulen[0]:
+			skulen.pop(0)
+		skulen = skulen[0].split(",")
+		if qtpid == "":
+			skuamount = len(skulen) - 1
+
+		else:
+			skuamount = len(skulen)
 		embedlink = []
 		embedlink.append("[MBOT QT]("+mbotqt+")")
 		embedlink.append("[HAWK QT]("+hawkqt+")")
@@ -317,7 +358,7 @@ async def qt(context, store, pid):
 			embed.add_field(name="SKU Amount", value="*" + str(skuamount) + " SKUs loaded*")
 			embed.add_field(name=str.upper(store) + " :flag_"+ str.lower(region)+":", value="[" + str(embedlink[0]) + "]" + "  [" + str(embedlink[1]) + "]", inline=False)
 			embed.set_thumbnail(url=shoepic)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		except(Exception,TypeError):
 			for i in range(2):
@@ -327,8 +368,12 @@ async def qt(context, store, pid):
 				embed.add_field(name="SKU Amount", value="*" + str(skuamount) + " SKUs loaded*", inline=True)
 				embed.add_field(name=str.upper(store) + " :flag_"+ str.lower(region)+":", value="[" + str(embedlink[i]) + "]", inline=True)
 				shoepid = finalpidlist.split(",")[0]
+				if "," in shoepid:
+					shoepid = finalpidlist.split(",")[1]
 				if "_" in shoepid:
 					shoepid = shoepid.split("_")[0]
+				if "." in shoepid:
+					shoepid = shoepid.split(".")[0]
 				if len(str(shoepid)) <= 6:
 					if store == "size":
 						picstore = "sz"
@@ -337,16 +382,17 @@ async def qt(context, store, pid):
 					elif store == "jdsports":
 						picstore = "jd"
 					embed.set_thumbnail(url="https://i8.amplience.net/i/jpl/"+ picstore + "_" + shoepid +"_a?qlt=92&w=900&h=637&v=1&fmt=webp")
-				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 				await context.send(embed=embed)
 	else:
 		embed=discord.Embed(title="Command Error", color=setembedcolor)
 		embed.add_field(name="Command Format", value="?qt <store> <PIDs/SKUs>", inline=False)
-		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 		await context.send(embed=embed)
 
 @bot.command()
 async def mesh(context, link):
+	link = str.lower(link)
 	try:
 		if "footpatrolcom" in link and len(link) < 25:
 			url = "https://m.footpatrol.com/product/pigeon-oos/" + link
@@ -424,7 +470,7 @@ async def mesh(context, link):
 			embed=discord.Embed(title="Error Scraping SKUs", color=setembedcolor)
 			embed.add_field(name=":flag_gb: SKU Scraper via PID - JDSports", value="Make sure to add `jd, jdsportsuk or jduk` to the end of the pid", inline=False)
 			embed.add_field(name=":flag_gb: SKU Scraper via PID - Size?", value="Make sure to add `sz, sizeuk or szuk` to the end of the pid", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		else:
 			if link.split('//')[1].split('.')[0] == "www":
@@ -610,7 +656,7 @@ async def mesh(context, link):
 			embed.add_field(name="Command", value="?pid <link>   or   ?pid <pid>", inline=False)
 			embed.add_field(name=":flag_gb: JDSports UK", value="Make sure to add `jdsportsuk or jduk` to the end of the pid", inline=False)
 			embed.add_field(name=":flag_gb: Size? UK", value="Make sure to add `sizeuk or szuk` to the end of the pid", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		elif "Footpatrol - Waiting Page" in response.text:
 			embed=discord.Embed(title="Error scraping SKUs", color=setembedcolor)
@@ -618,7 +664,7 @@ async def mesh(context, link):
 			embed.add_field(name="Command", value="?pid <link>   or   ?pid <pid>", inline=False)
 			embed.add_field(name=":flag_gb: JDSports UK", value="Make sure to add `jdsportsuk or jduk` to the end of the pid", inline=False)
 			embed.add_field(name=":flag_gb: Size? UK", value="Make sure to add `sizeuk or szuk` to the end of the pid", inline=False)
-			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+			embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		else:
 			soup = bs(response.content, 'html.parser')
@@ -673,7 +719,7 @@ async def mesh(context, link):
 				embed.add_field(name="QT", value=embedpids3, inline=True)
 				embed.add_field(name="QT for all SKUs", value=mbotqtallpids + " " + hawkqtallpids, inline=False)
 				embed.set_thumbnail(url=shoepic)
-				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 				await context.send(embed=embed)
 			except(Exception):
 				for i in range(3):
@@ -685,7 +731,7 @@ async def mesh(context, link):
 						embed.add_field(name="Size SKU", value=embedpids, inline=True)
 						embed.add_field(name="Size", value=embedpids2, inline=True)
 						embed.set_thumbnail(url=shoepic)
-						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 						await context.send(embed=embed)
 					else:
 						embed=discord.Embed(title="MESH QT" + embedstore[i] + " " + embedemote[i], color=setembedcolor)
@@ -694,7 +740,7 @@ async def mesh(context, link):
 						embed.add_field(name="SKU Amount", value="*" + str(skuamount) + " SKUs loaded*", inline=True)
 						embed.add_field(name=str.upper(store) + " :flag_"+ str.lower(region)+":", value=str(embedlink[i]), inline=True)
 						embed.set_thumbnail(url=shoepic)
-						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 						await context.send(embed=embed)
 	except(Exception,IndexError):
 		embed=discord.Embed(title="Error scraping SKUs", color=setembedcolor)
@@ -702,7 +748,7 @@ async def mesh(context, link):
 		embed.add_field(name="Command", value="?pid <link>   or   ?pid <pid>", inline=False)
 		embed.add_field(name=":flag_gb: JDSports UK", value="Make sure to add `jdsportsuk or jduk` to the end of the pid", inline=False)
 		embed.add_field(name=":flag_gb: Size? UK", value="Make sure to add `sizeuk or szuk` to the end of the pid", inline=False)
-		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 		await context.send(embed=embed)
 
 @bot.command()
@@ -713,7 +759,7 @@ async def meshhelp(context):
 	embed.add_field(name="QT Setup - Example", value="`?qt szuk 16080252.2510891\n16080252.2510892\n16080252.2510893`\n\n`?qt jdgb 16048706.0194498070598`\n\n`?qt fpgb 418943_footpatrolcom,418943_footpatrolcom`", inline=False)
 	embed.add_field(name="Country Format", value="?meshcountries", inline=True)
 	embed.add_field(name="Info", value="A image of the shoe will be applied for FP and Size QTs", inline=False)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
@@ -739,7 +785,7 @@ async def meshcountries(context):
 	embed.add_field(name="JDSports", value=jdstores, inline=True)
 	embed.add_field(name="Size?", value=szstores, inline=True)
 	embed.add_field(name="Footpatrol", value=fpstores, inline=True)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.event
@@ -751,7 +797,7 @@ async def on_command_error(ctx, error):
 		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 		embed.add_field(name="Command - SKU Scraper", value="?mesh <meshpid>\n?mesh <link>", inline=False)
 		embed.add_field(name="Command - QT", value="?qt <store> <PIDs/SKUs>", inline=False)
-		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		embed.set_footer(text=setfootertextmesh, icon_url=setfooterimage)
 		await ctx.send(embed=embed)
 		return
 	raise error
