@@ -1601,6 +1601,9 @@ async def ftlnew(context, link):
 	notloadedregion = []
 	notloadedregionurl = []
 
+	pid = link.split(".html")[0][-12:]
+	shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+
 	allregionlinksec = link.split("product/")[1]
 	allregionlinksec = "product/" + allregionlinksec
 	allregionlinkfirst = "https://www.footlocker."
@@ -1635,12 +1638,14 @@ async def ftlnew(context, link):
 				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 				embed.add_field(name="Product Page Live", value="No Region is Live!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				embed.set_thumbnail(url=shoepic)
 				await context.send(embed=embed)
 			else:
 				try:
 					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 					embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL, inline=False)
 					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+					embed.set_thumbnail(url=shoepic)
 					await context.send(embed=embed)
 				except(Exception):						
 					loadedURL1, loadedURL2 = split_list(loadedURL)
@@ -1649,41 +1654,42 @@ async def ftlnew(context, link):
 							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL1, inline=False)
 							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							embed.set_thumbnail(url=shoepic)
 							await context.send(embed=embed)
 						elif j == 1:
 							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL2, inline=False)
 							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							embed.set_thumbnail(url=shoepic)
 							await context.send(embed=embed)
 		if i == 1:
 			if not notloadedregionurl:
 				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 				embed.add_field(name="No Product Page loaded", value="ALL Regions are loaded!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				embed.set_thumbnail(url=shoepic)
 				await context.send(embed=embed)
 			else:
 				try:
 					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 					embed.add_field(name=":x: No Product Page loaded", value=notloadedURL, inline=False)
 					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+					embed.set_thumbnail(url=shoepic)
 					await context.send(embed=embed)
 				except(Exception):			
-					newloadedURL1, newloadedURL2 = split_list(notloadedURL)
-					print(notloadedURL)
-					pprint("   ")
-					pprint(newloadedURL1)
-					print("    ")
-					pprint(newloadedURL2)		
+					newloadedURL1, newloadedURL2 = split_list(notloadedURL)		
 					for j in range(2):
 						if j == 0:						
 							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL1, inline=False)
 							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							embed.set_thumbnail(url=shoepic)
 							await context.send(embed=embed)
 						elif j == 1:
 							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
 							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL2, inline=False)
 							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+							embed.set_thumbnail(url=shoepic)
 							await context.send(embed=embed)
 
 
