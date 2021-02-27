@@ -4,7 +4,10 @@ from datetime import datetime
 from colorama import Fore, Back, Style, init
 import requests
 import json
+from pprint import pprint
 from discord.ext.commands import CommandNotFound,MissingRequiredArgument
+import threading
+import time
 
 bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 
@@ -16,22 +19,58 @@ async def on_ready():
 	print('Bot is ready.')
 	pass
 
-setfootertext = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
+setfootertextorder = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x00000
-setthumbnail = setfooterimage
+setthumbnailorder = setfooterimage
+
+orderstatus = []
+tracknrplaced = []
+tracknrproc = []
+tracknrdes = []
+tracknrdel = []
+
+def bulk(order,track):
+	r = requests.get(order)
+	response = r.text
+	if 'Your order has been placed.' in response:
+		orderstatus.append("placed")
+		tracknrplaced.append(track)
+
+	elif 'Order not found' in response:
+		orderstatus.append("not found")
+
+	elif 'Your order is currently being processed.' in response:
+		orderstatus.append("processed")
+		tracknrproc.append(track)
+
+	elif 'Your order has been despatched.' in response:
+		orderstatus.append("despatched")
+		tracknrdes.append(tracknr)
+
+	elif 'Your order has been delivered.' in response:
+		orderstatus.append("delivered")
+		tracknrdel.append(track)
+
+	elif 'It looks like your order has been cancelled.' in response:
+		orderstatus.append("cancelled")
+
+	elif 'It looks like there was an issue taking payment for this order' in response:
+		orderstatus.append("issue")
 
 
 @bot.command()
 async def order(ctx, store, postcode, orderno: int):
 	lines = ctx.message.content.splitlines()
 	lines.pop(0)
+	if "ORDER" in lines[0]:
+		lines.pop(0)
 	linescount = len(lines)
 	if linescount == 0:
 		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
 		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?order jdde 79798\n714151764``")
-		test1.set_footer(text=setfootertext, icon_url=setfooterimage)
-		test1.set_thumbnail(url=setthumbnail)
+		test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+		test1.set_thumbnail(url=setthumbnailorder)
 		await ctx.send(embed = test1)
 	user_name_id = ctx.author.name + ' ID : ' + str(ctx.author.id)
 	log3 = Fore.CYAN + f'[{user_name_id}] '
@@ -40,7 +79,7 @@ async def order(ctx, store, postcode, orderno: int):
 	now = datetime.now()
 
 	if store == "fpgb" or store == "footpatrolgb" or store == "footpatroluk" or store == "fpuk" or store == "fpcom" or store == "footpatrolcom":
-		store = "footpatrolcom"
+		store = "footpatrol"
 		region = "gb"
 	elif store == "fpfr" or store == "footpatrolfr":
 		store = "footpatrol"
@@ -115,6 +154,7 @@ async def order(ctx, store, postcode, orderno: int):
 		store = "jdsports"
 		region = "myf"
 
+	
 	for i in lines:
 		try:
 			base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
@@ -125,8 +165,8 @@ async def order(ctx, store, postcode, orderno: int):
 			if 'Order not found' in response:
 				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
 				test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
-				test1.set_footer(text=setfootertext, icon_url=setfooterimage)
-				test1.set_thumbnail(url=setthumbnail)
+				test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnailorder)
 				await ctx.send(embed = test1)
 			test = json.loads(response)
 			a2 = test['status']['short']
@@ -186,7 +226,7 @@ async def order(ctx, store, postcode, orderno: int):
 				test1.add_field(name='Tracking', value=tracking2, inline=True)
 			else:
 				print('')
-			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
+			test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
 			test1.set_thumbnail(url=img)
 			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
 			print('')
@@ -194,20 +234,22 @@ async def order(ctx, store, postcode, orderno: int):
 		except KeyError:
 			test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
 			test1.add_field(name="Order not found!", value="Please check your ordernumber and zip code or use ?orderhelp for more infos")
-			test1.set_footer(text=setfootertext, icon_url=setfooterimage)
-			test1.set_thumbnail(url=setthumbnail)
+			test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+			test1.set_thumbnail(url=setthumbnailorder)
 			await ctx.send(embed = test1)
 
 @bot.command()
-async def orderbulk(ctx, store, postcode, orderno: int):
+async def track(ctx, store, postcode, orderno: int):
 	lines = ctx.message.content.splitlines()
 	lines.pop(0)
+	if "ORDER" in lines[0]:
+		lines.pop(0)
 	linescount = len(lines)
 	if linescount == 0:
 		test1 = discord.Embed(title="Mesh Order Tracker - Error",  colour=setembedcolor)
 		test1.add_field(name="Error", value="Make sure Ordernumbers are posted in next line!\nExample:\n```?orderbulk jdde 79798\n714151769\n714151768``")
-		test1.set_footer(text=setfootertext, icon_url=setfooterimage)
-		test1.set_thumbnail(url=setthumbnail)
+		test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+		test1.set_thumbnail(url=setthumbnailorder)
 		await ctx.send(embed = test1)
 	orderproc = 0
 	orderdel = 0
@@ -224,7 +266,7 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 	now = datetime.now()
 
 	if store == "fpgb" or store == "footpatrolgb" or store == "footpatroluk" or store == "fpuk" or store == "fpcom" or store == "footpatrolcom":
-		store = "footpatrolcom"
+		store = "footpatrol"
 		region = "gb"
 	elif store == "fpfr" or store == "footpatrolfr":
 		store = "footpatrol"
@@ -300,86 +342,108 @@ async def orderbulk(ctx, store, postcode, orderno: int):
 		region = "myf"
 
 	test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Tracking " + str(len(lines)) + " orders!",  colour=setembedcolor)
-	test1.set_footer(text=setfootertext, icon_url=setfooterimage)
+	test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
 	await ctx.send(embed = test1)
 
 	for i in lines:
-		try:
-			base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
-			track_url = ''
-			track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
-			r = requests.get(track_url)
-			response = r.text
-			if 'Order not found' in response:
-				ordernotfound = ordernotfound + 1
-			test = json.loads(response)
-			a2 = test['status']['short']
-			a4 = test['vendors']
-			date = a2[0]['date']
-			date = datetime.fromisoformat(date[:-1])
-			date.strftime('%Y-%m-%d %H:%M:%S')
-			a5 = a4[0]['items']
-			sku = a5[0]['sku']
-			name = a5[0]['name']
-			img = a5[0]['img']
-			size = a5[0]['size']
-			price_before = a5[0]['price']
-			price_number = price_before['amount']
-			price_currency = price_before['currency']
-			price_final = price_number + ' ' + price_currency
-			color = ''
-			status = ''
-			tracking1 = ''
-			tracking2 = ''
-			if 'Your order is currently being processed.' in response:
-				status = 'Your order is currently being processed.'
+		base_url = 'https://data.smartagent.io/v1/jdsports/track-my-order'
+		track_url = ''
+		track_url = base_url+'?orderNumber='+str(i)+'&fascia='+store+region+'&postcode='+str(postcode)
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[Tracking Ordernumber - {i}]")
+		x = threading.Thread(target=bulk, args=(track_url,f"{i}"))
+		time.sleep(0.05)
+		x.start()
+	x.join()
+	while threading.active_count() > 3:
+		time.sleep(0.1)
+
+	for i in range(len(orderstatus)):
+		if orderstatus[i] == "placed":
+			color = '16776960'
+			orderplaced = orderplaced + 1
+
+		elif orderstatus[i] == "processed":
 				color = '16776960'
 				orderproc = orderproc + 1
-			elif 'Your order has been placed.' in response:
-				status = 'Your order has been placed.'
-				color = '16776960'
-				orderplaced = orderplaced + 1
-			elif 'Your order has been despatched.' in response:
-				if '"trackingURL":null' in response:
-					tracking2 = 'N/A'
-				a12 = test['delivery']
-				tracking1 = a12['courier']
-				tracking2 = a12['trackingURL']
-				status = 'Your order has been despatched.'
-				color = '65280'
-				orderdis = orderdis + 1
-			elif 'Your order has been delivered.' in response:
-				a12 = test['delivery']
-				tracking1 = a12['courier']
-				tracking2 = a12['trackingURL']
-				status = 'Your order has been delivered.'
-				color = '65280'
-				orderdel = orderdel + 1
-			elif 'It looks like your order has been cancelled.' in response:
-				status = 'It looks like your order has been cancelled.'
-				color = '16711680'
-				ordercan = ordercan + 1
-			elif 'It looks like there was an issue taking payment for this order' in response:
-				status = 'It looks like there was an issue taking payment for this order.'
-				color = '16711680'
-				orderpay = orderpay + 1
-		except (KeyError,UnboundLocalError):
-				ordernotfound = ordernotfound + 1
-		trackedorders = orderproc + orderplaced + orderdis + orderdel + orderpay + ordercan
-		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[Tracking Ordernumber - {i}]")
 
-	test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Successfully tracked " + str(trackedorders) + " orders!",  colour=setembedcolor)
-	test1.add_field(name=':x:  Order Not Found', value=ordernotfound, inline=False)
-	test1.add_field(name=':sleeping: Order Placed', value=orderplaced, inline=False)
-	test1.add_field(name=':cold_face: Order Processed', value=orderproc, inline=False)
-	test1.add_field(name=':face_with_symbols_over_mouth: Order Canceled', value=ordercan, inline=False)
-	test1.add_field(name=':rage: Payment Error', value=orderpay, inline=False)
-	test1.add_field(name=':articulated_lorry: Order Dispatched', value=orderdis, inline=False)
-	test1.set_footer(text=setfootertext, icon_url=setfooterimage)
-	test1.set_thumbnail(url=setthumbnail)
-	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
-	print('')
-	await ctx.send(embed = test1)
+		elif orderstatus[i] == "despatched":
+			color = '65280'
+			orderdis = orderdis + 1
+
+		elif orderstatus[i] == "delivered":
+			color = '65280'
+			orderdel = orderdel + 1
+
+		elif orderstatus[i] == "cancelled":
+			color = '16711680'
+			ordercan = ordercan + 1
+
+		elif orderstatus[i] == "issue":
+			color = '16711680'
+			orderpay = orderpay + 1
+
+		elif orderstatus[i] == "not found":
+			ordernotfound = ordernotfound + 1
+
+	
+	trackedorders = str(len(orderstatus))
+
+	for i in range(5):
+		if i == 0:
+			test1 = discord.Embed(title="Mesh Order Tracker - Summary", description="Successfully tracked " + str(trackedorders) + " orders!",  colour=setembedcolor)
+			test1.add_field(name=':x:  Order Not Found', value=ordernotfound, inline=False)
+			test1.add_field(name=':sleeping: Order Placed', value=orderplaced, inline=False)
+			test1.add_field(name=':cold_face: Order Processed', value=orderproc, inline=False)
+			test1.add_field(name=':face_with_symbols_over_mouth: Order Canceled', value=ordercan, inline=False)
+			test1.add_field(name=':rage: Payment Error', value=orderpay, inline=False)
+			test1.add_field(name=':articulated_lorry: Order Dispatched', value=orderdis, inline=False)
+			test1.add_field(name=':house: Order delivered', value=orderdel, inline=False)
+			test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+			test1.set_thumbnail(url=setthumbnailorder)
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]" + log + Fore.GREEN + "[Webhook sent!]")
+			print('')
+			await ctx.send(embed = test1)
+		if i == 1:
+			if len(tracknrplaced) > 0:
+				embedplaced = "\n".join(tracknrplaced)
+				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
+				test1.add_field(name=':sleeping: Order Placed', value=embedplaced, inline=False)
+				test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnailorder)
+				await ctx.send(embed = test1)
+
+		if i == 2:
+			if len(tracknrproc) > 0:
+				embedpro = "\n".join(tracknrproc)
+				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
+				test1.add_field(name=':cold_face: Order Processed', value=embedpro, inline=False)
+				test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnailorder)
+				await ctx.send(embed = test1)
+
+		if i == 3:
+			if len(tracknrdes) > 0:
+				embeddes = "\n".join(tracknrdes)
+				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
+				test1.add_field(name=':articulated_lorry: Order Dispatched', value=embeddes, inline=False)
+				test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnailorder)
+				await ctx.send(embed = test1)
+
+		if i == 4:
+			if len(tracknrdel) > 0:
+				embeddel = "\n".join(tracknrdel)
+				test1 = discord.Embed(title="Mesh Order Tracker - Summary",  colour=setembedcolor)
+				test1.add_field(name=':house: Order delivered', value=embeddel, inline=False)
+				test1.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+				test1.set_thumbnail(url=setthumbnailorder)
+				await ctx.send(embed = test1)
+
+	orderstatus.clear()
+	tracknrdes.clear()
+	tracknrdel.clear()
+	tracknrproc.clear()
+	tracknrplaced.clear()
 
 @bot.command()
 async def orderhelp(context):
@@ -389,8 +453,8 @@ async def orderhelp(context):
 	embed.add_field(name="How do i get all order status :question:", value="```?orderbulk <store> <postcode>\n<ordernr1>\n<ordernr2>\n<ordernr3>\n```\n**Example:**```?orderbulk jdsportsde 79798\n302723669\n302723123\n302723456```", inline=False)
 	embed.add_field(name="How do i get a store list with its command format :question:", value="Use command `?orderstore to get a full list of all stores supported", inline=False)
 	embed.add_field(name="Information",value="You can either use the full name of the store or the given shortcut!\nexample: jdsportsnl -> jdnl", inline=False)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	embed.set_thumbnail(url=setthumbnail)
+	embed.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+	embed.set_thumbnail(url=setthumbnailorder)
 	await context.send(embed=embed)
 
 @bot.command()
@@ -416,8 +480,8 @@ async def orderstore(context):
 	embed.add_field(name="JDSports", value=jdstores, inline=True)
 	embed.add_field(name="Size?", value=szstores, inline=True)
 	embed.add_field(name="Footpatrol", value=fpstores, inline=True)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-	embed.set_thumbnail(url=setthumbnail)
+	embed.set_footer(text=setfootertextorder, icon_url=setfooterimage)
+	embed.set_thumbnail(url=setthumbnailorder)
 	await context.send(embed=embed)
 
 @bot.event
@@ -429,7 +493,7 @@ async def on_command_error(ctx, error):
 		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
 		embed.add_field(name="Commad - Mesh Tracker", value="```?order jdde 79798\n714151769\n714151768```", inline=False)
 		embed.add_field(name="Commad - Mesh Bulk Tracker", value="```?orderbulk jdde 79798\n714151769\n714151768```", inline=False)
-		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		embed.set_footer(text=setfootertextorder, icon_url=setfooterimage)
 		await ctx.send(embed=embed)
 		return
 	raise error
