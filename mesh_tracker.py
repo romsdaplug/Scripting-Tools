@@ -239,7 +239,7 @@ async def order(ctx, store, postcode, orderno: int):
 			await ctx.send(embed = test1)
 
 @bot.command()
-async def track(ctx, store, postcode, orderno: int):
+async def orderbulk(ctx, store, postcode, orderno: int):
 	lines = ctx.message.content.splitlines()
 	lines.pop(0)
 	if "ORDER" in lines[0]:
