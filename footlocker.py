@@ -597,7 +597,8 @@ async def stock(ctx, link):
 	except (requests.HTTPError,urllib.error.HTTPError,IndexError) as exception:
 		embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 		embed.set_thumbnail(url=setfooterimage)
-		embed.add_field(name="Info", value="Page Not Found", inline=False)
+		embed.add_field(name="Info", value="Page Not Found or No SKU in link", inline=False)
+		embed.add_field(name="How to add SKU", value='add "?v=" with the SKU from the site at the end of the link!\nExample: ?v=314101081504', inline=False)
 		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		if "private" in ctx.channel.type:
 			member = ctx.author
@@ -608,7 +609,6 @@ async def stock(ctx, link):
 				exception = "true"
 		else:
 			await ctx.send(embed=embed)
-			await test91.delete()
 
 
 @bot.command()
@@ -1192,7 +1192,8 @@ async def release(ctx, link):
 	except (requests.HTTPError,urllib.error.HTTPError,IndexError) as exception:
 		embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 		embed.set_thumbnail(url=setfooterimage)
-		embed.add_field(name="Info", value="Page Not Found", inline=False)
+		embed.add_field(name="Info", value="Page Not Found or No SKU in link", inline=False)
+		embed.add_field(name="How to add SKU", value='add "?v=" with the SKU from the site at the end of the link!\nExample: ?v=314101081504', inline=False)
 		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		if "private" in ctx.channel.type:
 			member = ctx.author
@@ -1203,7 +1204,6 @@ async def release(ctx, link):
 				exception = "true"
 		else:
 			await ctx.send(embed=embed)
-			await test91.delete()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
