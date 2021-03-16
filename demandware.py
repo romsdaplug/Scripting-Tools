@@ -5,7 +5,7 @@ from itertools import cycle
 import json
 import os
 from pprint import pprint
-from discord_webhook import DiscordEmbed, DiscordWebhook
+from discord.ext.commands import CommandNotFound,MissingRequiredArgument,CommandInvokeError
 from bs4 import BeautifulSoup as bs
 import requests
 import platform
@@ -34,13 +34,16 @@ def split_list(a_list):
     return a_list[:half], a_list[half:]
 
 def check_if_it_is_me(ctx):
-	return ctx.message.author.id == 175953718750085121 or ctx.message.author.id == 351639955531104258 or ctx.message.author.id == 243519195529084939 or ctx.message.author.id == 272815177659842561 or ctx.message.author.id == 418649205494775820
+	return ctx.message.author.id == 351639955531104258 or ctx.message.author.id == 272815177659842561 or ctx.message.author.id == 175953718750085121
 
 proxies = []
+
+demandwarehook = ["https://discord.com/api/webhooks/820813171019087882/srk7qNaoAB2UGfVNxRNncSePIlU6xGsM_07g2VNxgfFx-0mTO319JKgsoRigmStpsM9T"]
 
 setembedcolor = 0x000000
 setfooterimage = "https://media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setfootertext = "@ScriptingTools | Demandware"
+setfootertextstaff = "@ScriptingTools | Demandware | ?staffhelp" 
 
 try:
 	proxies = open("proxies.txt").read().splitlines()
@@ -154,7 +157,7 @@ async def snipespid(context, pid):
         embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
         embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
         embed.set_thumbnail(url=image)
-        embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+        embed.set_footer(text=setfootertext, icon_url=setfooterimage)
         await context.send(embed=embed)
         print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
         json_file.close()
@@ -215,7 +218,7 @@ async def snipespid(context, pid):
         else:
             embed=discord.Embed(title="Snipes - PID Scraper", color=setembedcolor)
             embed.add_field(name="Error", value="Make sure your PID / Link is correct.", inline=True)
-            embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+            embed.set_footer(text=setfootertext, icon_url=setfooterimage)
             await context.send(embed=embed)
         session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
         proxy = getRandomProxy()
@@ -306,7 +309,7 @@ async def snipespid(context, pid):
             embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
             embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
             embed.set_thumbnail(url=image)
-            embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+            embed.set_footer(text=setfootertext, icon_url=setfooterimage)
             await context.send(embed=embed)
             await session.close()
             print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
@@ -314,13 +317,13 @@ async def snipespid(context, pid):
             print("An Error occured", e, producturl)
             embed=discord.Embed(title="Snipes - PID Scraper", color=setembedcolor)
             embed.add_field(name="Error", value="An error occured, try later", inline=True)
-            embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+            embed.set_footer(text=setfootertext, icon_url=setfooterimage)
             await context.send(embed=embed)
             await session.close()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def snipesstock(context, pid):
+async def staffsnipesstock(context, pid):
 	
 	now = datetime.now()
 	try:
@@ -492,7 +495,7 @@ async def snipesstock(context, pid):
 		else:
 			embed=discord.Embed(title="Snipes - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="Make sure your PID / Link is correct.", inline=True)
-			embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
 		proxy = getRandomProxy()
@@ -583,7 +586,7 @@ async def snipesstock(context, pid):
 			print("An Error occured", e, producturl)
 			embed=discord.Embed(title="Snipes - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="An error occured, try later", inline=True)
-			embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 			await session.close()
 
@@ -695,18 +698,154 @@ async def snipesstock(context, pid):
 					releasedate = custom["releaseDateUTC"]
 				else:
 					releasedate = "Live"
-	embed=discord.Embed(title="Snipes - "+productname, description='> Snipes sizes early links, use them on drop / restock.\n\n> '+str(sku), color=0)
-	embed.add_field(name=":link: Sizes & Links", value=discsize, inline=True)
+	
+	for j in range(len(allsize3)):
+		name = str(allsize3[j])
+		y.append({
+			name:[{
+				"SKU": sku,
+				"Size": sizelinks_final[j],
+				"name": productname,
+				"stock": allsize2[j],
+				"image": image,
+				"totalstock": totalstock,
+				"releasedate": releasedate
+			  }]
+		})
+
+	def write_json(data, filename='snipesstock.json'): 
+		with open(filename,'w') as f: 
+			json.dump(data, f, indent=2)
+
+	with open('snipesstock.json') as json_file: 
+		data = json.load(json_file)
+		temp = data["SnipesStock"]
+		temp.append(y) 
+
+	write_json(data) 
+	json_file.close()
+
+	embed=discord.Embed(title="Snipes - "+productname, description='> Snipes sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+	embed.add_field(name=":link: Sizes", value=discsize, inline=True)
 	embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=discpids, inline=True)
 	embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
 	embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
-
+	embed.add_field(name="Information", value="Make sure to delete stock check before checking again! ?snipesstockdelete", inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertextstaff, icon_url=setfooterimage)
 	await context.send(embed=embed)
 	await session.close()
 	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + "[Webhook sent!]")
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def snipesstock(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["SnipesStock"] = []
+	pidlist = []
+	y = data["SnipesStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pid3 = pid.split('000')[1].split('.html')[0]
+		url1 = pid.split('000')[0]
+		pid2 = pid3.replace(pid3, '000'+pid3)
+		pid = pid2
+	elif bb == True:
+		pid5 = len(str(pid))
+		if pid5 == 14:
+			pid = pid
+		elif pid5 == 22:
+			pid2 = pid.split("000000")
+			pid3 = pid2[0]
+			pid = pid3
+		else:
+			print('Wrong PID')
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["SnipesStock"] = []
+
+	with open('snipesstock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["SnipesStock"])):            
+			for R in range(len(data["SnipesStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["SnipesStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[STOCK CHECK][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('snipesstock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["SnipesStock"])):            
+				for R in range(len(data["SnipesStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["SnipesStock"][i][R]:
+								key, value = list(data["SnipesStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		embed=discord.Embed(title="Snipes - "+productname, description='> Snipes sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+
+	else:
+		embed=discord.Embed(title="Snipes - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
@@ -768,7 +907,7 @@ async def snipesadd(context, info):
 	embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
@@ -815,12 +954,59 @@ async def snipesdelete(context, info):
 
 	embed=discord.Embed(title="Succesfully deleted from Snipes", color=setembedcolor)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-	embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def checksnipes(context, info):
+async def snipesstockdelete(context, info):
+
+	now = datetime.now()
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+	log = log2 + ' ' + log3
+
+	data = {}
+	data["SnipesStock"] = []
+	y = data["SnipesStock"]
+	lines = context.message.content.splitlines()
+	lines.pop(0)
+
+
+
+	with open('snipesstock.json', 'r') as data_file:
+		data = json.load(data_file)
+
+		for i in range(len(data["SnipesStock"])):            
+			for R in range(len(data["SnipesStock"][i])):
+				try:
+					for w in range(len(lines)):
+						if lines[w] in data["SnipesStock"][i][R]:
+							data["SnipesStock"][i][R].pop(lines[w])
+							print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Succesfully deleted PID - {lines[w]}]")
+							break;
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	with open('snipesstock.json', 'w') as data_file:
+		data = json.dump(data, data_file, indent=2)
+
+	variantIdlist = "\n".join(lines)
+
+	embed=discord.Embed(title="Succesfully deleted from Snipes", color=setembedcolor)
+	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def snipescheck(context, info):
 
 	now = datetime.now()
 	try:
@@ -859,13 +1045,13 @@ async def checksnipes(context, info):
 
 	if not foundpids:
 		embed=discord.Embed(title="Snipes - No Product found", color=setembedcolor)
-		embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 	else:
 		variantIdlist = "\n".join(foundpids)
 		embed=discord.Embed(title="Found Pids in Snipes.json", color=setembedcolor)
 		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-		embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 
 ################################################################################################################################################
@@ -1112,7 +1298,7 @@ async def soleboxpid(context, pid):
 			embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
 			embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
 			embed.set_thumbnail(url=image)
-			embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
 			await session.close()
@@ -1120,13 +1306,13 @@ async def soleboxpid(context, pid):
 			print("An Error occured", e, producturl)
 			embed=discord.Embed(title="Solebox - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="An error occured, try later", inline=True)
-			embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 			await session.close()
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def soleboxstock(context, pid):
+async def staffsoleboxstock(context, pid):
 	now = datetime.now()
 
 	try:
@@ -1248,7 +1434,7 @@ async def soleboxstock(context, pid):
 		else:
 			embed=discord.Embed(title="Solebox - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="Make sure your PID / Link is correct.", inline=True)
-			embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
 		proxy = getRandomProxy()
@@ -1340,7 +1526,7 @@ async def soleboxstock(context, pid):
 			print("An Error occured", e, producturl)
 			embed=discord.Embed(title="Solebox - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="An error occured, try later", inline=True)
-			embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 			await session.close()
 
@@ -1465,18 +1651,148 @@ async def soleboxstock(context, pid):
 				else:
 					releasedate = "Live"
 
-	embed=discord.Embed(title="Solebox - "+productname, description='> Solebox sizes early links, use them on drop / restock.\n\n> '+str(sku), color=0)
-	embed.add_field(name=":link: Sizes & Links", value=discsize, inline=True)
+	for j in range(len(allsize3)):
+		name = str(allsize3[j])
+		y.append({
+			name:[{
+				"SKU": sku,
+				"Size": sizelinks_final[j],
+				"name": productname,
+				"stock": allsize2[j],
+				"image": image,
+				"totalstock": totalstock,
+				"releasedate": releasedate
+			  }]
+		})
+
+	def write_json(data, filename='soleboxstock.json'): 
+		with open(filename,'w') as f: 
+			json.dump(data, f, indent=2)
+
+	with open('soleboxstock.json') as json_file: 
+		data = json.load(json_file)
+		temp = data["SoleboxStock"]
+		temp.append(y) 
+
+	write_json(data) 
+	json_file.close()
+
+	embed=discord.Embed(title="Solebox - "+productname, description='> Solebox sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+	embed.add_field(name=":link: Sizes", value=discsize, inline=True)
 	embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=discpids, inline=True)
 	embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
 	embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
-
+	embed.add_field(name="Information", value="Make sure to delete stock check before checking again! ?soleboxstockdelete", inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	embed.set_footer(text=setfootertextstaff, icon_url=setfooterimage)
 	await context.send(embed=embed)
 	await session.close()
 	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + "[Webhook sent!]")
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def soleboxstock(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["SoleboxStock"] = []
+	pidlist = []
+	y = data["SoleboxStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pidlink = pid.replace(".html","")
+		pid2 = pidlink[-8:]
+		url1 = pid.split('01')[0]
+		pid = pid2
+	elif bb == True:
+		if len(pid) > 10:
+			pid = pid[:8]
+		else:
+			pid = pid
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["SoleboxStock"] = []
+
+	with open('soleboxstock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["SoleboxStock"])):            
+			for R in range(len(data["SoleboxStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["SoleboxStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[STOCK CHECK][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('soleboxstock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["SoleboxStock"])):            
+				for R in range(len(data["SoleboxStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["SoleboxStock"][i][R]:
+								key, value = list(data["SoleboxStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		embed=discord.Embed(title="Solebox - "+productname, description='> Solebox sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+
+	else:
+		embed=discord.Embed(title="Solebox - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
@@ -1539,7 +1855,7 @@ async def soleboxadd(context, info):
 	embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
@@ -1586,12 +1902,59 @@ async def soleboxdelete(context, info):
 
 	embed=discord.Embed(title="Succesfully deleted from Solebox", color=setembedcolor)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-	embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def checksolebox(context, info):
+async def soleboxstockdelete(context, info):
+
+	now = datetime.now()
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+	log = log2 + ' ' + log3
+
+	data = {}
+	data["SoleboxStock"] = []
+	y = data["SoleboxStock"]
+	lines = context.message.content.splitlines()
+	lines.pop(0)
+
+
+
+	with open('soleboxstock.json', 'r') as data_file:
+		data = json.load(data_file)
+
+		for i in range(len(data["SoleboxStock"])):            
+			for R in range(len(data["SoleboxStock"][i])):
+				try:
+					for w in range(len(lines)):
+						if lines[w] in data["SoleboxStock"][i][R]:
+							data["SoleboxStock"][i][R].pop(lines[w])
+							print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Succesfully deleted PID - {lines[w]}]")
+							break;
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	with open('soleboxstock.json', 'w') as data_file:
+		data = json.dump(data, data_file, indent=2)
+
+	variantIdlist = "\n".join(lines)
+
+	embed=discord.Embed(title="Succesfully deleted from Solebox", color=setembedcolor)
+	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def soleboxcheck(context, info):
 
 	now = datetime.now()
 	try:
@@ -1630,13 +1993,13 @@ async def checksolebox(context, info):
 
 	if not foundpids:
 		embed=discord.Embed(title="Solebox - No Product found", color=setembedcolor)
-		embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 	else:
 		variantIdlist = "\n".join(foundpids)
 		embed=discord.Embed(title="Found Pids in Solebox.json", color=setembedcolor)
 		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-		embed.set_footer(text=setfootertext + ' Solebox Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 
 ################################################################################################################################################
@@ -1804,7 +2167,7 @@ async def onygopid(context, pid):
         else:
             embed=discord.Embed(title="Onygo - PID Scraper", color=setembedcolor)
             embed.add_field(name="Error", value="Make sure your PID / Link is correct.", inline=True)
-            embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+            embed.set_footer(text=setfootertext, icon_url=setfooterimage)
             await context.send(embed=embed)
         session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
         proxy = getRandomProxy()
@@ -1910,7 +2273,7 @@ async def onygopid(context, pid):
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def onygostock(context, pid):
+async def staffonygostock(context, pid):
 
 	now = datetime.now()
 
@@ -2042,7 +2405,7 @@ async def onygostock(context, pid):
 		else:
 			embed=discord.Embed(title="Onygo - PID Scraper", color=setembedcolor)
 			embed.add_field(name="Error", value="Make sure your PID / Link is correct.", inline=True)
-			embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await context.send(embed=embed)
 		session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
 		proxy = getRandomProxy()
@@ -2253,19 +2616,154 @@ async def onygostock(context, pid):
 					releasedate = custom["releaseDateUTC"]
 				else:
 					releasedate = "Live"
+	
+	for j in range(len(allsize3)):
+		name = str(allsize3[j])
+		y.append({
+			name:[{
+				"SKU": sku,
+				"Size": sizelinks_final[j],
+				"name": productname,
+				"stock": allsize2[j],
+				"image": image,
+				"totalstock": totalstock,
+				"releasedate": releasedate
+			  }]
+		})
 
-	embed=discord.Embed(title="Onygo - "+productname, description='> Onygo sizes early links, use them on drop / restock.\n\n> '+str(sku), color=0)
-	embed.add_field(name=":link: Sizes & Links", value=discsize, inline=True)
+	def write_json(data, filename='onygostock.json'): 
+		with open(filename,'w') as f: 
+			json.dump(data, f, indent=2)
+
+	with open('onygostock.json') as json_file: 
+		data = json.load(json_file)
+		temp = data["OnygoStock"]
+		temp.append(y) 
+
+	write_json(data) 
+	json_file.close()
+
+	embed=discord.Embed(title="Onygo - "+productname, description='> Onygo sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+	embed.add_field(name=":link: Sizes", value=discsize, inline=True)
 	embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=discpids, inline=True)
 	embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
 	embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
-
+	embed.add_field(name="Information", value="Make sure to delete stock check before checking again! ?onygostockdelete", inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text="@ScriptingTools | Onygo Stock Checker", icon_url="https://images-ext-2.discordapp.net/external/CaKgsPyNTamwDBmdhLjtuI36MuDiqIm7woXUcYVopw8/https/images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png")
+	embed.set_footer(text=setfootertextstaff, icon_url=setfooterimage)
 	await context.send(embed=embed)
 	await session.close()
 	print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + "[Webhook sent!]")
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def onygostock(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["OnygoStock"] = []
+	pidlist = []
+	y = data["OnygoStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pid3 = pid.split('000')[1].split('.html')[0]
+		url1 = pid.split('000')[0]
+		pid2 = pid3.replace(pid3, '000'+pid3)
+		pid = pid2
+	elif bb == True:
+		pid5 = len(str(pid))
+		if pid5 == 14:
+			pid = pid
+		elif pid5 == 22:
+			pid2 = pid.split("000000")
+			pid3 = pid2[0]
+			pid = pid3
+		else:
+			print('Wrong PID')
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["OnygoStock"] = []
+
+	with open('onygostock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["OnygoStock"])):            
+			for R in range(len(data["OnygoStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["OnygoStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[ONYGO][STOCK CHECK][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('onygostock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["OnygoStock"])):            
+				for R in range(len(data["OnygoStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["OnygoStock"][i][R]:
+								key, value = list(data["OnygoStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		embed=discord.Embed(title="Onygo - "+productname, description='> Onygo sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+
+	else:
+		embed=discord.Embed(title="Onygo - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
@@ -2329,7 +2827,7 @@ async def onygoadd(context, info):
 	embed.add_field(name=":straight_ruler: Size", value=sizelist, inline=True)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
 	embed.set_thumbnail(url=image)
-	embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
@@ -2376,12 +2874,59 @@ async def onygodelete(context, info):
 
 	embed=discord.Embed(title="Succesfully deleted from Onygo", color=setembedcolor)
 	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-	embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
-async def checkonygo(context, info):
+async def onygostockdelete(context, info):
+
+	now = datetime.now()
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+	log = log2 + ' ' + log3
+
+	data = {}
+	data["OnygoStock"] = []
+	y = data["OnygoStock"]
+	lines = context.message.content.splitlines()
+	lines.pop(0)
+
+
+
+	with open('onygostock.json', 'r') as data_file:
+		data = json.load(data_file)
+
+		for i in range(len(data["OnygoStock"])):            
+			for R in range(len(data["OnygoStock"][i])):
+				try:
+					for w in range(len(lines)):
+						if lines[w] in data["OnygoStock"][i][R]:
+							data["OnygoStock"][i][R].pop(lines[w])
+							print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Succesfully deleted PID - {lines[w]}]")
+							break;
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	with open('onygostock.json', 'w') as data_file:
+		data = json.dump(data, data_file, indent=2)
+
+	variantIdlist = "\n".join(lines)
+
+	embed=discord.Embed(title="Succesfully deleted from Onygo", color=setembedcolor)
+	embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def onygocheck(context, info):
 
 	now = datetime.now()
 	try:
@@ -2420,28 +2965,436 @@ async def checkonygo(context, info):
 
 	if not foundpids:
 		embed=discord.Embed(title="Onygo - No Product found", color=setembedcolor)
-		embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 	else:
 		variantIdlist = "\n".join(foundpids)
 		embed=discord.Embed(title="Found Pids in Onygo.json", color=setembedcolor)
 		embed.add_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
-		embed.set_footer(text=setfootertext + ' Onygo Scraper', icon_url=setfooterimage)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+#									   #####  #####  #      #####  #####  #####  #####
+#									   #   #  #      #      #      #   #  #      #
+#									   ####   ###    #      ###    #####  #####  ###
+#									   #  #   #      #      #      #   #      #  #
+#									   #   #  #####  #####  #####  #   #  #####  #####
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def releasesnipes(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["SnipesStock"] = []
+	pidlist = []
+	y = data["SnipesStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pid3 = pid.split('000')[1].split('.html')[0]
+		url1 = pid.split('000')[0]
+		pid2 = pid3.replace(pid3, '000'+pid3)
+		pid = pid2
+	elif bb == True:
+		pid5 = len(str(pid))
+		if pid5 == 14:
+			pid = pid
+		elif pid5 == 22:
+			pid2 = pid.split("000000")
+			pid3 = pid2[0]
+			pid = pid3
+		else:
+			print('Wrong PID')
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["SnipesStock"] = []
+
+	with open('snipesstock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["SnipesStock"])):            
+			for R in range(len(data["SnipesStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["SnipesStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[SNIPES][STOCK CHECK - RELEASE][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('snipesstock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["SnipesStock"])):            
+				for R in range(len(data["SnipesStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["SnipesStock"][i][R]:
+								key, value = list(data["SnipesStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		webhook = DiscordWebhook(url=demandwarehook)
+		embed = DiscordEmbed(title="Snipes - "+productname, description='> Snipes sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_embed_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_embed_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_embed_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_embed_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_embed_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		webhook.add_embed(embed)
+		webhook.execute()
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+
+	else:
+		embed=discord.Embed(title="Snipes - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def releasesolebox(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["SoleboxStock"] = []
+	pidlist = []
+	y = data["SoleboxStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pidlink = pid.replace(".html","")
+		pid2 = pidlink[-8:]
+		url1 = pid.split('01')[0]
+		pid = pid2
+	elif bb == True:
+		if len(pid) > 10:
+			pid = pid[:8]
+		else:
+			pid = pid
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["SoleboxStock"] = []
+
+	with open('soleboxstock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["SoleboxStock"])):            
+			for R in range(len(data["SoleboxStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["SoleboxStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[ONYGO][STOCK CHECK - RELEASE][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('soleboxstock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["SoleboxStock"])):            
+				for R in range(len(data["SoleboxStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["SoleboxStock"][i][R]:
+								key, value = list(data["SoleboxStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		webhook = DiscordWebhook(url=demandwarehook)
+		webhook = DiscordWebhook(title="Solebox - "+productname, description='> Solebox sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_embed_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_embed_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_embed_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_embed_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_embed_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		webhook.add_embed(embed)
+		webhook.execute()
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+
+	else:
+		embed=discord.Embed(title="Solebox - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
+
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def releaseonygo(context, pid):
+	now = datetime.now()
+
+	try:
+		server_name = context.guild.name
+	except AttributeError:
+		server_name = "DM"
+
+	user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+
+	log2 = Fore.CYAN +f'[{server_name}]'
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+
+	log = log2 + ' ' + log3
+
+	asd = 0
+	nopidfound = 0
+	data = {}
+	data["OnygoStock"] = []
+	pidlist = []
+	y = data["OnygoStock"]
+
+	bb = pid.isdigit()
+	if bb == False:
+		pid3 = pid.split('000')[1].split('.html')[0]
+		url1 = pid.split('000')[0]
+		pid2 = pid3.replace(pid3, '000'+pid3)
+		pid = pid2
+	elif bb == True:
+		pid5 = len(str(pid))
+		if pid5 == 14:
+			pid = pid
+		elif pid5 == 22:
+			pid2 = pid.split("000000")
+			pid3 = pid2[0]
+			pid = pid3
+		else:
+			print('Wrong PID')
+
+	testpid = ["00000001","00000002","00000003","00000004","00000005","00000006","00000007","00000008","00000009","00000010","00000011","00000012","00000013","00000014","00000015","00000016","00000017","00000018","00000019","00000020","00000021","00000022","00000023","00000024","00000025","00000026","00000027","00000028","00000029","00000030","00000031","Null"]
+	correcttestpid = []
+
+	for i in range(len(testpid)):
+		correcttestpid.append(pid + testpid[i])
+	data = {}
+	data["OnygoStock"] = []
+
+	with open('onygostock.json') as json_file:
+		data = json.load(json_file)
+		for i in range(len(data["OnygoStock"])):            
+			for R in range(len(data["OnygoStock"][i])):
+				try:
+					for w in range(len(correcttestpid)):
+						if correcttestpid[w] in data["OnygoStock"][i][R]:
+							nopidfound = 1
+				except (TypeError,KeyError,IndexError) as e:
+					continue
+
+	if nopidfound == 1:
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[ONYGO][STOCK CHECK - RELEASE][FOUND PID]")
+		embedpid = []
+		embedsize = []
+		embedstock = []
+	    
+		with open('onygostock.json') as json_file: 
+			data = json.load(json_file)
+			for i in range(len(data["OnygoStock"])):            
+				for R in range(len(data["OnygoStock"][i])):
+					try:
+						for w in range(len(correcttestpid)):
+							if correcttestpid[w] in data["OnygoStock"][i][R]:
+								key, value = list(data["OnygoStock"][i][R].items())[0]
+								embedpid.append(key)
+								embedsize.append(value[0]["Size"])
+								embedstock.append(str(value[0]["stock"]))
+								sku = value[0]["SKU"]
+								totalstock = value[0]["totalstock"]
+								releasedate = value[0]["releasedate"]
+								productname = value[0]["name"]
+								image = value[0]["image"]
+					except (TypeError,KeyError,IndexError) as e:
+						continue
+
+		variantId2 = ['N/A' if x==pid+"Null" else x for x in embedpid]
+		allsize = [x for x in embedsize]
+		sizelist = "\n".join(allsize)
+		variantIdlist = "\n".join(variantId2)
+		discstock = "\n".join(embedstock)
+
+		webhook = DiscordWebhook(url=demandwarehook)
+		embed = DiscordEmbed(title="Onygo - "+productname, description='> Onygo sizes early links, use them on drop / restock.\n\n> '+str(sku), color=setembedcolor)
+		embed.add_embed_field(name=":link: Sizes", value=sizelist, inline=True)
+		embed.add_embed_field(name=":bar_chart: Stock", value=discstock, inline=True)
+		embed.add_embed_field(name=":pushpin: SKUs", value=variantIdlist, inline=True)
+		embed.add_embed_field(name="Total Stock", value="`"+str(totalstock)+"`", inline=True)
+		embed.add_embed_field(name="Release Date", value="`"+str(releasedate)+"`", inline=True)
+		embed.set_thumbnail(url=image)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		webhook.add_embed(embed)
+		webhook.execute()
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] " + log + Fore.GREEN + f"[Webhook sent!]")
+		json_file.close()
+	else:
+		embed=discord.Embed(title="Onygo - Error", color=setembedcolor)
+		embed.add_field(name="No Stock Check for this product available", value="DM Staff to get it stock checked", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		await context.send(embed=embed)
 
 @bot.command()
 @commands.check(check_if_it_is_me)
 async def staffhelp(context):
 	embed=discord.Embed(title="Snipes - Add Product Help", color=setembedcolor)
+	embed.add_field(name="Command Format - ?staffsnipesstock", value="Actual Stock Check!\n```?staffsnipesstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?snipesstock", value="Stock read from last stock check with ?staffsnipesstock\n```?snipesstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?snipesstockdelete", value="```?snipesstockdelete\nALL PIDS```", inline=False)
+	embed.add_field(name="Command Format - ?snipesadd", value="```?snipesadd\nprice\nproductName\nimage\nsku\nAll PIDS\nALL SIZES```", inline=False)
+	embed.add_field(name="Command Format - ?snipesdelete", value="```?snipesdelete\nAll PIDS```", inline=False)
+	embed.add_field(name="Command Format - ?snipescheck", value="```?checksnipes\nAll PIDS```", inline=False)
+	embed.add_field(name="Information", value="""*Change "snipes" with solebox or onygo to use the other commands for selected store*"""+"\nUse following commands for more indepth Informations:\n?staffsnipes\n?staffsolebox\n?staffonygo" , inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def staffsnipes(context):
+	embed=discord.Embed(title="Snipes - Add Product Help", color=setembedcolor)
+	embed.add_field(name="Command Format - ?staffsnipesstock", value="Actual Stock Check!\n```?staffsnipesstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?snipesstock", value="Stock read from last stock check with ?staffsnipesstock\n```?snipesstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?snipesstockdelete", value="```?snipesstockdelete\nALL PIDS```", inline=False)
+	embed.add_field(name="Example - ?snipesstockdelete", value="```?snipesstockdelete\n000138018952400000006\n000138018952400000007```", inline=False)
 	embed.add_field(name="Command Format - ?snipesadd", value="```?snipesadd\nprice\nproductName\nimage\nsku\nAll PIDS\nALL SIZES```", inline=False)
 	embed.add_field(name="Example - ?snipesadd", value="```?snipesadd\n99,99 €\nDunk High Retro\nhttps://www.snipes.at/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwc5049674/1899784_P.jpg?sw=450&sh=450&sm=fit&sfrm=png\nCV12344-123\n0001380189978400000001\n0001380189978400000002\n0001380189978400000002\n41\n42\n42.5```", inline=False)
 	embed.add_field(name="Command Format - ?snipesdelete", value="```?snipesdelete\nAll PIDS```", inline=False)
 	embed.add_field(name="Example - ?snipesdelete", value="```?snipesdelete\n000138018952400000006\n000138018952400000007```", inline=False)
 	embed.add_field(name="Command Format - ?checksnipes", value="```?checksnipes\nAll PIDS```", inline=False)
 	embed.add_field(name="Example - ?checksnipes", value="```?checksnipes\n000138018952400000006\n000138018952400000007```", inline=False)
-	embed.add_field(name="Information", value="""*Change "snipes" with solebox or onygo to use the other commands for selected store*""" , inline=False)
-	embed.set_footer(text=setfootertext + ' Snipes Scraper', icon_url=setfooterimage)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def staffsolebox(context):
+	embed=discord.Embed(title="Solebox - Add Product Help", color=setembedcolor)
+	embed.add_field(name="Command Format - ?staffsoleboxstock", value="Actual Stock Check!\n```?staffsoleboxstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?soleboxstock", value="Stock read from last stock check with ?staffsoleboxstock\n```?soleboxstock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?soleboxstockdelete", value="```?soleboxstockdelete\nALL PIDS```", inline=False)
+	embed.add_field(name="Example - ?soleboxstockdelete", value="```?soleboxstockdelete\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Command Format - ?soleboxadd", value="```?soleboxadd\nprice\nproductName\nimage\nsku\nAll PIDS\nALL SIZES```", inline=False)
+	embed.add_field(name="Example - ?soleboxadd", value="```?soleboxadd\n99,99 €\nDunk High Retro\nhttps://www.snipes.at/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwc5049674/1899784_P.jpg?sw=450&sh=450&sm=fit&sfrm=png\nCV12344-123\n0001380189978400000001\n0001380189978400000002\n0001380189978400000002\n41\n42\n42.5```", inline=False)
+	embed.add_field(name="Command Format - ?soleboxdelete", value="```?soleboxdelete\nAll PIDS```", inline=False)
+	embed.add_field(name="Example - ?soleboxdelete", value="```?soleboxdelete\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Command Format - ?soleboxcheck", value="```?soleboxcheck\nAll PIDS```", inline=False)
+	embed.add_field(name="Example - ?soleboxcheck", value="```?soleboxcheck\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Information", value="""*Change "solebox" with snipes or onygo to use the other commands for selected store*""" , inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.command()
+@commands.check(check_if_it_is_me)
+async def staffonygo(context):
+	embed=discord.Embed(title="Snipes - Add Product Help", color=setembedcolor)
+	embed.add_field(name="Command Format - ?staffonygostock", value="Actual Stock Check!\n```?staffonygostock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?onygostock", value="Stock read from last stock check with ?staffonygostock\n```?onygostock <link or pid>```", inline=False)
+	embed.add_field(name="Command Format - ?onygostockdelete", value="```?onygostockdelete\nALL PIDS```", inline=False)
+	embed.add_field(name="Example - ?onygostockdelete", value="```?onygostockdelete\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Command Format - ?onygoadd", value="```?onygoadd\nprice\nproductName\nimage\nsku\nAll PIDS\nALL SIZES```", inline=False)
+	embed.add_field(name="Example - ?onygoadd", value="```?onygoadd\n99,99 €\nDunk High Retro\nhttps://www.snipes.at/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwc5049674/1899784_P.jpg?sw=450&sh=450&sm=fit&sfrm=png\nCV12344-123\n0001380189978400000001\n0001380189978400000002\n0001380189978400000002\n41\n42\n42.5```", inline=False)
+	embed.add_field(name="Command Format - ?onygodelete", value="```?onygodelete\nAll PIDS```", inline=False)
+	embed.add_field(name="Example - ?onygodelete", value="```?onygodelete\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Command Format - ?onygocheck", value="```?onygocheck\nAll PIDS```", inline=False)
+	embed.add_field(name="Example - ?onygocheck", value="```?onygocheck\n000138018952400000006\n000138018952400000007```", inline=False)
+	embed.add_field(name="Information", value="""*Change "onygo" with solebox or snipes to use the other commands for selected store*""" , inline=False)
+	embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+	await context.send(embed=embed)
+
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, CommandNotFound):
+		return
+	elif isinstance(error,MissingRequiredArgument):
+		embed=discord.Embed(title="Command Error", color=setembedcolor)
+		embed.add_field(name="Error", value="Your are missing an argument", inline=True)
+		embed.add_field(name="Help Command", value="?help / ?staffhelp", inline=False)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await ctx.send(embed=embed)
+		return
+	raise error
 
 
 bot.run(bottoken)
