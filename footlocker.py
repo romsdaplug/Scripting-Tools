@@ -16,6 +16,7 @@ import xmltodict
 from discord.ext.commands import CommandNotFound,MissingRequiredArgument,CommandInvokeError
 from datetime import datetime
 import threading
+import time
 from colorama import Fore, Back, Style, init
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
@@ -30,9 +31,9 @@ bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
 setfootertext = "@ScriptingTools | Stock Checker | <?ftlhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x000000
-euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
+euregionhook = ["https://discord.com/api/webhooks/826511701938929665/sDMNDIi7ULZL7x58wiSTqJYCKnnYB56XMZNAGosINZaNBXo0LgSvoz1cAAZc9YkdiVaY","https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
 asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
-newregionhook = ["https://discord.com/api/webhooks/796527829261090848/36pfX9AeOlz321uMFTwiibnwAwxT_noBgTkt98JgCoh1xzufCn6yQIW8LkPDtc5iv4dt","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
+newregionhook = ["https://discord.com/api/webhooks/826511701938929665/sDMNDIi7ULZL7x58wiSTqJYCKnnYB56XMZNAGosINZaNBXo0LgSvoz1cAAZc9YkdiVaY","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
 
 def split_list(a_list):
     half = len(a_list)//2
@@ -61,73 +62,8 @@ async def stock(ctx, link):
 		log = log3 + log4
 		now = datetime.now()
 
-		if region == 'FR' or region == 'fr':
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.fr/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_FR-Site/fr_FR/-/EUR"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'fr'
-			regioncountry = 'France'
 
-		elif region == 'NL' or region == 'nl':
-
-			splitpart = link.split("https://www.footlocker.")[1].split("/p")[0]
-			link = link.replace(splitpart,"fr/en")
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.fr/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_FR-Site/fr_FR/-/EUR"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'nl'
-			regioncountry = 'Netherlands'
-
-		elif region == 'UK' or region == 'uk' or region == 'GB' or region == 'gb' or region == "couk":
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.co.uk/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_GB-Site/en_GB/-/GBP"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'gb'
-			regioncountry = 'United Kingdom'
-
-		elif region == 'SG' or region == 'sg':
+		if region == 'SG' or region == 'sg':
 			headers = {
 			'pragma': "no-cache",
 			'cache-control': "no-cache",
@@ -233,7 +169,11 @@ async def stock(ctx, link):
 	###################################################################################################################################################
 	#---NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION---
 	###################################################################################################################################################
-
+	
+		elif region == 'UK' or region == 'uk' or region == 'GB' or region == 'gb' or region == "couk":
+			url = ("https://www.footlocker.co.uk/api/products/pdp/")
+			countrycode = 'gb'
+			regioncountry = 'United Kingdom'
 
 		elif region == 'IT' or region == 'it':
 			url = ("https://www.footlocker.it/api/products/pdp/")
@@ -304,50 +244,77 @@ async def stock(ctx, link):
 			url = ("https://www.footlocker.dk/api/products/pdp/")
 			countrycode = 'dk'
 			regioncountry = 'Denmark'
-			setwebhook = newregionhook
 		elif region == 'DE' or region == 'de':
 			url = ("https://www.footlocker.de/api/products/pdp/")
 			countrycode = 'de'
 			regioncountry = 'Germany'
-			setwebhook = newregionhook
+		elif region == 'NL' or region == 'nl':
+			url = ("https://www.footlocker.nl/api/products/pdp/")
+			countrycode = 'nl'
+			regioncountry = 'Netherlands'
+		elif region == 'FR' or region == 'fr':
+			url = ("https://www.footlocker.fr/api/products/pdp/")
+			countrycode = 'fr'
+			regioncountry = 'France'
 
 		else:
 			await ctx.send('This region is not supported by our stock checker.')
 		ftlstore = ""
-		if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
-			pid = link.split("?v=")[1][:12]
-			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[FTL PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
-			#print("Getting Stock for " + pid + " on FTL " + countrycode)
+		if region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
+
 			embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 			embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test91 = await ctx.send(embed=embed3)
+
+			try:
+				responselink = requests.get(link, headers=headers)
+				souplink = BeautifulSoup(responselink.content, "html.parser")
+				shoelink = souplink.find("meta", {"property":"og:url"})["content"]
+				pid = souplink.find("meta", {"property":"og:image"})["content"].split("FLEU/")[1].split("?wid")[0]
+				productlink = shoelink + "?v=" + pid
+			except Exception:
+				pid = link.split("?v=")[1][:12]
+				productlink = link
+
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[FTL PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
+
 			parameters = {
 			"BaseSKU": pid,
 			"InventoryServerity": "ProductDetail",
 			}
+
 			getpid7 = pid + "070"
 			response = requests.get(url, headers=headers, params=parameters)
+
 			if 'Foot Locker - Please Stand By' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Queue is up, we can't check stock!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
 			elif 'Foot Locker - Sold Out!' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
 			elif 'Please enable JS and disable any ad' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Datadome is up - Please try later", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
+			elif len(response.text) < 5200:
+				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
+				embed.set_thumbnail(url=img)
+				embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
+				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				await ctx.send(embed=embed)
+
 			else:
 				ftlstore = "old"
 				response.raise_for_status()
@@ -404,28 +371,33 @@ async def stock(ctx, link):
 				shoesku = shoesku[shoelen].text
 				shoesku = shoesku.replace("ID","").replace(" ","").replace(":","").replace("ProductCode","").replace("ProduktCode","").replace("Code produit","").replace("Codeproduit","").replace("Produkt Code","").replace("Product Code","")
 				size8 = str(pid)+'070'
+				size7 = str(pid)+'080'
+				size85 = str(pid)+'085'
 				size5 = str(pid)+'050'
 				try:
 					date = my_dict[size8]['quantityMessage']
 				except KeyError:
-					date = my_dict[size5]['quantityMessage']
+					try:
+						date = my_dict[size5]['quantityMessage']
+					except KeyError:
+						try:
+							date = my_dict[size7]['quantityMessage']
+						except KeyError:
+							date = my_dict[size85]['quantityMessage']
 
-				if region == "nl":
-					date = date.replace("Ce produit sera disponible à partir de","Dit product is verkrijgbaar vanaf")
 				if not date:
 					date = "Live"
 				stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-		if region == "DE" or region == "de" or region == 'IT' or region == 'it' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+		if region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'FR' or region == 'fr' or region == "DE" or region == "de" or region == 'IT' or region == 'it' or region == 'NL' or region == 'nl' or region == 'AT' or region == 'at' or region == 'dk' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 			ftlstore = "new"
 			pid = link.split(".html")[0][-12:]
 			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[FTL PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
-			#print("Getting Stock for " + pid + " on FTL " + countrycode)
-			embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
+			embed3=discord.Embed(title="Footlocker Stock Checker :flag_eu:", description='Checking backend...', color=setembedcolor)
 			embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test91 = await ctx.send(embed=embed3)
 			urllink = url + pid
-			
+
 			response = requests.get(urllink)
 			response.raise_for_status()
 			response2 = requests.get(link)
@@ -446,7 +418,6 @@ async def stock(ctx, link):
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
 			soup2 = BeautifulSoup(response2.content, "html.parser")
-
 			file = urllib.request.urlopen(urllink)
 			datafile = file.read()
 			my_dict = json.loads(datafile)
@@ -457,7 +428,6 @@ async def stock(ctx, link):
 			allstocklevel = []
 			shoename = my_dict['name']
 			shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
-
 
 			for sellableUnits in my_dict['sellableUnits']:
 				stocklevel = sellableUnits['stockLevelStatus']
@@ -502,49 +472,53 @@ async def stock(ctx, link):
 			pidnew = link.split(".html")[0][-12:]
 			shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pidnew + '_01?wid=763&hei=538&fmt=png-alpha'
 
-			allregionlinksec = link.split("product/")[1]
-			allregionlinksec = "product/" + allregionlinksec
+			allregionlinksec = "api/products/pdp/" + pid
 			allregionlinkfirst = "https://www.footlocker."
 
-			region = ["de/en/","at/en/","be/en/","dk/en/","gr/en/","hu/en/","ie/en/","it/en/","lu/en/","no/en/","cz/en/","pl/en/","pt/en/","es/en/","se/en/"]
+			region = ["co.uk/","de/","at/","fr/","be/","dk/","gr/","hu/","ie/","it/","lu/","no/","cz/","pl/","pt/","es/","se/"]
 
 			for i in range(len(region)):
+				print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[{pid}]" + f"[{str.upper(region[i])}][{channeltype}]")
 				url = allregionlinkfirst + region[i] + allregionlinksec
-				responsenew = requests.get(url)
-				if "ProductName-alt" in responsenew.text:
-					loadedregion.append(region[i])
+				m = threading.Thread(target=stockftl, args=(url,region[i]))
+				time.sleep(0.2)
+				m.start()
 
-			for i in range(len(loadedregion)):
-				loadedregion[i] = loadedregion[i].replace("/en/","")
+			m.join()
+			while threading.active_count() > 3:
+				time.sleep(1)
 
-				if loadedregion[i] == "de": loadedcountry.append("Germany")
-				elif loadedregion[i] == "at": loadedcountry.append("Austria")
-				elif loadedregion[i] == "be": loadedcountry.append("Belgium")
-				elif loadedregion[i] == "dk": loadedcountry.append("Denmark")
-				elif loadedregion[i] == "gr": loadedcountry.append("Greece")
-				elif loadedregion[i] == "ie": loadedcountry.append("Ireland")
-				elif loadedregion[i] == "hu": loadedcountry.append("Hungary")
-				elif loadedregion[i] == "it": loadedcountry.append("Italy")
-				elif loadedregion[i] == "lu": loadedcountry.append("Luxembourg")
-				elif loadedregion[i] == "no": loadedcountry.append("Norway")
-				elif loadedregion[i] == "cz": loadedcountry.append("Czech Republic")
-				elif loadedregion[i] == "pl": loadedcountry.append("Poland")
-				elif loadedregion[i] == "pt": loadedcountry.append("Portugal")
-				elif loadedregion[i] == "es": loadedcountry.append("Spain")
-				elif loadedregion[i] == "se": loadedcountry.append("Sweden")
+			for i in range(len(stockloadedregion)):
+				if "co.uk" in stockloadedregion[i]:
+					stockloadedregion[i] = "gb"
+				else:
+					stockloadedregion[i] = stockloadedregion[i].replace("/","")
 
-				loadedregion[i] = ":flag_" + loadedregion[i] + ":"
+				if stockloadedregion[i] == "gb": loadedcountry.append("United Kingdom")
+				elif stockloadedregion[i] == "de": loadedcountry.append("Germany")
+				elif stockloadedregion[i] == "nl": loadedcountry.append("Netherlands")
+				elif stockloadedregion[i] == "at": loadedcountry.append("Austria")
+				elif stockloadedregion[i] == "fr": loadedcountry.append("France")
+				elif stockloadedregion[i] == "be": loadedcountry.append("Belgium")
+				elif stockloadedregion[i] == "dk": loadedcountry.append("Denmark")
+				elif stockloadedregion[i] == "gr": loadedcountry.append("Greece")
+				elif stockloadedregion[i] == "ie": loadedcountry.append("Ireland")
+				elif stockloadedregion[i] == "hu": loadedcountry.append("Hungary")
+				elif stockloadedregion[i] == "it": loadedcountry.append("Italy")
+				elif stockloadedregion[i] == "lu": loadedcountry.append("Luxembourg")
+				elif stockloadedregion[i] == "no": loadedcountry.append("Norway")
+				elif stockloadedregion[i] == "cz": loadedcountry.append("Czech Republic")
+				elif stockloadedregion[i] == "pl": loadedcountry.append("Poland")
+				elif stockloadedregion[i] == "pt": loadedcountry.append("Portugal")
+				elif stockloadedregion[i] == "es": loadedcountry.append("Spain")
+				elif stockloadedregion[i] == "se": loadedcountry.append("Sweden")
 
-			loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion,loadedcountry))
+				stockloadedregion[i] = ":flag_" + stockloadedregion[i] + ":"
 
-
-		if countrycode == "nl":
-			link = link.replace("fr/en","nl/nl")
-
-
+			loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(stockloadedregion,loadedcountry))
 
 		if ftlstore == "old":
-			embed=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+			embed=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+productlink+')', color=setembedcolor)
 			embed.set_thumbnail(url=shoepic)
 			embed.add_field(name="Footlocker PID", value=str(pid), inline=True)
 			embed.add_field(name="Shoe SKU", value=str(shoesku), inline=True)
@@ -597,8 +571,7 @@ async def stock(ctx, link):
 	except (requests.HTTPError,urllib.error.HTTPError,IndexError) as exception:
 		embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 		embed.set_thumbnail(url=setfooterimage)
-		embed.add_field(name="Info", value="Page Not Found or No SKU in link", inline=False)
-		embed.add_field(name="How to add SKU", value='add "?v=" with the SKU from the site at the end of the link!\nExample: ?v=314101081504', inline=False)
+		embed.add_field(name="Info", value="Page Not Found", inline=False)
 		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		if "private" in ctx.channel.type:
 			member = ctx.author
@@ -609,6 +582,7 @@ async def stock(ctx, link):
 				exception = "true"
 		else:
 			await ctx.send(embed=embed)
+	stockloadedregion.clear()
 
 
 @bot.command()
@@ -632,77 +606,8 @@ async def release(ctx, link):
 		log = log3 + log4
 		now = datetime.now()
 
-		if region == 'FR' or region == 'fr':
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.fr/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_FR-Site/fr_FR/-/EUR"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'fr'
-			regioncountry = 'France'
-			setwebhook = euregionhook
 
-		elif region == 'NL' or region == 'nl':
-
-			splitpart = link.split("https://www.footlocker.")[1].split("/p")[0]
-			link = link.replace(splitpart,"fr/en")
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.fr/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_FR-Site/fr_FR/-/EUR"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'nl'
-			regioncountry = 'Netherlands'
-			setwebhook = euregionhook
-
-		elif region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb':
-			headers = {
-			'pragma': "no-cache",
-			'cache-control': "no-cache",
-			'accept': "application/json, text/javascript, /; q=0.01",
-			'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-			'x-requested-with': "XMLHttpRequest",
-			'sec-fetch-site': "same-origin",
-			'sec-fetch-mode': "cors",
-			'sec-fetch-dest': "empty",
-			'referer': link,
-			'accept-language': "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-			}
-			url = (
-				"https://www.footlocker.co.uk/INTERSHOP/web/FLE"
-				"/Footlocker-Footlocker_GB-Site/en_GB/-/GBP"
-				"/ViewProduct-ProductVariationSelect"
-				)
-			countrycode = 'gb'
-			regioncountry = 'United Kingdom'
-			setwebhook = euregionhook
-
-
-		elif region == 'SG' or region == 'sg':
+		if region == 'SG' or region == 'sg':
 			headers = {
 			'pragma': "no-cache",
 			'cache-control': "no-cache",
@@ -814,11 +719,22 @@ async def release(ctx, link):
 	#---NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION------NEW REGION---
 	###################################################################################################################################################
 
+		elif region == 'UK' or region == 'uk' or region == 'GB' or region == 'gb' or region == "couk":
+			url = ("https://www.footlocker.co.uk/api/products/pdp/")
+			countrycode = 'gb'
+			regioncountry = 'United Kingdom'
+			setwebhook = newregionhook
 
 		elif region == 'IT' or region == 'it':
 			url = ("https://www.footlocker.it/api/products/pdp/")
 			countrycode = 'it'
 			regioncountry = 'Italy'
+			setwebhook = newregionhook
+
+		elif region == 'FR' or region == 'fr':
+			url = ("https://www.footlocker.fr/api/products/pdp/")
+			countrycode = 'fr'
+			regioncountry = 'France'
 			setwebhook = newregionhook
 
 		elif region == 'DK' or region == 'dk':
@@ -904,115 +820,145 @@ async def release(ctx, link):
 			regioncountry = 'Germany'
 			setwebhook = newregionhook
 
-		if region == 'FR' or region == 'fr' or region == 'NL' or region == 'nl' or region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
-			ftlstore = "old"
-			pid = link.split("?v=")[1][:12]
-			print("Getting Stock for " + pid + " on FTL " + countrycode)
+		elif region == 'NL' or region == 'nl':
+			url = ("https://www.footlocker.de/api/products/pdp/")
+			countrycode = 'nl'
+			regioncountry = 'Netherlands'
+			setwebhook = newregionhook
+
+		if region == 'SG' or region == 'sg' or region == 'MY' or region == 'my' or region == 'HK' or region == 'hk' or region == 'MO' or region == 'mo' or region == 'AU' or region == 'comau':
 			embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
 			embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test91 = await ctx.send(embed=embed3)
+
+			try:
+				responselink = requests.get(link, headers=headers)
+				souplink = BeautifulSoup(responselink.content, "html.parser")
+				shoelink = souplink.find("meta", {"property":"og:url"})["content"]
+				pid = souplink.find("meta", {"property":"og:image"})["content"].split("FLEU/")[1].split("?wid")[0]
+				productlink = shoelink + "?v=" + pid
+			except Exception:
+				pid = link.split("?v=")[1][:12]
+				productlink = link
+
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[FTL PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
+
 			parameters = {
 			"BaseSKU": pid,
 			"InventoryServerity": "ProductDetail",
 			}
+
 			getpid7 = pid + "070"
-			getpid5 = pid + "050"
-			response = requests.get(url, headers=headers, params=parameters, verify=False)
+			response = requests.get(url, headers=headers, params=parameters)
+
 			if 'Foot Locker - Please Stand By' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Queue is up, we can't check stock!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
 			elif 'Foot Locker - Sold Out!' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
 			elif 'Please enable JS and disable any ad' in response.text:
 				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
-				img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 				embed.set_thumbnail(url=img)
 				embed.add_field(name="Info", value="Datadome is up - Please try later", inline=False)
 				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 				await ctx.send(embed=embed)
+			elif len(response.text) < 5200:
+				embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
+				img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
+				embed.set_thumbnail(url=img)
+				embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
+				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+				await ctx.send(embed=embed)
+
+			else:
+				ftlstore = "old"
+				response.raise_for_status()
+				soup = BeautifulSoup(response.json()["content"], "html.parser")
+				response2 = requests.get(link, headers=headers)
+				soup2 = BeautifulSoup(response2.content, "html.parser")
+				json_attribute_name = "data-product-variation-info-json"
+				div_node = soup.find("div", {json_attribute_name: True})
+				my_dict = json.loads(div_node.get(json_attribute_name))
+
+				sizepids = list(my_dict.keys())
+				data2 = "\n".join(sizepids)
+
+				qbotsizerange = sizepids[0][-3:] + "-" + sizepids[-1][-3:]
+
+				onlylastthreepids= []
+				mojisizerange = []
+				onlylastthreepids = [sub[12:] for sub in sizepids]
+				for string in onlylastthreepids:
+					new_string = string.replace("040", "4").replace("045", "4.5").replace("050", "5").replace("055", "5.5").replace("060", "6").replace("065", "6.5").replace("070", "7").replace("075", "7.5").replace("080", "8").replace("085", "8.5").replace("090", "9").replace("095", "9.5").replace("100", "10").replace("105", "10.5").replace("110", "11").replace("115", "11.5").replace("120", "12").replace("125", "12.5").replace("130", "13").replace("135", "13.5").replace("140", "14").replace("145", "14.5").replace("150", "15").replace("155", "15").replace("160", "16")
+					mojisizerange.append(new_string)
+				discordmojisizerange = ",".join(mojisizerange)
+
+				size = []
+				stock = []
+				for i in my_dict:
+					size.append(my_dict[i]['sizeValue'])
+					if not size:
+						webhook = DiscordWebhook(url=setwebhook)
+						embed=DiscordEmbed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+						embed.set_thumbnail(url=shoepic)
+						embed.add_embed_field(name="Info", value="No Stock Loaded", inline=True)
+						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						webhook.add_embed(embed)
+						response = webhook.execute()
+						break
+					stock.append(my_dict[i]['inventoryLevel'])
+					sizerange = list(size)
+
+				for index,item in enumerate(stock):
+					if item=="GREEN":
+						stock[index]=":green_square:"
+					elif item=="YELLOW":
+						stock[index]=":yellow_square:"
+					elif item=="RED":
+						stock[index]=":red_square:"
+				data = "\n".join("{0} {1}".format(x,y) for x,y in zip(stock,size))
 
 
-			response.raise_for_status()
-			soup = BeautifulSoup(response.json()["content"], "html.parser")
-			response2 = requests.get(link, headers=headers, verify=False)
-			soup2 = BeautifulSoup(response2.content, "html.parser")
-			json_attribute_name = "data-product-variation-info-json"
-			div_node = soup.find("div", {json_attribute_name: True})
-			my_dict = json.loads(div_node.get(json_attribute_name))
+				shoepic = soup2.find("meta", {"property":"og:image"})["content"]
+				shoename = soup2.find("meta", {"property":"og:title"})["content"]
+				shoesku = soup2.find_all("li", {"class":"fl-list--item"})
+				shoelen = int(len(shoesku))-1
+				shoesku = shoesku[shoelen].text
+				shoesku = shoesku.replace("ID","").replace(" ","").replace(":","").replace("ProductCode","").replace("ProduktCode","").replace("Code produit","").replace("Codeproduit","").replace("Produkt Code","").replace("Product Code","")
+				size8 = str(pid)+'070'
+				size7 = str(pid)+'080'
+				size85 = str(pid)+'085'
+				size5 = str(pid)+'050'
+				try:
+					date = my_dict[size8]['quantityMessage']
+				except KeyError:
+					try:
+						date = my_dict[size5]['quantityMessage']
+					except KeyError:
+						try:
+							date = my_dict[size7]['quantityMessage']
+						except KeyError:
+							date = my_dict[size85]['quantityMessage']
 
-			sizepids = list(my_dict.keys())
-			data2 = "\n".join(sizepids)
+				if not date:
+					date = "Live"
+				stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
 
-			qbotsizerange = sizepids[0][-3:] + "-" + sizepids[-1][-3:]
-
-			onlylastthreepids= []
-			mojisizerange = []
-			onlylastthreepids = [sub[12:] for sub in sizepids]
-			for string in onlylastthreepids:
-				new_string = string.replace("040", "4").replace("045", "4.5").replace("050", "5").replace("055", "5.5").replace("060", "6").replace("065", "6.5").replace("070", "7").replace("075", "7.5").replace("080", "8").replace("085", "8.5").replace("090", "9").replace("095", "9.5").replace("100", "10").replace("105", "10.5").replace("110", "11").replace("115", "11.5").replace("120", "12").replace("125", "12.5").replace("130", "13").replace("135", "13.5").replace("140", "14").replace("145", "14.5").replace("150", "15").replace("155", "15").replace("160", "16")
-				mojisizerange.append(new_string)
-			discordmojisizerange = ",".join(mojisizerange)
-
-			size = []
-			stock = []
-			for i in my_dict:
-				size.append(my_dict[i]['sizeValue'])
-				if not size:
-					webhook = DiscordWebhook(url=setwebhook)
-					embed=DiscordEmbed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
-					embed.set_thumbnail(url=shoepic)
-					embed.add_embed_field(name="Info", value="No Stock Loaded", inline=True)
-					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-					webhook.add_embed(embed)
-					response = webhook.execute()
-					break
-				stock.append(my_dict[i]['inventoryLevel'])
-				sizerange = list(size)
-
-			for index,item in enumerate(stock):
-				if item=="GREEN":
-					stock[index]=":green_square:"
-				elif item=="YELLOW":
-					stock[index]=":yellow_square:"
-				elif item=="RED":
-					stock[index]=":red_square:"
-			data = "\n".join("{0} {1}".format(x,y) for x,y in zip(stock,size))
-
-
-			shoepic = soup2.find("meta", {"property":"og:image"})["content"]
-			shoename = soup2.find("meta", {"property":"og:title"})["content"]
-			shoesku = soup2.find_all("li", {"class":"fl-list--item"})
-			shoelen = int(len(shoesku))-1
-			shoesku = shoesku[shoelen].text
-			shoesku = shoesku.replace("ID","").replace(" ","").replace(":","").replace("ProductCode","").replace("ProduktCode","").replace("Code produit","").replace("Codeproduit","").replace("Produkt Code","").replace("Product Code","")
-			size8 = str(pid)+'070'
-			size5 = str(pid)+'050'
-			try:
-				date = my_dict[size8]['quantityMessage']
-			except Exception:
-				date = my_dict[size5]['quantityMessage']
-
-			if region == "nl":
-				date = date.replace("Ce produit sera disponible à partir de","Dit product is verkrijgbaar vanaf")
-			if not date:
-				date = "Live"
-			stockinfo = ":green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock"
-
-		if region == 'DE' or region == 'de' or region == 'IT' or region == 'it' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
+		if region == 'UK' or region == 'couk' or region == 'GB' or region == 'gb' or region == 'FR' or region == 'fr' or region == 'DE' or region == 'de' or region == 'IT' or region == 'it' or region == 'NL' or region == 'nl' or region == 'dk' or region == 'AT' or region == 'at' or region == 'HU' or region == 'hu' or region == 'PL' or region == 'pl' or region == 'ES' or region == 'es' or region == 'PT' or region == 'pt' or region == 'GR' or region == 'gr' or region == 'NO' or region == 'no' or region == 'BE' or region == 'be' or region == 'IE' or region == 'ie' or region == 'CZ' or region == 'cz' or region == 'SE' or region == 'se':
 			ftlstore = "new"
 			pid = link.split(".html")[0][-12:]
 			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[FTL PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
-			#print("Getting Stock for " + pid + " on FTL " + countrycode)
-			embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
+			embed3=discord.Embed(title="Footlocker Stock Checker :flag_eu:", description='Checking backend...', color=setembedcolor)
 			embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
 			test91 = await ctx.send(embed=embed3)
 			urllink = url + pid
@@ -1084,7 +1030,6 @@ async def release(ctx, link):
 				date = "Live"
 			shoesku = "Not Available"
 
-			loadedregion = []
 			loadedregionurl = []
 			notloadedregion = []
 			notloadedregionurl = []
@@ -1093,44 +1038,50 @@ async def release(ctx, link):
 			pidnew = link.split(".html")[0][-12:]
 			shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pidnew + '_01?wid=763&hei=538&fmt=png-alpha'
 
-			allregionlinksec = link.split("product/")[1]
-			allregionlinksec = "product/" + allregionlinksec
+			allregionlinksec = "api/products/pdp/" + pid
 			allregionlinkfirst = "https://www.footlocker."
 
-			region = ["de/en/","at/en/","be/en/","dk/en/","gr/en/","hu/en/","ie/en/","it/en/","lu/en/","no/en/","cz/en/","pl/en/","pt/en/","es/en/","se/en/"]
+			region = ["co.uk/","de/","at/","fr/","be/","dk/","gr/","hu/","ie/","it/","lu/","no/","cz/","pl/","pt/","es/","se/"]
 
 			for i in range(len(region)):
+				print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[{pid}]" + f"[{channeltype}]")
 				url = allregionlinkfirst + region[i] + allregionlinksec
-				responsenew = requests.get(url)
-				if "ProductName-alt" in responsenew.text:
-					loadedregion.append(region[i])
+				m = threading.Thread(target=stockftl, args=(url,region[i]))
+				time.sleep(0.5)
+				m.start()
 
-			for i in range(len(loadedregion)):
-				loadedregion[i] = loadedregion[i].replace("/en/","")
+			m.join()
+			while threading.active_count() > 3:
+				time.sleep(1)
 
-				if loadedregion[i] == "de": loadedcountry.append("Germany")
-				elif loadedregion[i] == "at": loadedcountry.append("Austria")
-				elif loadedregion[i] == "be": loadedcountry.append("Belgium")
-				elif loadedregion[i] == "dk": loadedcountry.append("Denmark")
-				elif loadedregion[i] == "gr": loadedcountry.append("Greece")
-				elif loadedregion[i] == "ie": loadedcountry.append("Ireland")
-				elif loadedregion[i] == "hu": loadedcountry.append("Hungary")
-				elif loadedregion[i] == "it": loadedcountry.append("Italy")
-				elif loadedregion[i] == "lu": loadedcountry.append("Luxembourg")
-				elif loadedregion[i] == "no": loadedcountry.append("Norway")
-				elif loadedregion[i] == "cz": loadedcountry.append("Czech Republic")
-				elif loadedregion[i] == "pl": loadedcountry.append("Poland")
-				elif loadedregion[i] == "pt": loadedcountry.append("Portugal")
-				elif loadedregion[i] == "es": loadedcountry.append("Spain")
-				elif loadedregion[i] == "se": loadedcountry.append("Sweden")
+			for i in range(len(stockloadedregion)):
+				if "co.uk" in stockloadedregion[i]:
+					stockloadedregion[i] = "gb"
+				else:
+					stockloadedregion[i] = stockloadedregion[i].replace("/","")
 
-				loadedregion[i] = ":flag_" + loadedregion[i] + ":"
+				if stockloadedregion[i] == "gb": loadedcountry.append("United Kingdom")
+				elif stockloadedregion[i] == "de": loadedcountry.append("Germany")
+				elif stockloadedregion[i] == "nl": loadedcountry.append("Netherlands")
+				elif stockloadedregion[i] == "at": loadedcountry.append("Austria")
+				elif stockloadedregion[i] == "fr": loadedcountry.append("France")
+				elif stockloadedregion[i] == "be": loadedcountry.append("Belgium")
+				elif stockloadedregion[i] == "dk": loadedcountry.append("Denmark")
+				elif stockloadedregion[i] == "gr": loadedcountry.append("Greece")
+				elif stockloadedregion[i] == "ie": loadedcountry.append("Ireland")
+				elif stockloadedregion[i] == "hu": loadedcountry.append("Hungary")
+				elif stockloadedregion[i] == "it": loadedcountry.append("Italy")
+				elif stockloadedregion[i] == "lu": loadedcountry.append("Luxembourg")
+				elif stockloadedregion[i] == "no": loadedcountry.append("Norway")
+				elif stockloadedregion[i] == "cz": loadedcountry.append("Czech Republic")
+				elif stockloadedregion[i] == "pl": loadedcountry.append("Poland")
+				elif stockloadedregion[i] == "pt": loadedcountry.append("Portugal")
+				elif stockloadedregion[i] == "es": loadedcountry.append("Spain")
+				elif stockloadedregion[i] == "se": loadedcountry.append("Sweden")
 
-			loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion,loadedcountry))
+				stockloadedregion[i] = ":flag_" + stockloadedregion[i].replace("/","") + ":"
 
-
-		if countrycode == "nl":
-			link = link.replace("fr/en","nl/nl")
+			loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(stockloadedregion,loadedcountry))
 
 		if ftlstore == "old":
 			webhook = DiscordWebhook(url=setwebhook)
@@ -1163,7 +1114,7 @@ async def release(ctx, link):
 
 		if ftlstore == "new":
 			webhook = DiscordWebhook(url=setwebhook)
-			embed = DiscordEmbed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+			embed = DiscordEmbed(title="Footlocker Stock Checker :flag_eu:", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
 			embed.add_embed_field(name="Footlocker PID", value=str(pid), inline=True)
 			embed.add_embed_field(name="Shoe SKU", value=str(shoesku), inline=True)
 			embed.add_embed_field(name = chr(173), value = chr(173))
@@ -1181,19 +1132,11 @@ async def release(ctx, link):
 			embed.set_thumbnail(url=shoepic)
 			webhook.add_embed(embed)
 			webhook.execute()
-			if "private" in ctx.channel.type:
-				member = ctx.author
-				await member.send(embed=embed)
-				await test91.delete()
-			else:
-				await ctx.send(embed=embed)
-				await test91.delete()
 				
 	except (requests.HTTPError,urllib.error.HTTPError,IndexError) as exception:
 		embed=discord.Embed(title="Footlocker Stock Checker - Failed", color=setembedcolor)
 		embed.set_thumbnail(url=setfooterimage)
-		embed.add_field(name="Info", value="Page Not Found or No SKU in link", inline=False)
-		embed.add_field(name="How to add SKU", value='add "?v=" with the SKU from the site at the end of the link!\nExample: ?v=314101081504', inline=False)
+		embed.add_field(name="Info", value="Page Not Found", inline=False)
 		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 		if "private" in ctx.channel.type:
 			member = ctx.author
@@ -1204,10 +1147,20 @@ async def release(ctx, link):
 				exception = "true"
 		else:
 			await ctx.send(embed=embed)
+	stockloadedregion.clear()
 
 @bot.command()
-@commands.check(check_if_it_is_me)
 async def side(ctx, link):
+	if isinstance(ctx.channel, discord.channel.DMChannel):
+		channeltype = "DM"
+	else:
+		channeltype = "CHANNEL"
+
+	user_name_id = ctx.author.name + ' ID : ' + str(ctx.author.id)
+	log3 = Fore.CYAN + f'[{user_name_id}] '
+	log4 = "[SIDESTEP STOCK CHECK]"
+	log = log3 + log4
+	now = datetime.now()
 	
 	headers = ''
 	url = ''
@@ -1215,9 +1168,7 @@ async def side(ctx, link):
 	shoename = ''
 	countrycode = ''
 	region = str(link.split("shoes.")[1].split("/")[0]).replace("\n","")
-	print(region)
 	if region == 'de':
-		print("i'm here")
 		headers = {
 		'pragma': "no-cache",
 		'cache-control': "no-cache",
@@ -1237,10 +1188,6 @@ async def side(ctx, link):
 		)
 		pid = link[-12:]
 		countrycode = 'de'
-		print("Getting Stock for " + pid + " on Sidestep " + countrycode)
-		embed3=discord.Embed(title="Side-Step Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
-		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
-		test91 = await ctx.send(embed=embed3)
 		regioncountry = 'Germany'
 	elif region == 'NL' or region == 'nl':
 		headers = {
@@ -1265,15 +1212,20 @@ async def side(ctx, link):
 		)
 		pid = link[-12:]
 		countrycode = 'nl'
-		print("Getting Stock for " + pid + " on Sidestep " + countrycode)
-		embed3=discord.Embed(title="Footlocker Stock Checker :flag_" + countrycode + ":", description='Checking backend...', color=setembedcolor)
-		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
-		test91 = await ctx.send(embed=embed3)
 		regioncountry = 'Netherlands'
 	else:
 		await ctx.send('This region is not supported by our stock checker.')
 
 	if region == 'de' or region == "nl":
+
+		responselink = requests.get(link, headers=headers)
+		souplink = BeautifulSoup(responselink.content, "html.parser")
+		shoelink = souplink.find("meta", {"property":"og:url"})["content"]
+		pid = souplink.find("meta", {"property":"og:image"})["content"].split("FLEU/")[1].split("?wid")[0]
+		productlink = shoelink + "?v=" + pid
+
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[SIDE-STEP PID - {pid}]" + f"[{str.upper(countrycode)}][{channeltype}]")
+
 		parameters = {
 		"BaseSKU": pid,
 		"InventoryServerity": "ProductDetail",
@@ -1281,21 +1233,21 @@ async def side(ctx, link):
 		response = requests.get(url, headers=headers, params=parameters)
 		if 'Foot Locker - Please Stand By' in response.text:
 			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
-			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Queue is up, we can't check stock!", inline=False)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif 'Foot Locker - Sold Out!' in response.text:
 			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
-			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Product is loaded as Sold out!", inline=False)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 			await ctx.send(embed=embed)
 		elif 'Please enable JS and disable any ad' in response.text:
 			embed=discord.Embed(title="Sidestep Stock Checker - Failed", color=setembedcolor)
-			img = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+			img = 'http://images.footlocker.com/is/image/FLEU/' + pid + '?wid=232&hei=232'
 			embed.set_thumbnail(url=img)
 			embed.add_field(name="Info", value="Datadome is up - Please try later", inline=False)
 			embed.set_footer(text=setfootertext, icon_url=setfooterimage)
@@ -1333,11 +1285,10 @@ async def side(ctx, link):
 		size8 = str(pid)+'070'
 		stockinfo = ':green_square:  -  More than 6 stock\n:yellow_square:  -  6 or less stock\n:red_square:  -  Out of Stock'
 
-	embed=discord.Embed(title="Sidestep Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+link+')', color=setembedcolor)
+	embed=discord.Embed(title="Sidestep Stock Checker :flag_" + countrycode + ":", description='['+str.upper(shoename)+']('+productlink+')', color=setembedcolor)
 	embed.set_thumbnail(url=shoepic)
 	embed.add_field(name="Sidestep PID", value=str(pid), inline=True)
 	embed.add_field(name="Region", value=regioncountry, inline=False)
-	#embed.add_field(name="Availability", value=str(date), inline=False)
 	embed.add_field(name="Stock & Sizes", value = data, inline=True)
 	embed.add_field(name="Size PIDS", value = data2, inline=True)
 	embed.add_field(name="Moji Custom Size", value = mojisizerange, inline=False)
@@ -1347,121 +1298,275 @@ async def side(ctx, link):
 	if "private" in ctx.channel.type:
 		member = ctx.author
 		await member.send(embed=embed)
-		await test91.delete()
 	else:
 		await ctx.send(embed=embed)
-		await test91.delete()
 
+stockloadedregion = []
+def stockftl(url,region):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.content, "html.parser")
+	try:
+		file = urllib.request.urlopen(url)
+		datafile = file.read()
+		my_dict = json.loads(datafile)
+		file.close()
+	except Exception:
+		pass
+
+	try:
+		brand = my_dict["brand"]
+	except Exception:
+		brand = "notloaded"
+
+	if not brand == "notloaded":
+		stockloadedregion.append(region)
+
+loadedregion = []
+loadedregionurl = []
+notloadedregion = []
+notloadedregionurl = []
+pricenotloaded = []
+pricenotloadedregion = []
+priceloaded = []
+priceloadedregion = []
+unkownurl = []
+unknownregion = []
+
+def threadftlnew(url,region,country,pid):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.content, "html.parser")
+	try:
+		file = urllib.request.urlopen(url)
+		datafile = file.read()
+		my_dict = json.loads(datafile)
+		file.close()
+	except Exception:
+		pass
+
+	try:
+		variantAttributes = my_dict["variantAttributes"]
+		price1 = variantAttributes[0]["price"]
+		price = price1["formattedOriginalPrice"]
+	except (AttributeError,UnboundLocalError):
+		price = "N/A"
+
+	try:
+		brand = my_dict["brand"]
+	except Exception:
+		brand = "notloaded"
+
+	if brand == "notloaded":
+		notloadedregion.append(region)
+		newurl = "https://www.footlocker." + region + "en/product/~/" + pid
+		embedlinknotloaded = f"[{str(country)}]({str(newurl)})"
+		notloadedregionurl.append(embedlinknotloaded)
+		pricenotloaded.append(price)
+	elif not brand == "notloaded":
+		loadedregion.append(region)
+		newurl = "https://www.footlocker." + region + "en/product/~/" + pid
+		embedlinkloaded = f"[{str(country)}]({str(newurl)})"
+		loadedregionurl.append(embedlinkloaded)
+		priceloaded.append(price)
+	else:
+		unknownregion.append(region)
+		newurl = "https://www.footlocker." + region + "en/product/~/" + pid
+		embedunkown = f"[{str(country)}]({str(newurl)})"
+		unkownurl.append(embedunkown)
+
+statusftlnewrunning = ["notrunning"]
 
 @bot.command()
 async def ftlnew(context, link):
 
-	loadedregion = []
-	loadedregionurl = []
-	notloadedregion = []
-	notloadedregionurl = []
+	if statusftlnewrunning[0] == "notrunning":
+		statusftlnewrunning[0] = "running"
+		if isinstance(context.channel, discord.channel.DMChannel):
+			channeltype = "DM"
+		else:
+			channeltype = "CHANNEL"
 
-	pid = link.split(".html")[0][-12:]
-	shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
+		user_name_id = context.author.name + ' ID : ' + str(context.author.id)
+		log3 = Fore.CYAN + f'[{user_name_id}] '
+		log4 = "[FTL NEW CHECKER]"
+		log = log3 + log4
+		now = datetime.now()
 
-	allregionlinksec = link.split("product/")[1]
-	allregionlinksec = "product/" + allregionlinksec
-	allregionlinkfirst = "https://www.footlocker."
+		embed3=discord.Embed(title="FTL NEW CHECKER :flag_eu:", description='Checking backend...', color=setembedcolor)
+		embed3.set_footer(text=setfootertext, icon_url=setfooterimage)
+		test91 = await context.send(embed=embed3)
 
-	region = ["de/en/","at/en/","be/en/","dk/en/","gr/en/","hu/en/","ie/en/","it/en/","lu/en/","no/en/","cz/en/","pl/en/","pt/en/","es/en/","se/en/"]
+		pid = link.split(".html")[0][-12:]
+		shoepic = 'https://images.footlocker.com/is/image/FLEU/' + pid + '_01?wid=763&hei=538&fmt=png-alpha'
 
-	for i in range(len(region)):
-		url = allregionlinkfirst + region[i] + allregionlinksec
-		response = requests.get(url)
-		if "Heading-main font-body-2" in response.text:
-			notloadedregion.append(region[i])
-			notloadedregionurl.append(url)
-		elif "ProductName-alt" in response.text:
-			loadedregion.append(region[i])
-			loadedregionurl.append(url)
+		allregionlinksec = "api/products/pdp/" + pid
+		allregionlinkfirst = "https://www.footlocker."
 
-	for i in range(len(loadedregion)):
-		loadedregion[i] = loadedregion[i].replace("/en/","")
-		loadedregion[i] = ":flag_" + loadedregion[i] + ":"
+		regionprice = ["co.uk/","de/","at/","fr/","be/","dk/","gr/","hu/","ie/","it/","lu/","no/","cz/","pl/","pt/","es/","se/"]
+		region = ["co.uk/","de/","at/","fr/","be/","dk/","gr/","hu/","ie/","it/","lu/","no/","cz/","pl/","pt/","es/","se/"]
+		country = ["United Kingdom","Germany","Austria","France","Belgium","Denmark","Greece","Hungary","Ireland","Italy","Luxembourg","Norway","Czech Republic","Poland","Portugal","Spain","Sweden"]
 
-	for i in range(len(notloadedregion)):
-		notloadedregion[i] = notloadedregion[i].replace("/en/","")
-		notloadedregion[i] = ":flag_" + notloadedregion[i] + ":"
+		for i in range(len(region)):
+			print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + f"[{pid}]" + f"[{str.upper(country[i])}][{channeltype}]")
+			url = allregionlinkfirst + region[i] + allregionlinksec
+			url2 = allregionlinkfirst + regionprice[i] + allregionlinksec
+			m = threading.Thread(target=threadftlnew, args=(url,region[i],country[i],pid))
+			time.sleep(0.5)
+			m.start()
 
-	loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion,loadedregionurl))
-	notloadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(notloadedregion,notloadedregionurl))
+		m.join()
+		while threading.active_count() > 3:
+			time.sleep(1)
 
-
-	for i in range(2):
-		if i == 0:
-			if not loadedURL:
-				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-				embed.add_field(name="Product Page Live", value="No Region is Live!", inline=False)
-				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-				embed.set_thumbnail(url=shoepic)
-				await context.send(embed=embed)
+		for i in range(len(loadedregion)):
+			if "co.uk" in loadedregion[i]:
+				loadedregion[i] = ":flag_gb:"
 			else:
-				try:
-					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-					embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL, inline=False)
+				loadedregion[i] = ":flag_" + loadedregion[i].replace("/","") + ":"
+
+		for i in range(len(notloadedregion)):
+			if "co.uk" in notloadedregion[i]:
+				notloadedregion[i] = ":flag_gb:"
+			else:
+				notloadedregion[i] = ":flag_" + notloadedregion[i].replace("/","") + ":"
+
+		for i in range(len(unknownregion)):
+			if "co.uk" in unknownregion[i]:
+				unknownregion[i] = ":flag_gb:"
+			else:
+				unknownregion[i] = ":flag_" + unknownregion[i].replace("/","") + ":"
+
+		loadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion,loadedregionurl))
+		notloadedURL = "\n".join("{0} {1}".format(x,y) for x,y in zip(notloadedregion,notloadedregionurl))
+
+
+		for i in range(3):
+			if i == 0:
+				if not loadedURL:
+					if len(region) == len(notloadedregionurl):
+						embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+						embed.add_field(name="No Product Page loaded", value="No Region is Live!", inline=False)
+						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_thumbnail(url=shoepic)
+						await context.send(embed=embed)
+				else:
+					try:
+						embedpriceloaded = "\n".join(priceloaded)
+						embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+						embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL, inline=True)
+						embed.add_field(name=":dollar: Price", value=embedpriceloaded, inline=True)
+						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_thumbnail(url=shoepic)
+						await context.send(embed=embed)
+					except(Exception):						
+						loadedregionurl1, loadedregionurl2 = split_list(loadedregionurl)
+						loadedregion1, loadedregion2 = split_list(loadedregion)
+						embedpriceloaded1,embedpriceloaded2 = split_list(priceloaded)
+
+						embedpriceloaded3 = "\n".join(embedpriceloaded1)
+						embedpriceloaded4 = "\n".join(embedpriceloaded2)
+
+						loadedURL1 = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion1,loadedregionurl1))
+						loadedURL2 = "\n".join("{0} {1}".format(x,y) for x,y in zip(loadedregion2,loadedregionurl2))
+
+						for j in range(2):
+							if j == 0:
+								embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+								embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL1, inline=True)
+								embed.add_field(name=":dollar: Price", value=embedpriceloaded3, inline=True)
+								embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+								embed.set_thumbnail(url=shoepic)
+								await context.send(embed=embed)
+							elif j == 1:
+								embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+								embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL2, inline=True)
+								embed.add_field(name=":dollar: Price", value=embedpriceloaded4, inline=True)
+								embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+								embed.set_thumbnail(url=shoepic)
+								await context.send(embed=embed)
+			if i == 1:
+				if not notloadedURL:
+					if len(region) == len(loadedregionurl):
+						embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+						embed.add_field(name="Product Page Live", value="ALL Regions are loaded!", inline=True)
+						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_thumbnail(url=shoepic)
+						await context.send(embed=embed)
+				else:
+					try:
+						embedpricenotloaded = "\n".join(pricenotloaded)
+						embed=discord.Embed(title="Footlocker New Region Links", description="If a price is shown check link with region language instead of english",color=setembedcolor)
+						embed.add_field(name=":x: No Product Page loaded", value=notloadedURL, inline=True)
+						embed.add_field(name=":dollar: Price", value=embedpricenotloaded, inline=True)
+						embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+						embed.set_thumbnail(url=shoepic)
+						await context.send(embed=embed)
+					except(Exception):			
+						notloadedregionurl1, notloadedregionurl2 = split_list(notloadedregionurl)
+						notloadedregion1, notloadedregion2 = split_list(notloadedregion)
+						embedpricenotloaded1,embedpricenotloaded2 = split_list(pricenotloaded)
+
+						embedpricenotloaded3 = "\n".join(embedpricenotloaded1)
+						embedpricenotloaded4 = "\n".join(embedpricenotloaded2)
+
+						newloadedURL1 = "\n".join("{0} {1}".format(x,y) for x,y in zip(notloadedregion1,notloadedregionurl1))
+						newloadedURL2 = "\n".join("{0} {1}".format(x,y) for x,y in zip(notloadedregion2,notloadedregionurl2))	
+						for j in range(2):
+							if j == 0:						
+								embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+								embed.add_field(name=":x: No Product Page loaded", value=newloadedURL1, inline=True)
+								embed.add_field(name=":dollar: Price", value=embedpricenotloaded3, inline=True)
+								embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+								embed.set_thumbnail(url=shoepic)
+								await context.send(embed=embed)
+							elif j == 1:
+								embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
+								embed.add_field(name=":x: No Product Page loaded", value=newloadedURL2, inline=True)
+								embed.add_field(name=":dollar: Price", value=embedpricenotloaded4, inline=True)
+								embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+								embed.set_thumbnail(url=shoepic)
+								await context.send(embed=embed)
+			if i == 2:
+				if unknownregion:
+					pprint(unknownregion)
+					pprint(unkownurl)
+					unkownembed = "\n".join("{0} {1}".format(x,y) for x,y in zip(unknownregion,unkownurl))
+					embed=discord.Embed(title="Footlocker New Region Links",description="Check Links Manual!", color=setembedcolor)
+					embed.add_field(name=":grey_question: Unkown Status", value=unkownembed, inline=True)
 					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
 					embed.set_thumbnail(url=shoepic)
 					await context.send(embed=embed)
-				except(Exception):						
-					loadedURL1, loadedURL2 = split_list(loadedURL)
-					for j in range(2):
-						if j == 0:
-							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL1, inline=False)
-							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-							embed.set_thumbnail(url=shoepic)
-							await context.send(embed=embed)
-						elif j == 1:
-							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-							embed.add_field(name=":white_check_mark: Product Page Live", value=loadedURL2, inline=False)
-							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-							embed.set_thumbnail(url=shoepic)
-							await context.send(embed=embed)
-		if i == 1:
-			if not notloadedregionurl:
-				embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-				embed.add_field(name="No Product Page loaded", value="ALL Regions are loaded!", inline=False)
-				embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-				embed.set_thumbnail(url=shoepic)
-				await context.send(embed=embed)
-			else:
-				try:
-					embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-					embed.add_field(name=":x: No Product Page loaded", value=notloadedURL, inline=False)
-					embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-					embed.set_thumbnail(url=shoepic)
-					await context.send(embed=embed)
-				except(Exception):			
-					newloadedURL1, newloadedURL2 = split_list(notloadedURL)		
-					for j in range(2):
-						if j == 0:						
-							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL1, inline=False)
-							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-							embed.set_thumbnail(url=shoepic)
-							await context.send(embed=embed)
-						elif j == 1:
-							embed=discord.Embed(title="Footlocker New Region Links", color=setembedcolor)
-							embed.add_field(name=":x: No Product Page loaded", value=newloadedURL2, inline=False)
-							embed.set_footer(text=setfootertext, icon_url=setfooterimage)
-							embed.set_thumbnail(url=shoepic)
-							await context.send(embed=embed)
 
+		print(Fore.MAGENTA + f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"+ log + Fore.GREEN + "ALL WEBHOOKS SENT!")
+		loadedregion.clear()
+		loadedregionurl.clear()
+		notloadedregion.clear()
+		notloadedregionurl.clear()
+		pricenotloaded.clear()
+		pricenotloadedregion.clear()
+		priceloaded.clear()
+		priceloadedregion.clear()
+		unknownregion.clear()
+		unkownurl.clear()
+		statusftlnewrunning[0] = "notrunning"
+		if channeltype == "DM":
+			pass
+		else:
+			context.test91.delete()
+	else:
+		embed=discord.Embed(title="Footlocker New Region", color=setembedcolor)
+		embed.add_field(name="PLS Wait", value="Someone is using this command try again later", inline=True)
+		embed.set_footer(text=setfootertext, icon_url=setfooterimage)
+		await context.send(embed=embed)
 
 @bot.command()
 async def ftlcountries(context):
 	embed=discord.Embed(title="All Support FTL Countries", color=setembedcolor)
-	old_region = ['UK','FR','NL','SG','AU','MY','HK','MO']
-	old_region_name = ['United Kingdom','France','Netherlands','Singapore','Australia','Malaysia','Hong Kong','Macau']
-	old_region_flag = [':flag_gb:',':flag_fr:',':flag_nl:',':flag_sg:',':flag_au:',':flag_my:',':flag_hk:',':flag_mo:']
-	new_region = ['AT','BE','DK','HU','IE','IT',"DE",'GR','LU','NO','CZ','PL','PT','ES','SE']
-	new_region_name = ['Austria','Belgium','Denmark','Hungary','Ireland','Italy',"Germany",'Greece','Luxembourg','Norway','Czech Republic','Poland','Portugal','Spain','Sweden']
-	new_region_flag = [':flag_at:',':flag_be:',':flag_dk:',':flag_hu:',':flag_ie:',':flag_it:',':flag_de:',':flag_gr:',':flag_lu:',':flag_no:',':flag_cz:',':flag_pl:',':flag_pt:',':flag_es:',':flag_se:']
+	old_region = ['SG','AU','MY','HK','MO']
+	old_region_name = ['Singapore','Australia','Malaysia','Hong Kong','Macau']
+	old_region_flag = [':flag_sg:',':flag_au:',':flag_my:',':flag_hk:',':flag_mo:']
+	new_region = ["UK",'AT','BE','DK','HU','IE','IT',"DE",'GR','LU','NO','CZ','PL','PT','ES','SE',"NL","FR"]
+	new_region_name = ["United Kingdom",'Austria','Belgium','Denmark','Hungary','Ireland','Italy',"Germany",'Greece','Luxembourg','Norway','Czech Republic','Poland','Portugal','Spain','Sweden',"Netherlands","France"]
+	new_region_flag = [":flag_gb:",':flag_at:',':flag_be:',':flag_dk:',':flag_hu:',':flag_ie:',':flag_it:',':flag_de:',':flag_gr:',':flag_lu:',':flag_no:',':flag_cz:',':flag_pl:',':flag_pt:',':flag_es:',':flag_se:',":flag_nl:",":flag_fr:"]
 	countriesold = "\n".join("{0} - {1}  {2}".format(x,y,z) for x,y,z in zip(old_region_flag,old_region,old_region_name))
 	countriesnew = "\n".join("{0} - {1} {2}".format(x,y,z) for x,y,z in zip(new_region_flag,new_region,new_region_name))
 	embed.add_field(name="NEW REGION", value=countriesnew, inline=True)
