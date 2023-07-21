@@ -26,14 +26,14 @@ async def on_ready():
 	print('Bot is ready.')
 	pass
 
-bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
+bottoken = "YOUR_DISCORD_BOT_TOKEN"
 
-setfootertext = "@ScriptingTools | Stock Checker | <?ftlhelp>"
+setfootertext = "@ScriptingToolsPublic | Stock Checker | <?ftlhelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x000000
-euregionhook = ["https://discord.com/api/webhooks/826511701938929665/sDMNDIi7ULZL7x58wiSTqJYCKnnYB56XMZNAGosINZaNBXo0LgSvoz1cAAZc9YkdiVaY","https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
-asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
-newregionhook = ["https://discord.com/api/webhooks/826511701938929665/sDMNDIi7ULZL7x58wiSTqJYCKnnYB56XMZNAGosINZaNBXo0LgSvoz1cAAZc9YkdiVaY","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN","https://discord.com/api/webhooks/817319398581862460/ssmAmxLGk48nOq5WHPEM80j1dNtBk4RZVdmX57ICk2fZQw6qVngmaQuc7OpV4qMmeGVE","https://discord.com/api/webhooks/817330940078587926/nUjzq3y6kwmvlQR8rYkS9aeJ9ySjsCUxGdw8RCsT751F5O8kkrs8_q4u2ET7XZY0_I8-","https://discord.com/api/webhooks/796511750639321122/36-2KT29M5HQ607AYgLRomI10vRoq1QOJ4IpDsQjqpn8HCdMYit-6A9Z2Gbavm6bsC7B"]
+euregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
+asiaregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
+newregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
 
 def split_list(a_list):
     half = len(a_list)//2
