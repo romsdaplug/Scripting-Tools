@@ -19,4 +19,4 @@ A lot of modules might be deprecated as most of sites changed but feel free to c
 
 All you have to do is :
 
-Input your Discord Bot Token at the beginning of each script.
+- Input your Discord Bot Token at the beginning of each script.
