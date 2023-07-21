@@ -1,4 +1,4 @@
-# Scripting Tools v1.0
+# Scripting Tools v1.0 (Public Version)
 
 - This an open source of the first version of Scripting Tools (2y ago).
 
