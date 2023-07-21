@@ -16,29 +16,29 @@ from decimal import Decimal
 from discord.ext.commands import CommandNotFound,MissingRequiredArgument
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
-bottoken = "Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
+bottoken = "YOUR_DISCORD_BOT_TOKEN"
 
 @bot.event
 async def on_ready():
 	print('Bot is ready.')
 	pass
 
-setfootertextftl = "@ScriptingTools | FTL / SIDE Stock Checker | <?ftlhelp>"
-setfootertextmesh = "@ScriptingTools | Mesh QT / PID Scraper | <?meshhelp>"
-setfootertextnike = "@ScriptingTools | Nike Early Links | <?nikehelp>"
-setfootertextorder = "@ScriptingTools | Mesh Order Tracker | <?orderhelp>"
-setfootertextrestocks = "@ScriptingTools | Restocks"
-setfootertextstockx = "@ScriptingTools | StockX"
-setfootertextups = "@ScriptingTools | UPS Order Tracker | <?upshelp>"
-setfootertextzalando = "@ScriptingTools | <?zalandohelp>"
+setfootertextftl = "@ScriptingToolsPublic | FTL / SIDE Stock Checker | <?ftlhelp>"
+setfootertextmesh = "@ScriptingToolsPublic | Mesh QT / PID Scraper | <?meshhelp>"
+setfootertextnike = "@ScriptingToolsPublic | Nike Early Links | <?nikehelp>"
+setfootertextorder = "@ScriptingToolsPublic | Mesh Order Tracker | <?orderhelp>"
+setfootertextrestocks = "@ScriptingToolsPublic | Restocks"
+setfootertextstockx = "@ScriptingToolsPublic | StockX"
+setfootertextups = "@ScriptingToolsPublic | UPS Order Tracker | <?upshelp>"
+setfootertextzalando = "@ScriptingToolsPublic | <?zalandohelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x00000
 setthumbnailorder = setfooterimage
 setthumbnailups = setfooterimage
 
-euregionhook = ["https://discord.com/api/webhooks/795830345668362262/q6mhcOBrm6JsG6n7RE-J0XFn9arGDFhG9WL-by45-n9qidrKEHjXBywzo__nBu_yWDmo","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN"]
-asiaregionhook = ["https://discord.com/api/webhooks/795830744110071819/oqo38JTYAl_PDIdFJZtQq-01ILvRtSrQpP4LR_zbzyDthOaEsGV1PEjyD8QWvuryWsHN","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN"]
-newregionhook = ["https://discord.com/api/webhooks/796527829261090848/36pfX9AeOlz321uMFTwiibnwAwxT_noBgTkt98JgCoh1xzufCn6yQIW8LkPDtc5iv4dt","https://discord.com/api/webhooks/805796056024481823/25pAS0D_v75ADprKf2HHGHYffcqfSpA__2Br6cnVj95hdh1-3V9EXIiHjHCyWVpE3WUf","https://discord.com/api/webhooks/806877294907883540/w30E5dZFEmeFX3VtuWUsrWxyVYW-Gb5GrHcBT_88ilNQjJlHz7FqGm5rJUIz6D6vwvXM","https://discord.com/api/webhooks/810969141631778866/E94q6xRfWZatyPPtOVWx_bPnxWXF_bBDgCDfwvkXHa-4lhghwqU_l8Ie1Od3-cAC4wTN"]
+euregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
+asiaregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
+newregionhook = ["YOUR_DISCORD_WEBHOOK_URL","YOUR_DISCORD_WEBHOOK_URL2"]
 
 def split_list(a_list):
     half = len(a_list)//2
