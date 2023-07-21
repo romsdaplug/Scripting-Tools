@@ -18,9 +18,9 @@ from discord.ext.commands import CommandNotFound,MissingRequiredArgument
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
 
-bottoken ="Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
+bottoken ="YOUR_DISCORD_BOT_TOKEN"
 
-setfootertext = "@ScriptingTools | <?nikehelp>"
+setfootertext = "@ScriptingToolsPublic | <?nikehelp>"
 setfooterimage = "https://images-ext-1.discordapp.net/external/atwFnJRaXHB0ebXrVSPjVWDXe5hL2OQ0JBWopjGcVCY/https/images-ext-2.discordapp.net/external/gGrbK8FUkmby_Ao8mmH9dZ4RI1cvfkhpUNBlIB46XQE/https/media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
 setembedcolor = 0x000000
 
