@@ -21,11 +21,11 @@ from discord.ext.commands import CommandNotFound
 
 
 bot = commands.Bot(command_prefix = '?', help_command=None)
-bottoken ="Nzk4NTY2ODE4ODEzMDUwOTYw.X_25Tg.Fgr9xvAtE0qkJnmHL_dz4gZ3ofw"
+bottoken ="YOUR_DISCORD_BOT_TOKEN"
 
 setembedcolor = 0
 setfooterimage = "https://media.discordapp.net/attachments/460974692073734164/680067025493950474/Wcu7EAAAAASUVORK5CYII.png"
-setfootertext = "@ScriptingTools |"
+setfootertext = "@ScriptingToolsPublic |"
 
 init(autoreset=True)
 
